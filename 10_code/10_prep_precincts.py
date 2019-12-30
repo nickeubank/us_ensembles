@@ -22,7 +22,7 @@ state_fips = pickle.load(open(f, "rb" ))[state]
 
 # Precinct
 precincts = gpd.read_file("./00_source_data/votes/"
-                          "2008_presidential_precinct_counts2.shp")
+                          "2008_presidential_precinct_counts.shp")
 
 precincts = precincts[['OBJECTID', 'P2008_D', 'P2008_R', 
                        'STATE', 'COUNTY', 'geometry']]
@@ -68,10 +68,28 @@ districts = districts.to_crs(crs)
 # into precincts
 ###########
 
-# import maup
-# district_assignment = maup.assign(precincts, districts)
-# precincts["DISTRICT"] = district_assignment
+import maup
 
-# assignment = maup.assign(census_blocks, precincts)
-# precincts[variables] = blocks[variables].groupby(assignment).sum()
-# precincts[variables].head()
+# Districts
+district_assignment = maup.assign(precincts, districts)
+precincts["DISTRICT"] = district_assignment
+
+# Population
+assignment = maup.assign(census_blocks, precincts)
+precincts['population'] = census_blocks['POP10'].groupby(assignment).sum()
+precincts['population'].head()
+
+###########
+# Fill gaps and overlaps
+###########
+#precincts_no_overlaps = maup.resolve_overlaps(precincts)
+#precincts_no_overlaps_or_gaps = maup.resolve_gaps(precincts_no_overlaps)
+
+###########
+# Save
+###########
+
+f = f'20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp'
+#precincts_no_overlaps_or_gaps.to_file(f)
+precincts.to_file(f)
+
