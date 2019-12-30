@@ -10,21 +10,9 @@ os.chdir('/users/nick/github/us_ensembles')
 ###########
 
 # state = os.getenv('STATE')
-state = 0  
+state = 22
 f='20_intermediate_files/sequential_to_fips.pickle'
 state_fips = pickle.load(open(f, "rb" ))[state]
-
-
-##########
-# Clean clipped
-##########
-
-file = f'20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}_clipped.shp'
-gdf = gpd.read_file(file)
-gdf['geometry'] = gdf['geometry'].buffer(0)
-
-file2 = f'20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}_clipped_buffer0d.shp'
-gdf.to_file(file2)
 
 ##########
 # Set Initial Partition
@@ -34,13 +22,13 @@ from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
 
 # Ignore errors: some overlap issues, but shouldn't matter for adjacency
-graph = Graph.from_file(file2, cols_to_add=['district', 'population'])
+graph = Graph.from_json(f'20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}.json')
 
 election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 
 initial_partition = Partition(
     graph,
-    assignment="DISTRICT",
+    assignment="district",
     updaters={
         "cut_edges": cut_edges,
         "population": Tally("population", alias="population"),

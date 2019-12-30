@@ -90,6 +90,16 @@ precincts['population'].head()
 #precincts_no_overlaps_or_gaps = maup.resolve_gaps(precincts_no_overlaps)
 
 ###########
+# Deal with NAs
+###########
+
+import pandas as pd
+
+missing = pd.isnull(precincts['district']) | pd.isnull(precincts['population'])
+assert (missing.sum() / len(precincts)) < 0.005
+precincts = precincts[~missing]
+
+###########
 # Save
 ###########
 

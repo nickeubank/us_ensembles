@@ -96,8 +96,11 @@ while len(list(connected_components(graph))) > 1:
         for close in to_connect: 
             graph.add_edge(close, match)
             graph[close][match]['shared_perim'] = 0
+            
     print('finished one pass')
     print(f'Now have {len(list(connected_components(graph)))} components')
-
     
 print('done')
+
+
+graph.to_json(f'20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}.json')
