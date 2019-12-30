@@ -11,7 +11,7 @@ os.chdir('/users/nick/github/us_ensembles')
 ###########
 
 # state = os.getenv('STATE')
-state = 0  
+state = 22  
 f='20_intermediate_files/sequential_to_fips.pickle'
 state_fips = pickle.load(open(f, "rb" ))[state]
 
@@ -29,7 +29,9 @@ precincts = precincts[['OBJECTID', 'P2008_D', 'P2008_R',
 (~precincts.is_valid).sum()
 precincts = precincts[precincts.STATE == state_fips]
 assert str(precincts.crs) == "{'init': 'epsg:3085'}"
-precincts.loc[~precincts.is_valid, 'geometry'] = precincts.loc[~precincts.is_valid, 'geometry'].simplify(0.00005, preserve_topology=False)
+
+# Topology problems
+precincts.loc[~precincts.is_valid, 'geometry'] = precincts.loc[~precincts.is_valid, 'geometry'].buffer(0)
 assert precincts.is_valid.all()
 
 
@@ -50,6 +52,8 @@ districts = districts[districts['STATEFP'] == state_fips]
 
 districts = districts[['STATEFP', 'CD114FP', 'GEOID', 'geometry']]
 
+# Topology problems
+districts.loc[~districts.is_valid, 'geometry'] = districts.loc[~districts.is_valid, 'geometry'].buffer(0)
 assert districts.is_valid.all()
 
 
@@ -72,7 +76,7 @@ import maup
 
 # Districts
 district_assignment = maup.assign(precincts, districts)
-precincts["DISTRICT"] = district_assignment
+precincts["district"] = district_assignment
 
 # Population
 assignment = maup.assign(census_blocks, precincts)
