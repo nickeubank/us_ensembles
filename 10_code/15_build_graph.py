@@ -66,6 +66,8 @@ gdf = gdf.drop('index', axis='columns')
 
 
 # Let's do some connecting! :)
+print(f'starting with {len(list(connected_components(graph)))} components')
+
 while len(list(connected_components(graph))) > 1:
 
     sub = list(connected_components(graph))[0]
@@ -95,3 +97,7 @@ while len(list(connected_components(graph))) > 1:
             graph.add_edge(close, match)
             graph[close][match]['shared_perim'] = 0
     print('finished one pass')
+    print(f'Now have {len(list(connected_components(graph)))} components')
+
+    
+print('done')
