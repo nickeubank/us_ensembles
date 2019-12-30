@@ -1,6 +1,7 @@
 import geopandas as gpd
 import os
 import pickle
+import numpy as np
 
 os.chdir('/users/nick/github/us_ensembles')
 
@@ -23,10 +24,11 @@ from gerrychain.constraints.contiguity import contiguous_components, contiguous
 file = f'20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp'
 
 # Build adjacency graph and import dataframce (for distance calculations)
-graph = gc.Graph.from_file(file, cols_to_add=['district', 'population'], 
+graph = Graph.from_file(file, cols_to_add=['district', 'population'], 
                            ignore_errors=True)
 gdf = gpd.read_file(file)
 
+assert len(graph) == len(gdf)
 
 ##########
 # First, deal with unconnected nodes
