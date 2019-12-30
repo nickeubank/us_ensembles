@@ -28,7 +28,7 @@ file = f'20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips
 graph = Graph.from_file(file, cols_to_add=['DISTRICT', 'population'],
                         ignore_errors=True)
 
-election = Election("PRES2008", {"Dem": "P20008_D", "Rep": "P2008_R"})
+election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 
 initial_partition = Partition(
     graph,
