@@ -16,17 +16,25 @@ state_fips = pickle.load(open(f, "rb" ))[state]
 
 
 ##########
-# Setup for analysis
+# Clean clipped
+##########
+
+file = f'20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}_clipped.shp'
+gdf = gpd.read_file(file)
+gdf['geometry'] = gdf['geometry'].buffer(0)
+
+file2 = f'20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}_clipped_buffer0d.shp'
+gdf.to_file(file2)
+
+##########
+# Set Initial Partition
 ##########
 
 from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
 
-file = f'20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp'
-
 # Ignore errors: some overlap issues, but shouldn't matter for adjacency
-graph = Graph.from_file(file, cols_to_add=['DISTRICT', 'population'],
-                        ignore_errors=True)
+graph = Graph.from_file(file2, cols_to_add=['district', 'population'])
 
 election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 

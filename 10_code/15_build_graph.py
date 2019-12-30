@@ -71,9 +71,9 @@ while len(list(connected_components(graph))) > 1:
     sub = list(connected_components(graph))[0]
 
     # Split geodataframe
-    trying_to_connect = gdf.iloc[list(sub)].copy()
+    trying_to_connect = gdf.loc[list(sub)].copy()
     remainder = set(gdf.index).difference(sub)
-    others = gdf.iloc[list(remainder)].copy()
+    others = gdf.loc[list(remainder)].copy()
 
     # Find precincts closest to the component I want to connect
     trying_union = trying_to_connect.geometry.unary_union
@@ -93,5 +93,5 @@ while len(list(connected_components(graph))) > 1:
     
         for close in to_connect: 
             graph.add_edge(close, match)
-            graph[close, match]['shared_perim']=0
+            graph[close][match]['shared_perim'] = 0
     print('finished one pass')
