@@ -131,3 +131,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+00_source_data/census_blocks/*.zip
