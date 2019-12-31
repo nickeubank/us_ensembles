@@ -9,31 +9,49 @@ import pickle
 
 # state = os.getenv('STATE')
 
-def setup_state_by_fips(state_fips):
+f = '../20_intermediate_files/sequential_to_fips.pickle'
+state_fips_codes = sorted(list(pickle.load(open(f, "rb" )).values()))
+
+
+###########
+# Loads used for all passes
+###########
+
+# Precinct
+precincts = gpd.read_file("../00_source_data/votes/"
+                          "2008_presidential_precinct_counts.shp")
+
+precincts = precincts[['OBJECTID', 'P2008_D', 'P2008_R', 
+                       'STATE', 'COUNTY', 'geometry']]
+
+# District Maps
+districts = gpd.read_file('../00_source_data/legislative_districts/'
+                          'nhgis0190_shapefile_tl2014_us_cd114th_2014/'
+                          'US_cd114th_2014.shp')
+
+districts = districts[['STATEFP', 'CD114FP', 'GEOID', 'geometry']]
+
+########
+# Loopz
+########
+
+for idx, state_fips in enumerate(state_fips_codes):
+    print(f'on step {idx}, fips {state_fips}')
 
     ###########
     # Bring in precincts, population, 
     # and current districts
     ###########
-
-    # Precinct
-    precincts = gpd.read_file("../00_source_data/votes/"
-                              "2008_presidential_precinct_counts.shp")
-
-    precincts = precincts[['OBJECTID', 'P2008_D', 'P2008_R', 
-                           'STATE', 'COUNTY', 'geometry']]
-    (~precincts.is_valid).sum()
-    precincts = precincts[precincts.STATE == state_fips]
+    
+    precincts = precincts[precincts.STATE == state_fips].copy()
     assert str(precincts.crs) == "{'init': 'epsg:3085'}"
 
     # Topology problems
     precincts.loc[~precincts.is_valid, 'geometry'] = precincts.loc[~precincts.is_valid, 'geometry'].buffer(0)
     assert precincts.is_valid.all()
 
-
     # Census blocks
-    f_blocks = f'../00_source_data/census_blocks/'\
-               f'tabblock2010_{state_fips}'\
+    f_blocks = f'../00_source_data/census_blocks/tabblock2010_{state_fips}'\
                f'_pophu/tabblock2010_{state_fips}_pophu.shp'
 
     census_blocks = gpd.read_file(f_blocks)
@@ -41,13 +59,7 @@ def setup_state_by_fips(state_fips):
     assert census_blocks.is_valid.all()
 
     # Legislative Districts
-    districts = gpd.read_file('../00_source_data/legislative_districts/'
-                              'nhgis0190_shapefile_tl2014_us_cd114th_2014/'
-                              'US_cd114th_2014.shp')
-
-    districts = districts[districts['STATEFP'] == state_fips]
-
-    districts = districts[['STATEFP', 'CD114FP', 'GEOID', 'geometry']]
+    districts = districts[districts['STATEFP'] == state_fips].copy()
 
     # Topology problems
     districts.loc[~districts.is_valid, 'geometry'] = districts.loc[~districts.is_valid, 'geometry'].buffer(0)
@@ -104,15 +116,3 @@ def setup_state_by_fips(state_fips):
     #precincts_no_overlaps_or_gaps.to_file(f)
     precincts.to_file(f)
     print(f'finished {state_fips}')
-    return state_fips
-    
-#######
-# Actual run
-#######
-
-from joblib import Parallel, delayed
-
-f='../20_intermediate_files/sequential_to_fips.pickle'
-state_fips_codes = pickle.load(open(f, "rb" )).values()
-
-results = Parallel(n_jobs=10)(delayed(setup_state_by_fips)(fips) for fips in state_fips_codes)
