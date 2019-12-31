@@ -57,3 +57,8 @@ chain = MarkovChain(
     initial_state=initial_partition,
     total_steps=1000
 )
+
+cuts = []
+for part in chain: 
+    cuts.append(len(part["cut_edges"]))
+    
