@@ -2,8 +2,11 @@ import geopandas as gpd
 import os
 import pickle
 import numpy as np
+import gerrychain as gc
+from gerrychain.tree import recursive_tree_part
 
-os.chdir('/users/nick/github/us_ensembles')
+
+#os.chdir('/users/nick/github/us_ensembles')
 
 ###########
 # Get environment var from SLURM
@@ -12,18 +15,35 @@ os.chdir('/users/nick/github/us_ensembles')
 
 # state = os.getenv('STATE')
 state = 22
-f='20_intermediate_files/sequential_to_fips.pickle'
+f='../20_intermediate_files/sequential_to_fips.pickle'
 state_fips = pickle.load(open(f, "rb" ))[state]
-
+num_districts = 14
 
 ##########
 # Find nearest gaps and connect
 ##########
 from gerrychain import Graph
 from gerrychain.constraints.contiguity import contiguous_components, contiguous
-file = f'20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp'
+file = f'../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp'
 
 # Build adjacency graph and import dataframce (for distance calculations)
+#graph = gc.Graph.from_file(file, cols_to_add=['district', 'population', 'OBJECTID'], 
+#                           ignore_errors=True)
+
+gdf = gpd.read_file(file)
+
+centroids = gdf.centroid
+
+gdf["C_X"] = centroids.x
+
+gdf["C_Y"] = centroids.y
+
+graph = gc.Graph.from_geodataframe(gdf,ignore_errors =True)
+
+graph.add_data(gdf)
+
+totpop=sum(gdf['population'])
+
 graph = Graph.from_file(file, cols_to_add=['district', 'population'], 
                            ignore_errors=True)
 gdf = gpd.read_file(file)
@@ -104,5 +124,12 @@ while len(list(connected_components(graph))) > 1:
     
 print('done')
 
+cddict =  recursive_tree_part(graph, range(num_districts), totpop / num_districts,"population", .05, 1)
+pos = {node:(float(graph.nodes[node]['C_X']), float(graph.nodes[node]['C_Y'])) for node in graph.nodes}
 
-graph.to_json(f'20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}.json')
+for node in graph.nodes():
+    graph.nodes[node]['New_Seed'] = cddict[node]
+    graph.nodes[node]['pos'] = pos[node]
+
+
+graph.to_json(f'../20_intermediate_files/precinct_graphs/new_precinct_graphs_{state_fips}.json')
