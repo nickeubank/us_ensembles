@@ -46,6 +46,9 @@ for idx, state_fips in enumerate(state_fips_codes):
     precincts = precincts[precincts.STATE == state_fips].copy()
     assert str(precincts.crs) == "{'init': 'epsg:3085'}"
 
+    if len(precincts) == 0:
+        raise ValueError(f"no precincts for fips {state_fips}")
+    
     # Topology problems
     precincts.loc[~precincts.is_valid, 'geometry'] = precincts.loc[~precincts.is_valid, 'geometry'].buffer(0)
     assert precincts.is_valid.all()
@@ -105,7 +108,11 @@ for idx, state_fips in enumerate(state_fips_codes):
     import pandas as pd
 
     missing = pd.isnull(precincts['district']) | pd.isnull(precincts['population'])
-    assert (missing.sum() / len(precincts)) < 0.005
+
+    if (missing.sum() / len(precincts)) > 0.005:
+        raise ValueError("missing district or population data for more than 5% of precincts"
+                         f"in state fips {state_fips}")
+        
     precincts = precincts[~missing]
 
     ###########
