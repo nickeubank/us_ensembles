@@ -2,9 +2,6 @@ import geopandas as gpd
 import os
 import pickle
 
-os.chdir('/users/nick/github/us_ensembles')
-
-
 ###########
 # Get environment var from SLURM
 # and convert

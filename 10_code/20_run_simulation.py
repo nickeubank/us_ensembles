@@ -2,8 +2,6 @@ import geopandas as gpd
 import os
 import pickle
 
-#os.chdir('../users/nick/github/us_ensembles')
-
 ###########
 # Get environment var from SLURM
 # and convert
@@ -22,7 +20,7 @@ from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
 
 # Ignore errors: some overlap issues, but shouldn't matter for adjacency
-graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/new_precinct_graphs_{state_fips}.json')
+graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}.json')
 
 election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 
@@ -39,8 +37,6 @@ initial_partition = Partition(
 
 
 
-
-
 ############
 # Run a simulation!
 ############
@@ -49,6 +45,7 @@ from gerrychain import MarkovChain
 from gerrychain.constraints import single_flip_contiguous, contiguous_bfs
 from gerrychain.proposals import propose_random_flip
 from gerrychain.accept import always_accept
+
 
 chain = MarkovChain(
     proposal=propose_random_flip,

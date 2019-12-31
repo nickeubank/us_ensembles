@@ -5,9 +5,6 @@ import numpy as np
 import gerrychain as gc
 from gerrychain.tree import recursive_tree_part
 
-
-#os.chdir('/users/nick/github/us_ensembles')
-
 ###########
 # Get environment var from SLURM
 # and convert
@@ -24,31 +21,23 @@ num_districts = 14
 ##########
 from gerrychain import Graph
 from gerrychain.constraints.contiguity import contiguous_components, contiguous
-file = f'../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp'
 
-# Build adjacency graph and import dataframce (for distance calculations)
-#graph = gc.Graph.from_file(file, cols_to_add=['district', 'population', 'OBJECTID'], 
-#                           ignore_errors=True)
+file = f'../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp'
 
 gdf = gpd.read_file(file)
 
+# Add centroids
 centroids = gdf.centroid
 
 gdf["C_X"] = centroids.x
-
 gdf["C_Y"] = centroids.y
 
+# Convert to graph
 graph = gc.Graph.from_geodataframe(gdf,ignore_errors =True)
 
 graph.add_data(gdf)
-
-totpop=sum(gdf['population'])
-
-graph = Graph.from_file(file, cols_to_add=['district', 'population'], 
-                           ignore_errors=True)
-gdf = gpd.read_file(file)
-
-assert len(graph) == len(gdf)
+totpop = sum(gdf['population'])
+num_districts = gdf.district.nunique()
 
 ##########
 # First, deal with unconnected nodes
@@ -132,4 +121,4 @@ for node in graph.nodes():
     graph.nodes[node]['pos'] = pos[node]
 
 
-graph.to_json(f'../20_intermediate_files/precinct_graphs/new_precinct_graphs_{state_fips}.json')
+graph.to_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}.json')
