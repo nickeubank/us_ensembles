@@ -98,8 +98,9 @@ for part in chain:
     step_index += 1
     
     #chain_flips.append(dict(part.flips))
+    #Currently useless!
     if part.flips is not None:
-        with open(f'flips_{step_index}.json', 'w') as fp:
+        with open(newdir+f'flips_{step_index}.json', 'w') as fp:
             json.dump(dict(part.flips), fp)
 	
     pop_vec.append(sorted(list(part["population"].values())))
