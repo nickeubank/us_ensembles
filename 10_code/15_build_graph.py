@@ -113,7 +113,7 @@ while len(list(connected_components(graph))) > 1:
     
 print('done')
 
-cddict =  recursive_tree_part(graph, range(num_districts), totpop / num_districts,"population", .05, 1)
+cddict =  recursive_tree_part(graph, range(num_districts), totpop / num_districts,"population", .02, 1)
 pos = {node:(float(graph.nodes[node]['C_X']), float(graph.nodes[node]['C_Y'])) for node in graph.nodes}
 
 for node in graph.nodes():
