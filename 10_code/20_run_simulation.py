@@ -6,6 +6,8 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt 
 import networkx as nx
+from functools import partial
+import json
 ###########
 # Get environment var from SLURM
 # and convert
@@ -16,7 +18,7 @@ state = 22
 f='../20_intermediate_files/sequential_to_fips.pickle'
 state_fips = pickle.load(open(f, "rb" ))[state]
 
-newdir = "../20_intermediate_files/chain_ouputs/"
+newdir = f"../20_intermediate_files/chain_ouputs/{state_fips}/"
 os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
 with open(newdir + "init.txt", "w") as f:
     f.write("Created Folder")
@@ -29,7 +31,7 @@ from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
 
 # Ignore errors: some overlap issues, but shouldn't matter for adjacency
-graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}.json')
+graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_26.json')
 
 election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 
@@ -58,18 +60,19 @@ from gerrychain.metrics import efficiency_gap, mean_median, partisan_bias, parti
 from gerrychain.proposals import recom
 
 election_names = ["PRES2008"]
+num_elections = 1 
 
 ideal_population = sum(initial_partition["population"].values()) / len(
     initial_partition
 )
 
 proposal = partial(
-    recom, pop_col="population", pop_target=ideal_population, epsilon=0.02, node_repeats=1
+    recom, pop_col="population", pop_target=ideal_population, epsilon=0.05, node_repeats=1
 )
 
 chain = MarkovChain(
     proposal=proposal,
-    constraints=[within_percent_of_ideal_population(initial_partition, 0.02)],
+    constraints=[within_percent_of_ideal_population(initial_partition, 0.05)],
     accept=always_accept,
     initial_state=initial_partition,
     total_steps=1000
@@ -88,9 +91,16 @@ pbs = []
 pgs = []
 hmss = []
 
+#chain_flips = []
+
 step_index = 0
 for part in chain: 
     step_index += 1
+    
+    #chain_flips.append(dict(part.flips))
+    if part.flips is not None:
+        with open(f'flips_{step_index}.json', 'w') as fp:
+            json.dump(dict(part.flips), fp)
 	
     pop_vec.append(sorted(list(part["population"].values())))
     cut_vec.append(len(part["cut_edges"]))
@@ -108,7 +118,7 @@ for part in chain:
         pbs[-1].append(partisan_bias(part[election_names[elect]]))
         pgs[-1].append(partisan_gini(part[election_names[elect]]))
         
-    if step_index % 1000 == 0:
+    if step_index % 100 == 0:
         print(step_index)
         
         with open(newdir + "mms" + str(step_index) + ".csv", "w") as tf1:
@@ -149,7 +159,7 @@ for part in chain:
 
         plt.figure()
         nx.draw(graph, pos=pos, node_color=[dict(part.assignment)[node] for node in graph.nodes()], node_size = 50, cmap='tab20')                   
-        plt.savefig(newdir + "plot" + str(t) + ".png")
+        plt.savefig(newdir + "plot" + str(step_index) + ".png")
         plt.close()
         
         pop_vec = []
