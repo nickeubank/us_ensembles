@@ -102,6 +102,10 @@ for part in chain:
     if part.flips is not None:
         with open(newdir+f'flips_{step_index}.json', 'w') as fp:
             json.dump(dict(part.flips), fp)
+	else:
+        with open(newdir+f'flips_{step_index}.json', 'w') as fp:
+            json.dump(dict(), fp)
+		
 	
     pop_vec.append(sorted(list(part["population"].values())))
     cut_vec.append(len(part["cut_edges"]))
