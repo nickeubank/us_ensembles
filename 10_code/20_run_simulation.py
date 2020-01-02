@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from functools import partial
 import json
+import random
 ###########
 # Get environment var from SLURM
 # and convert
@@ -47,6 +48,82 @@ initial_partition = Partition(
 )
 
 
+############
+# Uniform Tree Utilities
+############
+from gerrychain.tree import recursive_tree_part, bipartition_tree_random, PopulatedGraph,contract_leaves_until_balanced_or_none,find_balanced_edge_cuts
+
+
+def get_spanning_tree_u_w(G):
+    node_set=set(G.nodes())
+    x0=random.choice(tuple(node_set))
+    x1=x0
+    while x1==x0:
+        x1=random.choice(tuple(node_set))
+    node_set.remove(x1)
+    tnodes ={x1}
+    tedges=[]
+    current=x0
+    current_path=[x0]
+    current_edges=[]
+    while node_set != set():
+        next=random.choice(list(G.neighbors(current)))
+        current_edges.append((current,next))
+        current = next
+        current_path.append(next)
+
+        if next in tnodes:
+            for x in current_path[:-1]:
+                node_set.remove(x)
+                tnodes.add(x)
+            for ed in current_edges:
+                tedges.append(ed)
+            current_edges = []
+            if node_set != set():
+                current=random.choice(tuple(node_set))
+            current_path=[current]
+
+
+        if next in current_path[:-1]:
+            current_path.pop()
+            current_edges.pop()
+            for i in range(len(current_path)):
+                if current_edges !=[]:
+                    current_edges.pop()
+                if current_path.pop() == next:
+                    break
+            if len(current_path)>0:
+                current=current_path[-1]
+            else:
+                current=random.choice(tuple(node_set))
+                current_path=[current]
+
+    #tgraph = Graph()
+    #tgraph.add_edges_from(tedges)
+    return G.edge_subgraph(tedges)
+
+def my_uu_bipartition_tree_random(
+    graph,
+    pop_col,
+    pop_target,
+    epsilon,
+    node_repeats=1,
+    spanning_tree=None,
+    choice=random.choice):
+    populations = {node: graph.nodes[node][pop_col] for node in graph}
+
+    possible_cuts = []
+    if spanning_tree is None:
+        spanning_tree = get_spanning_tree_u_w(graph)
+
+    while len(possible_cuts) == 0:
+        spanning_tree = get_spanning_tree_u_w(graph)
+        h = PopulatedGraph(spanning_tree, populations, pop_target, epsilon)
+        possible_cuts = find_balanced_edge_cuts(h, choice=choice)
+
+    return choice(possible_cuts).subset
+
+
 
 ############
 # Run a simulation!
@@ -67,8 +144,8 @@ ideal_population = sum(initial_partition["population"].values()) / len(
 )
 
 proposal = partial(
-    recom, pop_col="population", pop_target=ideal_population, epsilon=0.05, node_repeats=1
-)
+    recom, pop_col="population", pop_target=ideal_population, epsilon=0.01, node_repeats=1, method =my_uu_bipartition_tree_random)
+    
 
 chain = MarkovChain(
     proposal=proposal,
