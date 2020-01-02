@@ -13,8 +13,8 @@ import json
 # and convert
 ###########
 
-# state = os.getenv('STATE')
-state = 22
+state = os.getenv('STATE')
+
 f='../20_intermediate_files/sequential_to_fips.pickle'
 state_fips = pickle.load(open(f, "rb" ))[state]
 
@@ -31,7 +31,7 @@ from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
 
 # Ignore errors: some overlap issues, but shouldn't matter for adjacency
-graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_26.json')
+graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}.json')
 
 election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 
@@ -75,11 +75,10 @@ chain = MarkovChain(
     constraints=[within_percent_of_ideal_population(initial_partition, 0.05)],
     accept=always_accept,
     initial_state=initial_partition,
-    total_steps=1000
+    total_steps=100
 )
 
 pos = {node:(float(graph.nodes[node]['C_X']), float(graph.nodes[node]['C_Y'])) for node in graph.nodes}
-
 
 
 pop_vec = []
@@ -102,11 +101,11 @@ for part in chain:
     if part.flips is not None:
         with open(newdir+f'flips_{step_index}.json', 'w') as fp:
             json.dump(dict(part.flips), fp)
-	else:
+    else:
         with open(newdir+f'flips_{step_index}.json', 'w') as fp:
             json.dump(dict(), fp)
-		
-	
+
+
     pop_vec.append(sorted(list(part["population"].values())))
     cut_vec.append(len(part["cut_edges"]))
     mms.append([])
