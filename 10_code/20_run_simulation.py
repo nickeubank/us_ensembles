@@ -252,8 +252,8 @@ for part in chain:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(votes[elect])  
 
-        plt.figure()
-        nx.draw(graph, pos=pos, node_color=[dict(part.assignment)[node] for node in graph.nodes()], node_size = 50, cmap='tab20')                   
+        plt.figure(figsize=(8, 6), dpi=500)
+        nx.draw(graph, pos=pos, node_color=[dict(part.assignment)[node] for node in graph.nodes()], node_size = 20, cmap='tab20')                   
         plt.savefig(newdir + "plot" + str(step_index) + ".png")
         plt.close()
         
