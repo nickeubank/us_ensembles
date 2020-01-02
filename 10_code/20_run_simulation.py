@@ -157,7 +157,7 @@ proposal = partial(
 
 chain = MarkovChain(
     proposal=proposal,
-    constraints=[within_percent_of_ideal_population(initial_partition, 0.05)],
+    constraints=[within_percent_of_ideal_population(initial_partition, 0.02)],
     accept=always_accept,
     initial_state=initial_partition,
     total_steps=1000
