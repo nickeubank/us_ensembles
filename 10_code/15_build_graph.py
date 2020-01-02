@@ -113,12 +113,15 @@ while len(list(connected_components(graph))) > 1:
     
 print('done')
 
-cddict =  recursive_tree_part(graph, range(num_districts), totpop / num_districts,"population", .02, 1)
-pos = {node:(float(graph.nodes[node]['C_X']), float(graph.nodes[node]['C_Y'])) for node in graph.nodes}
 
-for node in graph.nodes():
-    graph.nodes[node]['New_Seed'] = cddict[node]
-    graph.nodes[node]['pos'] = pos[node]
+for new_seed in range(3):
+
+    cddict =  recursive_tree_part(graph, range(num_districts), totpop / num_districts,"population", .02, 1)
+    pos = {node:(float(graph.nodes[node]['C_X']), float(graph.nodes[node]['C_Y'])) for node in graph.nodes}
+
+    for node in graph.nodes():
+        graph.nodes[node]['New_Seed'] = cddict[node]
+        graph.nodes[node]['pos'] = pos[node]
 
 
-graph.to_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}.json')
+    graph.to_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed{new_seed}.json')
