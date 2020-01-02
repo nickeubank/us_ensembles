@@ -108,13 +108,13 @@ for idx, state_fips in enumerate(to_fix):
             
             precincts['temp'] = 1
             precincts_unary = precincts[['temp', 'geometry']].dissolve(by='temp')
-            precincts_unary = precincts_unary.simplify(0.05)
-            precincts_unary = gpd.GeoDataFrame(precincts_unary, geometry=0)
+            precincts_unary['geometry'] = precincts_unary.simplify(0.05)
             precincts_unary.crs = precincts.crs
             
             pre_merge_census_len = len(census_blocks)
-            census_blocks = gpd.sjoin(census_blocks, precincts_unary,
-                                      how='inner', op='intersects')
+            assert len(precincts_unary) == 1
+            census_blocks = gpd.overlay(census_blocks, precincts_unary,
+                                      how='intersection')
         
         assert len(intersecting_census_blocks) <= len(census_blocks)
         assignment = maup.assign(intersecting_census_blocks, precincts)
