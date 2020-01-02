@@ -160,7 +160,7 @@ chain = MarkovChain(
     constraints=[within_percent_of_ideal_population(initial_partition, 0.02)],
     accept=always_accept,
     initial_state=initial_partition,
-    total_steps=1000
+    total_steps=100000
 )
 
 pos = {node:(float(graph.nodes[node]['C_X']), float(graph.nodes[node]['C_Y'])) for node in graph.nodes}
@@ -210,7 +210,7 @@ for part in chain:
         pbs[-1].append(partisan_bias(part[election_names[elect]]))
         pgs[-1].append(partisan_gini(part[election_names[elect]]))
         
-    if step_index % 100 == 0:
+    if step_index % 10000 == 0:
         print(step_index)
         
         with open(newdir+f'flips_{step_index}.json', 'w') as fp1:
