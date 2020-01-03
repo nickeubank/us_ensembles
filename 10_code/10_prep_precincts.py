@@ -1,6 +1,7 @@
 import geopandas as gpd
 import os
 import pickle
+import numpy as np
 
 ###########
 # Get environment var from SLURM
@@ -73,7 +74,8 @@ for idx, state_fips in enumerate(state_fips_codes):
         districts = master_districts[master_districts['STATEFP'] == state_fips].copy()
 
         # Topology problems
-        districts.loc[~districts.is_valid, 'geometry'] = districts.loc[~districts.is_valid, 'geometry'].buffer(0)
+        districts.loc[~districts.is_valid, 'geometry'] = districts.loc[~districts.is_valid,
+                                                                       'geometry'].buffer(0)
         assert districts.is_valid.all()
 
 
@@ -108,9 +110,13 @@ for idx, state_fips in enumerate(state_fips_codes):
         # More sanity checks, 'cause this stuff is easy to get wrong. 
         intersections['share_in_precinct'] = intersections.area / intersections['pre_split_area']
         assert (intersections['share_in_precinct'] <=1.01).all()
-        intersections['new_area'] = intersections.groupby('BLOCKID10').area.sum()
-        assert (intersections['new_area'] / intersections['pre_split_area']) <= 1
-        assert (intersections['new_area'] / intersections['pre_split_area']).mean() > 8
+        intersections['current_fragment_area'] = intersections.area
+        intersections['new_block_summed_area'] = intersections.groupby('BLOCKID10').current_fragment_area.transform(sum)
+        assert ((intersections['new_block_summed_area'] / 
+                intersections['pre_split_area']) <= 1.01).all()
+        
+        assert (intersections['new_block_summed_area'] / 
+                intersections['pre_split_area']).mean() > 0.8
         
         # Actual population interpolation
         intersections['population'] = intersections.POP10 * intersections['share_in_precinct']
@@ -130,8 +136,12 @@ for idx, state_fips in enumerate(state_fips_codes):
 
         # Check my work
         vote_totals = precincts['P2008_D'] + precincts['P2008_R']
-        assert np.corrcoef(vote_totals[precincts.population > 10].values, 
-                           precincts[precincts.population > 10].population.values)[0,1] > 0.8
+        corr = np.corrcoef(vote_totals[precincts.population > 10].values, 
+                           precincts[precincts.population > 10].population.values)[0,1]
+        
+        assert corr > 0
+        print(f'correlation between vote totals and'
+              f'population for fips {state_fips} is {corr:.3f}')
                 
         ###########
         # Put district
@@ -153,7 +163,7 @@ for idx, state_fips in enumerate(state_fips_codes):
         missing = pd.isnull(precincts['district']) | pd.isnull(precincts['population'])
 
         if (missing.sum() / len(precincts)) > 0.001:
-            raise ValueError("missing district or population data for more than 0.5% of precincts"
+            raise ValueError("missing district or population data for more than 0.1% of precincts"
                              f"in state fips {state_fips}")
 
         print(f'missing {missing.sum() / len(precincts)}')

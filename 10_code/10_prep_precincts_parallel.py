@@ -1,13 +1,12 @@
 import geopandas as gpd
 import os
 import pickle
+import numpy as np
 
 ###########
 # Get environment var from SLURM
 # and convert
 ###########
-
-# state = os.getenv('STATE')
 
 def setup_state_by_fips(bundle):
 
@@ -15,6 +14,8 @@ def setup_state_by_fips(bundle):
     state_fips, precincts, districts = bundle
 
     try: 
+        print(f'on fips {state_fips}', flush=True)
+
         ###########
         # Bring in precincts, population, 
         # and current districts
@@ -25,16 +26,22 @@ def setup_state_by_fips(bundle):
         if len(precincts) == 0:
             raise ValueError(f"no precincts for fips {state_fips}")
 
-        assert str(precincts.crs) == "{'init': 'epsg:3085'}"
-
         # Topology problems
-        precincts.loc[~precincts.is_valid, 'geometry'] = precincts.loc[~precincts.is_valid, 'geometry'].buffer(0)
+        assert str(precincts.crs) == "{'init': 'epsg:3085'}"
+        precincts.loc[~precincts.is_valid, 'geometry'] = precincts.loc[~precincts.is_valid, 
+                                                                       'geometry'].buffer(0)
         assert precincts.is_valid.all()
 
         # Census blocks
         f_blocks = f'../00_source_data/census_blocks/tabblock2010_{state_fips}'\
                    f'_pophu/tabblock2010_{state_fips}_pophu.shp'
 
+        # FL and NY have some places with census blocks but no precincts (e.g. federal parks). 
+        # Causes later problems.
+        if state_fips in ['12', '36']:
+            f_blocks = f'../00_source_data/census_blocks/tabblock2010_{state_fips}'\
+                       f'_pophu_clipped/tabblock2010_{state_fips}_pophu_clipped.shp'
+            
         census_blocks = gpd.read_file(f_blocks)
 
         assert census_blocks.is_valid.all()
@@ -43,7 +50,8 @@ def setup_state_by_fips(bundle):
         districts = master_districts[master_districts['STATEFP'] == state_fips].copy()
 
         # Topology problems
-        districts.loc[~districts.is_valid, 'geometry'] = districts.loc[~districts.is_valid, 'geometry'].buffer(0)
+        districts.loc[~districts.is_valid, 'geometry'] = districts.loc[~districts.is_valid,
+                                                                       'geometry'].buffer(0)
         assert districts.is_valid.all()
 
 
@@ -57,8 +65,64 @@ def setup_state_by_fips(bundle):
         precincts = precincts.to_crs(crs)
         districts = districts.to_crs(crs)
 
+        ##########
+        # Population
+        # Add with interpolations
+        ##########
+
+        # Make sure OBJECTID unique
+        assert not precincts.OBJECTID.duplicated().any()
+        
+        census_blocks = census_blocks[['POP10', 'BLOCKID10', 'geometry']]
+        census_blocks['pre_split_area'] = census_blocks.area
+ 
+        # Get all intersections
+        intersections = gpd.overlay(census_blocks, precincts, how='intersection')
+        
+        # Do interpolations
+        intersections['population'] = intersections.POP10 * (intersections.area / 
+                                                             intersections['pre_split_area'])
+        
+        # More sanity checks, 'cause this stuff is easy to get wrong. 
+        intersections['share_in_precinct'] = intersections.area / intersections['pre_split_area']
+        assert (intersections['share_in_precinct'] <=1.01).all()
+        intersections['current_fragment_area'] = intersections.area
+        intersections['new_block_summed_area'] = intersections.groupby('BLOCKID10'                                                                      ).current_fragment_area.transform(sum)
+        assert ((intersections['new_block_summed_area'] / 
+                intersections['pre_split_area']) <= 1.01).all()
+        
+        assert (intersections['new_block_summed_area'] / 
+                intersections['pre_split_area']).mean() > 0.8
+        
+        # Actual population interpolation
+        intersections['population'] = intersections.POP10 * intersections['share_in_precinct']
+        
+        precinct_pops = intersections[['OBJECTID', 'population']].groupby('OBJECTID',
+                                                                   as_index=False).sum()
+        
+        precincts = precincts.merge(precinct_pops, on='OBJECTID', 
+                                    how='outer', validate='1:1', 
+                                    indicator=True)
+        # Check re-merge. 
+        if state_fips == '30':
+            assert precincts._merge.value_counts(normalize=True).loc['both'] > 0.99
+        else: 
+            assert (precincts._merge == 'both').all()
+
+        precincts = precincts.drop('_merge', axis='columns')
+
+        # Check my work
+        vote_totals = precincts['P2008_D'] + precincts['P2008_R']
+        corr = np.corrcoef(vote_totals[precincts.population > 10].values, 
+                           precincts[precincts.population > 10].population.values)[0,1]
+        
+        assert corr > 0
+        print(f'correlation between vote totals and'
+              f'population for fips {state_fips} is {corr:.3f}', 
+              flush=True)
+                
         ###########
-        # Put population and district
+        # Put district
         # into precincts
         ###########
 
@@ -67,25 +131,7 @@ def setup_state_by_fips(bundle):
         # Districts
         district_assignment = maup.assign(precincts, districts)
         precincts["district"] = district_assignment
-
-        # Population 
         
-        # have to drop census blocks that fully miss precincts (very rare, but happens.)
-        # e.g. everglade reserve in FL
-        precincts_unary = precincts.geometry.unary_union
-        intersecting_census_blocks = gpd.sjoin(census_blocks, precincts[['district', 'geometry']], 
-                                               how='inner', op='intersects')
-        intersecting_census_blocks = intersecting_census_blocks.drop('district', axis='columns').drop_duplicates()
-        assignment = maup.assign(intersecting_census_blocks, precincts)
-        precincts['population'] = intersecting_census_blocks['POP10'].groupby(assignment).sum()
-        precincts['population'].head()
-
-        ###########
-        # Fill gaps and overlaps
-        ###########
-        #precincts_no_overlaps = maup.resolve_overlaps(precincts)
-        #precincts_no_overlaps_or_gaps = maup.resolve_gaps(precincts_no_overlaps)
-
         ###########
         # Deal with NAs
         ###########
@@ -94,10 +140,11 @@ def setup_state_by_fips(bundle):
 
         missing = pd.isnull(precincts['district']) | pd.isnull(precincts['population'])
 
-        if (missing.sum() / len(precincts)) > 0.005:
-            raise ValueError("missing district or population data for more than 5% of precincts"
+        if (missing.sum() / len(precincts)) > 0.001:
+            raise ValueError("missing district or population data for more than 0.1% of precincts"
                              f"in state fips {state_fips}")
 
+        print(f'missing {missing.sum() / len(precincts)}', flush=True)
         precincts = precincts[~missing]
 
         ###########
@@ -105,9 +152,8 @@ def setup_state_by_fips(bundle):
         ###########
 
         f = f'../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp'
-        #precincts_no_overlaps_or_gaps.to_file(f)
         precincts.to_file(f)
-        print(f'finished {state_fips}')
+        print(f'finished {state_fips}', flush=True)
         return None
     except: 
         print(f'failed {state_fips}')
@@ -144,7 +190,8 @@ master_districts = master_districts[['STATEFP', 'CD114FP', 'GEOID', 'geometry']]
 # And... EXECUTE!
 #######
 
-results = (Parallel(n_jobs=10, verbose=5, backend='multiprocessing')
+results = (Parallel(n_jobs=3, verbose=10, backend='multiprocessing')
            (delayed(setup_state_by_fips)
-           ((fips, master_precincts, master_districts)) for fips in state_fips_codes)
+           ((fips, master_precincts, master_districts)) for fips 
+            in state_fips_codes)
           )
