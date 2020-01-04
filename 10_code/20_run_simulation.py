@@ -175,7 +175,7 @@ pbs = []
 pgs = []
 hmss = []
 
-#chain_flips = []
+chain_flips = []
 
 step_index = 0
 for part in chain: 
@@ -210,7 +210,7 @@ for part in chain:
         pbs[-1].append(partisan_bias(part[election_names[elect]]))
         pgs[-1].append(partisan_gini(part[election_names[elect]]))
         
-    if step_index % 1000 == 0:
+    if step_index % 10000 == 0:
         print(step_index)
         
         with open(newdir+f'flips_{step_index}.json', 'w') as fp1:
