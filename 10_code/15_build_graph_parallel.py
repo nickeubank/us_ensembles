@@ -4,6 +4,8 @@ import pickle
 import numpy as np
 import gerrychain as gc
 from gerrychain.tree import recursive_tree_part
+from joblib import Parallel, delayed
+
 
 ###########
 # Get environment var from SLURM
@@ -19,9 +21,10 @@ state_fips_codes = list(pickle.load(open(f, "rb" )).values())
 from gerrychain import Graph
 from gerrychain.constraints.contiguity import contiguous_components, contiguous
 
-for idx, state_fips in enumerate(state_fips_codes[15:17]):
-    print(f'working on step {idx}, fips {state_fips}')
+#for idx, state_fips in enumerate(state_fips_codes):
 
+def build_graphs(state_fips):
+    print(f'starting fips {state_fips}', flush=True)
     file = f'../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp'
 
     gdf = gpd.read_file(file)
@@ -77,10 +80,10 @@ for idx, state_fips in enumerate(state_fips_codes[15:17]):
 
 
     # Let's do some connecting! :)
-    print(f'starting with {len(list(connected_components(graph)))} components')
+    print(f'starting with {len(list(connected_components(graph)))} components for {state_fips}', flush=True)
 
     while len(list(connected_components(graph))) > 1:
-
+        
         sub = list(connected_components(graph))[0]
 
         # Split geodataframe
@@ -111,7 +114,7 @@ for idx, state_fips in enumerate(state_fips_codes[15:17]):
         print('finished one pass')
         print(f'Now have {len(list(connected_components(graph)))} components')
 
-    print('done')
+    print(f'done with connections for {state_fips}', flush=True)
 
 
     for new_seed in range(3):
@@ -127,3 +130,15 @@ for idx, state_fips in enumerate(state_fips_codes[15:17]):
 
         graph.to_json(f'../20_intermediate_files/precinct_graphs/'
                       f'precinct_graphs_{state_fips}_seed{new_seed}.json')
+
+    print(f'all done with {state_fips}', flush=True)
+        
+#######
+# Now run in parallel!
+#######
+
+results = (Parallel(n_jobs=8, verbose=10, backend='multiprocessing')
+           (delayed(build_graphs)
+           (fips) for fips in state_fips_codes)
+          )
+
