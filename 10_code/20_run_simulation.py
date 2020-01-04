@@ -116,10 +116,15 @@ def my_uu_bipartition_tree_random(
     populations = {node: graph.nodes[node][pop_col] for node in graph}
 
     possible_cuts = []
-    if spanning_tree is None:
-        spanning_tree = get_spanning_tree_u_w(graph)
+    #if spanning_tree is None:
+    #    spanning_tree = get_spanning_tree_u_w(graph)
 
+    tree_attempts = 0
     while len(possible_cuts) == 0:
+        tree_attempts += 1
+        if tree_attempts == 25:
+            #print('25 trees')
+            return set()
         spanning_tree = get_spanning_tree_u_w(graph)
         h = PopulatedGraph(spanning_tree, populations, pop_target, epsilon)
         possible_cuts = find_balanced_edge_cuts(h, choice=choice)
@@ -152,10 +157,10 @@ proposal = partial(
 
 chain = MarkovChain(
     proposal=proposal,
-    constraints=[within_percent_of_ideal_population(initial_partition, 0.05)],
+    constraints=[within_percent_of_ideal_population(initial_partition, 0.02)],
     accept=always_accept,
     initial_state=initial_partition,
-    total_steps=100
+    total_steps=100000
 )
 
 pos = {node:(float(graph.nodes[node]['C_X']), float(graph.nodes[node]['C_Y'])) for node in graph.nodes}
@@ -176,14 +181,17 @@ step_index = 0
 for part in chain: 
     step_index += 1
     
-    #chain_flips.append(dict(part.flips))
-    #Currently useless!
     if part.flips is not None:
-        with open(newdir+f'flips_{step_index}.json', 'w') as fp:
-            json.dump(dict(part.flips), fp)
-    else:
-        with open(newdir+f'flips_{step_index}.json', 'w') as fp:
-            json.dump(dict(), fp)
+        chain_flips.append(dict(part.flips))
+    else: 
+        chain_flips.append(dict())
+    #Too much writing!
+    #if part.flips is not None:
+    #    with open(newdir+f'flips_{step_index}.json', 'w') as fp:
+    #        json.dump(dict(part.flips), fp)
+    #else:
+    #    with open(newdir+f'flips_{step_index}.json', 'w') as fp:
+    #        json.dump(dict(), fp)
 
 
     pop_vec.append(sorted(list(part["population"].values())))
@@ -202,8 +210,11 @@ for part in chain:
         pbs[-1].append(partisan_bias(part[election_names[elect]]))
         pgs[-1].append(partisan_gini(part[election_names[elect]]))
         
-    if step_index % 100 == 0:
+    if step_index % 1000 == 0:
         print(step_index)
+        
+        with open(newdir+f'flips_{step_index}.json', 'w') as fp1:
+            json.dump(chain_flips, fp1)
         
         with open(newdir + "mms" + str(step_index) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
@@ -241,8 +252,8 @@ for part in chain:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(votes[elect])  
 
-        plt.figure()
-        nx.draw(graph, pos=pos, node_color=[dict(part.assignment)[node] for node in graph.nodes()], node_size = 50, cmap='tab20')                   
+        plt.figure(figsize=(8, 6), dpi=500)
+        nx.draw(graph, pos=pos, node_color=[dict(part.assignment)[node] for node in graph.nodes()], node_size = 20, cmap='tab20')                   
         plt.savefig(newdir + "plot" + str(step_index) + ".png")
         plt.close()
         
