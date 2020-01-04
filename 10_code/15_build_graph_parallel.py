@@ -116,11 +116,18 @@ def build_graphs(state_fips):
 
     print(f'done with connections for {state_fips}', flush=True)
 
-
+    graph.to_json(f'../20_intermediate_files/precinct_graphs/'
+                  f'precinct_graphs_{state_fips}_PRESEED.json')
+    
     for new_seed in range(3):
 
-        cddict =  recursive_tree_part(graph, range(num_districts), 
-                                      totpop / num_districts,"population", .02, 1)
+        if state_fips != '12':
+            cddict =  recursive_tree_part(graph, range(num_districts), 
+                                          totpop / num_districts, "population", .02, 1)
+        else: 
+            cddict =  recursive_tree_part(graph, range(num_districts), 
+                                          totpop / num_districts, "population", .05, 1)
+            
         pos = {node:(float(graph.nodes[node]['C_X']), 
                      float(graph.nodes[node]['C_Y'])) for node in graph.nodes}
 
