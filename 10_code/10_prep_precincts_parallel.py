@@ -4,14 +4,53 @@ import pickle
 import numpy as np
 
 ###########
-# Get environment var from SLURM
-# and convert
+# Helper functions
 ###########
 
-def setup_state_by_fips(bundle):
+def check_intersection_validity(intersections, precincts, state_fips):
+        assert (intersections['share_in_precinct'] <=1.01).all()
+        intersections['current_fragment_area'] = intersections.area
+        intersections['new_block_summed_area'] = intersections.groupby('BLOCKID10'                                                                      ).current_fragment_area.transform(sum)
 
-    # Unbundle args. Can only pass 1 to joblib. 
-    state_fips, precincts, districts = bundle
+        # Check area splits obey logical math
+        if state_fips in ['12', '36']:
+            # Florida has some small precinct overlaps
+            # NY has one pair of precincts 
+            # with same geography. Too small to hunt. 
+            test = (intersections['new_block_summed_area'] / 
+                    intersections['pre_split_area']) > 1.01
+            assert test.sum() / len(intersections) < 0.01
+        elif state_fips == '30':
+            test = (intersections['new_block_summed_area'] / 
+                    intersections['pre_split_area']) > 1.01
+            assert test.sum() / len(intersections) < 0.03
+        else: 
+            assert ((intersections['new_block_summed_area'] / 
+                    intersections['pre_split_area']) <= 1.01).all()
+
+        assert (intersections['new_block_summed_area'] / 
+                intersections['pre_split_area']).mean() > 0.8
+
+        # Check more people -> more votes. 
+        vote_totals = precincts['P2008_D'] + precincts['P2008_R']
+        corr = np.corrcoef(vote_totals[precincts.population > 10].values, 
+                           precincts[precincts.population > 10].population.values)[0,1]
+        
+        if state_fips != '44':
+            # Rhode Island doesn't have enough variation / N to 
+            # get LLN. 
+            assert corr > 0
+            print(f'correlation between vote totals and'
+                  f'population for fips {state_fips} is {corr:.3f}')
+
+############
+# Master function for
+# prepping shapefile
+# Written as try-except for 
+# running quickly in parallel. 
+############
+
+def setup_state_by_fips(state_fips):
 
     try: 
         print(f'on fips {state_fips}', flush=True)
@@ -20,9 +59,15 @@ def setup_state_by_fips(bundle):
         # Bring in precincts, population, 
         # and current districts
         ###########
-
+        
+        # Montana required extra processing in ArcGIS for
+        # some bad tracing
+        if state_fips == '30':
+            master_precincts = gpd.read_file("../00_source_data/votes/"
+                                             "montana_with_arcprocessing.shp")
+        
         precincts = master_precincts[master_precincts.STATE == state_fips].copy()
-
+        
         if len(precincts) == 0:
             raise ValueError(f"no precincts for fips {state_fips}")
 
@@ -83,28 +128,8 @@ def setup_state_by_fips(bundle):
         intersections['population'] = intersections.POP10 * (intersections.area / 
                                                              intersections['pre_split_area'])
         
-        # More sanity checks, 'cause this stuff is easy to get wrong. 
-        intersections['share_in_precinct'] = intersections.area / intersections['pre_split_area']
-        assert (intersections['share_in_precinct'] <=1.01).all()
-        intersections['current_fragment_area'] = intersections.area
-        intersections['new_block_summed_area'] = intersections.groupby('BLOCKID10'                                                                      ).current_fragment_area.transform(sum)
-
-        # Check area splits obey logical math
-        if state_fips in ['12', '36']:
-            # Florida has some small precinct overlaps
-            # NY has one pair of precincts 
-            # with same geography. Too small to hunt. 
-            test = (intersections['new_block_summed_area'] / 
-                    intersections['pre_split_area']) > 1.01
-            assert test.sum() / len(intersections) < 0.01
-        else: 
-            assert ((intersections['new_block_summed_area'] / 
-                    intersections['pre_split_area']) <= 1.01).all()
-
-        assert (intersections['new_block_summed_area'] / 
-                intersections['pre_split_area']).mean() > 0.8
-
         # Actual population interpolation
+        intersections['share_in_precinct'] = intersections.area / intersections['pre_split_area']
         intersections['population'] = intersections.POP10 * intersections['share_in_precinct']
         
         precinct_pops = intersections[['OBJECTID', 'population']].groupby('OBJECTID',
@@ -122,14 +147,7 @@ def setup_state_by_fips(bundle):
         precincts = precincts.drop('_merge', axis='columns')
 
         # Check my work
-        vote_totals = precincts['P2008_D'] + precincts['P2008_R']
-        corr = np.corrcoef(vote_totals[precincts.population > 10].values, 
-                           precincts[precincts.population > 10].population.values)[0,1]
-        
-        assert corr > 0
-        print(f'correlation between vote totals and'
-              f'population for fips {state_fips} is {corr:.3f}', 
-              flush=True)
+        check_intersection_validity(intersections, precincts, state_fips)
                 
         ###########
         # Put district
@@ -183,9 +201,9 @@ from joblib import Parallel, delayed
 f='../20_intermediate_files/sequential_to_fips.pickle'
 state_fips_codes = sorted(list(pickle.load(open(f, "rb" )).values()))
 
-###########
+##
 # Loads used for all passes
-###########
+##
 
 # Precinct
 master_precincts = gpd.read_file("../00_source_data/votes/"
@@ -201,15 +219,13 @@ master_districts = gpd.read_file('../00_source_data/legislative_districts/'
 
 master_districts = master_districts[['STATEFP', 'CD114FP', 'GEOID', 'geometry']]
 
-#######
+##
 # And... EXECUTE!
-#######
+##
 
 results = (Parallel(n_jobs=3, verbose=10, backend='multiprocessing')
            (delayed(setup_state_by_fips)
-           ((fips, master_precincts, master_districts)) for fips 
-            in state_fips_codes)
+           (fips) for fips in state_fips_codes)
           )
 
 
-['44', '36']
