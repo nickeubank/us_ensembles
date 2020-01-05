@@ -155,10 +155,13 @@ ideal_population = sum(initial_partition["population"].values()) / len(
 proposal = partial(
     recom, pop_col="population", pop_target=ideal_population, epsilon=0.01, node_repeats=1, method =my_uu_bipartition_tree_random)
     
-
+threshold = 0.02
+if state_fips in ['06', '12']:
+    threshold = 0.05
+    
 chain = MarkovChain(
     proposal=proposal,
-    constraints=[within_percent_of_ideal_population(initial_partition, 0.02)],
+    constraints=[within_percent_of_ideal_population(initial_partition, threshold)],
     accept=always_accept,
     initial_state=initial_partition,
     total_steps=100000
