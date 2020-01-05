@@ -18,7 +18,6 @@ state_run = os.getenv('STATE_RUN')
 state_index = int(state_run) // 3
 run = int(state_run) % 3
 
-
 f='../20_intermediate_files/sequential_to_fips.pickle'
 state_fips = pickle.load(open(f, "rb" ))[state_index]
 
@@ -39,7 +38,6 @@ graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/precinct_grap
 
 election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 
-
 initial_partition = Partition(
     graph,
     assignment='New_Seed',
@@ -50,6 +48,9 @@ initial_partition = Partition(
     }
 )
 
+if len(initial_partition.parts) == 1:
+    import sys
+    sys.exit()
 
 ############
 # Uniform Tree Utilities
