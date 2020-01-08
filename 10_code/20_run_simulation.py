@@ -269,6 +269,7 @@ for part in chain:
         pbs = []
         pgs = []
         hmss = []
+        chain_flips = []
 
         
     
