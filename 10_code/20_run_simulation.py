@@ -49,6 +49,7 @@ initial_partition = Partition(
 )
 
 if len(initial_partition.parts) == 1:
+    print('quitting because 1 district!')
     import sys
     sys.exit()
 
@@ -158,13 +159,15 @@ proposal = partial(
 threshold = 0.02
 if state_fips in ['06', '12']:
     threshold = 0.05
+
+print(f'threshold set to {threshold}')
     
 chain = MarkovChain(
     proposal=proposal,
     constraints=[within_percent_of_ideal_population(initial_partition, threshold)],
     accept=always_accept,
     initial_state=initial_partition,
-    total_steps=100000
+    total_steps=30001
 )
 
 pos = {node:(float(graph.nodes[node]['C_X']), float(graph.nodes[node]['C_Y'])) for node in graph.nodes}
