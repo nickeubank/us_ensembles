@@ -329,9 +329,9 @@ for state_fips in fips_list:
         hmss2 = hmss2[burn::sub_sample]
         hmss3 = hmss3[burn::sub_sample]
         
-        sns.distplot(hmss1[0, :],bins=[x-.25 for x in range(int(min(hmss1[j, :]))-1,int(max(hmss1[j, :]))+2)],hist_kws={"rwidth":.2,"align":"left"}, kde=False, color="blue")
-        sns.distplot(hmss2[0, :],bins=[x for x in range(int(min(hmss2[j, :]))-1,int(max(hmss2[j, :]))+2)],hist_kws={"rwidth":.2,"align":"left"}, kde=False, color="yellow")
-        sns.distplot([x+1 for x in hms3[0, :]],bins=[x+.25 for x in range(int(min(hmss3[j, :]))-1,int(max(hmss3[j, :]))+2)],hist_kws={"rwidth":.2,"align":"left"}, kde=False, color="red")
+        sns.distplot(hmss1[0, :],bins=[x-.25 for x in range(int(min(hmss1[0, :]))-1,int(max(hmss1[0, :]))+2)],hist_kws={"rwidth":.2,"align":"left"}, kde=False, color="blue")
+        sns.distplot(hmss2[0, :],bins=[x for x in range(int(min(hmss2[0, :]))-1,int(max(hmss2[0, :]))+2)],hist_kws={"rwidth":.2,"align":"left"}, kde=False, color="yellow")
+        sns.distplot([x+1 for x in hms3[0, :]],bins=[x+.25 for x in range(int(min(hmss3[0, :]))-1,int(max(hmss3[0, :]))+2)],hist_kws={"rwidth":.2,"align":"left"}, kde=False, color="red")
         
         #plt.axvline(x=1402, color="orange", label="Enacted")
         plt.axvline(x=np.mean(hmss1[0, :]), color="b", label="Ensemble 1 Mean")
