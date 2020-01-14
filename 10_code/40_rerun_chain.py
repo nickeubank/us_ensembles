@@ -9,6 +9,9 @@ import networkx as nx
 from functools import partial
 import json
 import random
+from maup inport assign
+#from dislocation_chain_utility import * 
+
 
 state_run = os.getenv('STATE_RUN')
 state_index = int(state_run) // 3
@@ -43,7 +46,31 @@ num_districts = 7 #replace this with length of vote vector
 from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
 
+    
+dlocs = []
+
 for state_fips in fips_list:
+
+        dlocs.append([])
+
+    #Point initialization happens here
+    #check for crs matching!
+    state_precincts = gpd.read_file(f"../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp")
+    state_points = gpd.read_file("../../../Dropbox/disloaction_intermediate_files/60_voter_knn_scores/state{state_fips}_u2_run2") # THIS FILEANAME isn't quite right - need to check format values. 
+    
+    point_assign - assign(state_points,state_precincts)
+    
+    state_points['precinct'] = assignment
+    #state_points['precinct'] = state_points['precinct'].map(state_precincts.index)
+    #Maybe unnecessary?
+    
+    
+    
+    
+    
+    
+    
+    
     for run in ['0','1','2']:
         
         datadir = f"../../../Dropbox/US_Ensembles/{state_fips}_{run}/"
@@ -80,7 +107,7 @@ for state_fips in fips_list:
 
 		ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]
 		
-		dlocs = []
+		dlocs[-1].append([])
 
 		for t in ts:
 			dict_list = json.loads(datadir + f'flips_{t}.json')
@@ -88,6 +115,7 @@ for state_fips in fips_list:
 		
 
 			#Make new partition by updating dictionary
+            
 			
 			for step in range(step_size):
 			
@@ -102,7 +130,23 @@ for state_fips in fips_list:
 						"PRES2008": election
 					}
 				)
+                
+                
+            
 		
+        
+        
+            state_points['current'] = state_points['precinct'].map(dict(new_assignment))
+            
+                id_dict = {tuple(partition[election].races)[x]:x for x in range(len(partition.parts.keys()))}
 
+    
+            pdict = {x:pvec[id_dict[x]] for x in partition.parts.keys()}
+    
+    
+            pf["dislocate"]=pf["KnnShrDem"]-pf["current"].map(pdict)
+            
+            
+            dlocs[-1][-1].append()
 			#measure dislocation and write to file 
 			#dlocs.append()
