@@ -47,11 +47,11 @@ from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
 
     
-dlocs = []
 
 for state_fips in fips_list:
 
-        dlocs.append([])
+        dlocs = []
+
 
     #Point initialization happens here
     #check for crs matching!
@@ -150,3 +150,10 @@ for state_fips in fips_list:
             dlocs[-1][-1].append()
 			#measure dislocation and write to file 
 			#dlocs.append()
+            
+            
+    with open(newdir + "dloc" + str(step_index) + ".csv", "w") as tf1:
+        writer = csv.writer(tf1, lineterminator="\n")
+        writer.writerows(dlocs)            
+            
+    dlocs = []
