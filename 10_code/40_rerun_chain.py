@@ -136,10 +136,12 @@ for state_fips in fips_list:
             pdict = {x:pvec[id_dict[x]] for x in partition.parts.keys()}
     
     
-            pf["dislocate"]=pf["KnnShrDem"]-pf["current"].map(pdict)
+            pf["dislocate"]=pf["KnnShrDem"]-(pf["current"].map(pdict) - 0.0369)
+            
+            district_averages = {x: pf.groupby('current')['dislocate'].mean()[x] for x in partition.parts}   
             
             
-            dlocs[-1][-1].append()
+            dlocs[-1][-1].append(np.mean(pf["dislocate"]))
 			#measure dislocation and write to file 
 			#dlocs.append()
             
