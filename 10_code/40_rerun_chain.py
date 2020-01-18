@@ -56,20 +56,13 @@ for state_fips in fips_list:
     #Point initialization happens here
     #check for crs matching!
     state_precincts = gpd.read_file(f"../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp")
-    state_points = gpd.read_file("../../../Dropbox/disloaction_intermediate_files/60_voter_knn_scores/state{state_fips}_u2_run2") # THIS FILEANAME isn't quite right - need to check format values. 
+    state_points = gpd.read_file("../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/state{state_fips}_u2_run2") # THIS FILEANAME isn't quite right - need to check format values. 
     
     point_assign - assign(state_points,state_precincts)
     
     state_points['precinct'] = assignment
     #state_points['precinct'] = state_points['precinct'].map(state_precincts.index)
     #Maybe unnecessary?
-    
-    
-    
-    
-    
-    
-    
     
     for run in ['0','1','2']:
         
@@ -81,7 +74,6 @@ for state_fips in fips_list:
         with open(newdir + "init.txt", "w") as f:
             f.write("Created Folder")
 
-		# Ignore errors: some overlap issues, but shouldn't matter for adjacency
 		graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed{run}.json')
 
 		election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
