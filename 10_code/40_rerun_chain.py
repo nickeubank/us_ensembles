@@ -85,7 +85,7 @@ for state_fips in fips_list:
         
         datadir = f"../../../Dropbox/US_Ensembles/{state_fips}_{run}/"
         
-        newdir = f"../../../Dropbox/US_Ensembles/{state_fips}_{run}/rerun/"
+        newdir = f"../../../Dropbox/US_Ensembles/{state_fips}_run{run}/rerun/"
         
         os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
         with open(newdir + "init.txt", "w") as f:
