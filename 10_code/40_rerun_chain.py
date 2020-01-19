@@ -122,6 +122,7 @@ for state_fips in fips_list:
         adlocs.append([])
 
         for t in ts:
+            print(t,run)
             #dict_list = json.loads(datadir + f'flips_{t}.json')
             with open(datadir+f'flips_{t}.json') as f:
                 dict_list = ast.literal_eval(f.read())
@@ -162,13 +163,13 @@ for state_fips in fips_list:
                 pdict = {x:pvec[id_dict[x]] for x in new_partition.parts.keys()}
  
     
-                pf["dislocate"]=pf["KnnShrDem"]-(pf["current"].map(pdict) - 0.0369)
+                state_points["dislocate"]=state_points["KnnShrDem"]-(state_points["current"].map(pdict) - 0.0369)
             
                 #district_averages = {x: pf.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts}   # for now just average over whole state
             
             
-                dlocs[-1].append(np.mean(pf["dislocate"]))
-                adlocs[-1].append(np.mean(np.abs(pf["dislocate"])))
+                dlocs[-1].append(np.mean(state_points["dislocate"]))
+                adlocs[-1].append(np.mean(np.abs(state_points["dislocate"])))
 
 
                 #measure dislocation and write to file 
