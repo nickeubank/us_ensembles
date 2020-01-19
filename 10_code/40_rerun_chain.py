@@ -122,7 +122,7 @@ for state_fips in fips_list:
         for t in ts:
             #dict_list = json.loads(datadir + f'flips_{t}.json')
             with open(datadir+f'flips_{t}.json') as f:
-                data = ast.literal_eval(f.read())
+                dict_list = ast.literal_eval(f.read())
 
             #if t = ts[0]:
             #    data.remove(0)
