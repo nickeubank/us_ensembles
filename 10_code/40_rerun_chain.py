@@ -18,8 +18,8 @@ from maup import assign
 #run = int(state_run) % 3
 
 
-f='../20_intermediate_files/sequential_to_fips.pickle'
-state_fips = pickle.load(open(f, "rb" ))[state_index]
+#f='../20_intermediate_files/sequential_to_fips.pickle'
+#state_fips = pickle.load(open(f, "rb" ))[state_index]
 
 newdir = f"../20_intermediate_files/chain_ouputs/{state_fips}_run{run}/"
 os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
