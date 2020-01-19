@@ -83,9 +83,9 @@ for state_fips in fips_list:
     
     for run in ['0','1','2']:
         
-        datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_{run}/"
+        datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/"
         
-        newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_{run}/rerun/"
+        newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun/"
         
         os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
         with open(newdir + "init.txt", "w") as f:
