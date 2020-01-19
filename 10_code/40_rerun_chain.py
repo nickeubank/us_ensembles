@@ -21,10 +21,11 @@ from maup import assign
 #f='../20_intermediate_files/sequential_to_fips.pickle'
 #state_fips = pickle.load(open(f, "rb" ))[state_index]
 
-newdir = f"../20_intermediate_files/chain_ouputs/{state_fips}_run{run}/"
-os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
-with open(newdir + "init.txt", "w") as f:
-    f.write("Created Folder")
+
+#newdir = f"../20_intermediate_files/chain_ouputs/{state_fips}_run{run}/"
+#os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
+#with open(newdir + "init.txt", "w") as f:
+#    f.write("Created Folder")
 
 
 
