@@ -139,7 +139,7 @@ for state_fips in fips_list:
             
             for step in range(step_size):
             
-                new_assignment.update(dict_list[step])
+                new_assignment.update({int(item[0]):int(item[1]) for item in dict_list[step].items()})
                 
                 new_partition = Partition(
                     graph,
