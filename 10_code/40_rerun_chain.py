@@ -177,13 +177,13 @@ for state_fips in fips_list:
                 #dlocs.append()
             
             
-    with open(newdir + "dloc" + str(step_index) + ".csv", "w") as tf1:
-        writer = csv.writer(tf1, lineterminator="\n")
-        writer.writerows(dlocs)            
+        with open(newdir + "dloc" + str(t) + ".csv", "w") as tf1:
+            writer = csv.writer(tf1, lineterminator="\n")
+            writer.writerows(dlocs)            
 
-    with open(newdir + "adloc" + str(step_index) + ".csv", "w") as tf1:
-        writer = csv.writer(tf1, lineterminator="\n")
-        writer.writerows(adlocs)
+        with open(newdir + "adloc" + str(t) + ".csv", "w") as tf1:
+            writer = csv.writer(tf1, lineterminator="\n")
+            writer.writerows(adlocs)
             
-    dlocs = []
-    adlocs = []
+        dlocs = []
+        adlocs = []
