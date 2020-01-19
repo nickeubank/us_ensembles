@@ -13,9 +13,9 @@ from maup import assign
 #from dislocation_chain_utility import * 
 
 
-state_run = os.getenv('STATE_RUN')
-state_index = int(state_run) // 3
-run = int(state_run) % 3
+#state_run = os.getenv('STATE_RUN')
+#state_index = int(state_run) // 3
+#run = int(state_run) % 3
 
 
 f='../20_intermediate_files/sequential_to_fips.pickle'
