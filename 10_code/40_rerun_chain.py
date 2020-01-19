@@ -60,7 +60,7 @@ for state_fips in fips_list:
     state_precincts = gpd.read_file(f"../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp")
     state_points = gpd.read_file("../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/Alabama_USHouse.shp") # THIS FILEANAME isn't quite right - need to check format values. 
     
-    point_assign - assign(state_points,state_precincts)
+    point_assign = assign(state_points,state_precincts)
     
     state_points['precinct'] = assignment
     #state_points['precinct'] = state_points['precinct'].map(state_precincts.index)
