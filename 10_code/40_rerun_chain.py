@@ -10,6 +10,7 @@ from functools import partial
 import json
 import random
 from maup import assign
+import numpy as np
 import ast
 #from dislocation_chain_utility import * 
 
