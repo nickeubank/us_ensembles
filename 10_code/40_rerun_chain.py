@@ -116,7 +116,7 @@ for state_fips in fips_list:
 
         ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]
         
-        dlocs[-1].append([])
+        dlocs.append([])
 
         for t in ts:
             dict_list = json.loads(datadir + f'flips_{t}.json')
@@ -142,25 +142,25 @@ for state_fips in fips_list:
                 
                 
             
-            pvec = new_partition[election].percents("Dem")
+                pvec = new_partition[election].percents("Dem")
         
         
-            state_points['current'] = state_points['precinct'].map(dict(new_assignment))
+                state_points['current'] = state_points['precinct'].map(dict(new_assignment))
             
-            id_dict = {tuple(new_partition[election].races)[x]:x for x in range(len(partition.parts.keys()))}
+                id_dict = {tuple(new_partition[election].races)[x]:x for x in range(len(partition.parts.keys()))}
 
     
-            pdict = {x:pvec[id_dict[x]] for x in new_partition.parts.keys()}
+                pdict = {x:pvec[id_dict[x]] for x in new_partition.parts.keys()}
+ 
     
-    
-            pf["dislocate"]=pf["KnnShrDem"]-(pf["current"].map(pdict) - 0.0369)
+                pf["dislocate"]=pf["KnnShrDem"]-(pf["current"].map(pdict) - 0.0369)
             
-            #district_averages = {x: pf.groupby('current')['dislocate'].mean()[x] for x in partition.parts}   # for now just average over whole state
+                #district_averages = {x: pf.groupby('current')['dislocate'].mean()[x] for x in partition.parts}   # for now just average over whole state
             
             
-            dlocs[-1][-1].append(np.mean(pf["dislocate"]))
-            #measure dislocation and write to file 
-            #dlocs.append()
+                dlocs[-1].append(np.mean(pf["dislocate"]))
+                #measure dislocation and write to file 
+                #dlocs.append()
             
             
     with open(newdir + "dloc" + str(step_index) + ".csv", "w") as tf1:
