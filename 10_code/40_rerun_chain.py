@@ -75,54 +75,54 @@ for state_fips in fips_list:
         with open(newdir + "init.txt", "w") as f:
             f.write("Created Folder")
 
-		graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed{run}.json')
+        graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed{run}.json')
 
-		election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
-
-
-		initial_partition = Partition(
-			graph,
-			assignment='New_Seed',
-			updaters={
-				"cut_edges": cut_edges,
-				"population": Tally("population", alias="population"),
-				"PRES2008": election
-			}
-		)
-		
-		new_assignment = dict(initial_partition.assignment)
-		#load graph and make initial partition
+        election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 
 
-		#load json one at a time
-		max_steps = 100000
-		step_size = 10000
+        initial_partition = Partition(
+            graph,
+            assignment='New_Seed',
+            updaters={
+                "cut_edges": cut_edges,
+                "population": Tally("population", alias="population"),
+                "PRES2008": election
+            }
+        )
+        
+        new_assignment = dict(initial_partition.assignment)
+        #load graph and make initial partition
 
-		ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]
-		
-		dlocs[-1].append([])
 
-		for t in ts:
-			dict_list = json.loads(datadir + f'flips_{t}.json')
-			
-		
+        #load json one at a time
+        max_steps = 100000
+        step_size = 10000
 
-			#Make new partition by updating dictionary
+        ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]
+        
+        dlocs[-1].append([])
+
+        for t in ts:
+            dict_list = json.loads(datadir + f'flips_{t}.json')
             
-			
-			for step in range(step_size):
-			
-				new_assignment = new_assignment.update(dict_list[step])
-				
-				new_partition = Partition(
-					graph,
-					assignment=new_assignment,
-					updaters={
-						"cut_edges": cut_edges,
-						"population": Tally("population", alias="population"),
-						"PRES2008": election
-					}
-				)
+        
+
+            #Make new partition by updating dictionary
+            
+            
+            for step in range(step_size):
+            
+                new_assignment = new_assignment.update(dict_list[step])
+                
+                new_partition = Partition(
+                    graph,
+                    assignment=new_assignment,
+                    updaters={
+                        "cut_edges": cut_edges,
+                        "population": Tally("population", alias="population"),
+                        "PRES2008": election
+                    }
+                )
                 
                 
             
@@ -143,8 +143,8 @@ for state_fips in fips_list:
             
             
             dlocs[-1][-1].append(np.mean(pf["dislocate"]))
-			#measure dislocation and write to file 
-			#dlocs.append()
+            #measure dislocation and write to file 
+            #dlocs.append()
             
             
     with open(newdir + "dloc" + str(step_index) + ".csv", "w") as tf1:
