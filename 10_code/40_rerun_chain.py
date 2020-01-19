@@ -59,10 +59,15 @@ for state_fips in fips_list:
     #check for crs matching!
     state_precincts = gpd.read_file(f"../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp")
     state_points = gpd.read_file("../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/Alabama_USHouse.shp") # THIS FILEANAME isn't quite right - need to check format values. 
-    
-    state_points.to_crs(state_precincts.crs)
+    print("loaded precincts/points")
+    #state_points['geometry'] = state_points['geometry'].to_crs(state_precincts.crs)
+    state_precincts['geometry'] = state_precincts['geometry'].to_crs(state_points.crs)
+
+    print("changed crs")
 
     point_assign = assign(state_points,state_precincts)
+ 
+    print("Made Assignment")
     
     state_points['precinct'] = assignment
     #state_points['precinct'] = state_points['precinct'].map(state_precincts.index)
