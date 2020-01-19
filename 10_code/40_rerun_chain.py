@@ -38,6 +38,7 @@ fips_list = ['01']
 
 plan_name = "Enacted"
 
+election = election_names[0]
 
 num_districts = 7 #replace this with length of vote vector
 
@@ -50,7 +51,7 @@ from gerrychain.updaters import Tally, cut_edges
 
 for state_fips in fips_list:
 
-        dlocs = []
+    dlocs = []
 
 
     #Point initialization happens here
@@ -125,20 +126,20 @@ for state_fips in fips_list:
                 
                 
             
-		
+            pvec = new_partition[election].percents("Democratic")
         
         
             state_points['current'] = state_points['precinct'].map(dict(new_assignment))
             
-                id_dict = {tuple(partition[election].races)[x]:x for x in range(len(partition.parts.keys()))}
+            id_dict = {tuple(new_partition[election].races)[x]:x for x in range(len(partition.parts.keys()))}
 
     
-            pdict = {x:pvec[id_dict[x]] for x in partition.parts.keys()}
+            pdict = {x:pvec[id_dict[x]] for x in new_partition.parts.keys()}
     
     
             pf["dislocate"]=pf["KnnShrDem"]-(pf["current"].map(pdict) - 0.0369)
             
-            district_averages = {x: pf.groupby('current')['dislocate'].mean()[x] for x in partition.parts}   
+            #district_averages = {x: pf.groupby('current')['dislocate'].mean()[x] for x in partition.parts}   # for now just average over whole state
             
             
             dlocs[-1][-1].append(np.mean(pf["dislocate"]))
