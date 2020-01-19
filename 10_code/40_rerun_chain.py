@@ -126,7 +126,7 @@ for state_fips in fips_list:
                 
                 
             
-            pvec = new_partition[election].percents("Democratic")
+            pvec = new_partition[election].percents("Dem")
         
         
             state_points['current'] = state_points['precinct'].map(dict(new_assignment))
