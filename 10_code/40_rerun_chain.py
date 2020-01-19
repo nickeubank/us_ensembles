@@ -83,9 +83,9 @@ for state_fips in fips_list:
     
     for run in ['0','1','2']:
         
-        datadir = f"../../../Dropbox/US_Ensembles/{state_fips}_{run}/"
+        datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_{run}/"
         
-        newdir = f"../../../Dropbox/US_Ensembles/{state_fips}_run{run}/rerun/"
+        newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_{run}/rerun/"
         
         os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
         with open(newdir + "init.txt", "w") as f:
@@ -119,7 +119,13 @@ for state_fips in fips_list:
         dlocs.append([])
 
         for t in ts:
-            dict_list = json.loads(datadir + f'flips_{t}.json')
+            #dict_list = json.loads(datadir + f'flips_{t}.json')
+            with open(datadir+f'flips_{t}.json') as f:
+	       data = ast.literal_eval(f.read())
+
+            #if t = ts[0]:
+            #    data.remove(0)
+ 
             
         
 
