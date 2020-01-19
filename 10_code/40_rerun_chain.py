@@ -9,7 +9,7 @@ import networkx as nx
 from functools import partial
 import json
 import random
-from maup inport assign
+from maup import assign
 #from dislocation_chain_utility import * 
 
 
