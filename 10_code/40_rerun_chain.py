@@ -249,28 +249,26 @@ for state_fips in fips_list:
             
                 dlocs[-1].append(state_points["dislocate"].mean())
                 adlocs[-1].append((state_points["dislocate"].abs()).mean())
-                if adlocs[-1][-1] < .05:
-                    wseats[-1].append(new_partition[election_name].wins("Dem"))
+                #if adlocs[-1][-1] < .05:
+                #    wseats[-1].append(new_partition[election_name].wins("Dem"))
 
                 Rdlocs[-1].append(len(state_points[state_points["dislocate"]>0]))
                 Ddlocs[-1].append(len(state_points[state_points["dislocate"]<0]))
                 Ravgdlocs[-1].append(abs(state_points[state_points["dislocate"]>0].mean()))
                 Davgdlocs[-1].append(abs(state_points[state_points["dislocate"]<0].mean()))
 
-
-
-
-
-                if step == 0:
-                    plt.figure()
-                    state_precincts.plot(color = 'bisque', linewidth = 1, edgecolor = 'slategray')
-                    state_points.plot(column = 'dislocate', cmap = 'seismic')
-                    plt.savefig(newdir+"pointcolors"+str(t)+".png")
-                    plt.close()
+                
+            plt.figure()
+            state_precincts.plot(color = 'bisque', linewidth = 1, edgecolor = 'slategray')
+            state_points.plot(column = 'dislocate', cmap = 'seismic')
+            plt.savefig(newdir+"pointcolors"+str(t)+".png")
+            plt.close()
 
                  
             
-            
+        
+
+
         with open(newdir + "dloc" + str(t) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
             writer.writerows(dlocs)            
