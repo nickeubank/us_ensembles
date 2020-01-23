@@ -61,7 +61,20 @@ election_names = ["PRES2008"]
 
 election_columns = [["P2008_D",  "P2008_R"]]
 
-        
+state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
+"06":"California","08":"Colorado","09":"Connecticut","10":"Delaware",
+"12":"Florida","13":"Georgia","66":"Guam","15":"Hawaii","19":"Iowa",
+"16":"Idaho","17":"Illinois","18":"Indiana","20":"Kansas","21":"Kentucky",
+"22":"Louisiana","25":"Massachusetts","24":"Maryland","23":"Maine","26":"Michigan",
+"27":"Minnesota","29":"Missouri","28":"Mississippi","30":"Montana",
+"37":"North_Carolina","38":"North_Dakota","31":"Nebraska","33":"New_Hampshire",
+"34":"New_Jersey","35":"New_Mexico","32":"Nevada","36":"New_York","39":"Ohio",
+"40":"Oklahoma","41":"Oregon","42":"Pennsylvania","72":"Puerto_Rico",
+"44":"Rhode_Island","45":"South_Carolina","46":"South_Dakota","47":"Tenessee",
+"48":"Texas","49":"Utah","51":"Virginia","50":"Vermont","53":"Washington",
+"55":"Wisconsin","54":"West_Virginia","56":"Wyoming"}
+
+    
         
 for state_fips in indices:
 
