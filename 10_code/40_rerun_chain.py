@@ -237,9 +237,9 @@ for state_fips in fips_list:
                 pdict = {x:pvec[id_dict[x]] for x in new_partition.parts.keys()}
  
     
-                state_points["dislocate"] = (state_points["current"].map(pdict) - 0.0369) - state_points["KnnShrDem"]
+                state_points["dislocate"] = -(state_points["KnnShrDem"] - (state_points["current"].map(pdict) - 0.0369))
 
-                state_points["abs_dislocate"] = np.abs(state_points["dislocate"])
+                #dstate_points["abs_dislocate"] = np.abs(state_points["dislocate"])
 
             
                 #district_averages = {x: pf.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts}   # for now just average over whole state
@@ -247,19 +247,17 @@ for state_fips in fips_list:
                 seats[-1].append(new_partition[election_name].wins("Dem"))
             
             
-                dlocs[-1].append(np.mean(state_points["dislocate"]))
-                adlocs[-1].append(np.mean(np.abs(state_points["dislocate"])))
+                dlocs[-1].append(state_points["dislocate"].mean())
+                adlocs[-1].append((state_points["dislocate"].abs()).mean())
                 if adlocs[-1][-1] < .05:
                     wseats[-1].append(new_partition[election_name].wins("Dem"))
+
                 Rdlocs[-1].append(len(state_points[state_points["dislocate"]>0]))
                 Ddlocs[-1].append(len(state_points[state_points["dislocate"]<0]))
-                Ravgdlocs[-1].append(np.abs(np.mean(state_points[state_points["dislocate"]>0])))
-                Davgdlocs[-1].append(np.abs(np.mean(state_points[state_points["dislocate"]<0])))
+                Ravgdlocs[-1].append(abs(state_points[state_points["dislocate"]>0].mean()))
+                Davgdlocs[-1].append(abs(state_points[state_points["dislocate"]<0].mean()))
 
 
-
-                #measure dislocation and write to file 
-                #dlocs.append()
 
 
 
