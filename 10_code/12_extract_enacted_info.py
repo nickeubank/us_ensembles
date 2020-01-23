@@ -145,7 +145,7 @@ for state_fips in indices:
 
 
 
-    with open(newdir + "Start_Values_"+str(state_fips+".txt", "w") as f:
+    with open(newdir + "Start_Values_"+str(state_fips)+".txt", "w") as f:
         f.write("Values for Starting Plan: Enacted Plan:\n \n ")
         f.write("Initial Cut: "+ str(len(initial_partition["cut_edges"])))
         f.write("\n")
