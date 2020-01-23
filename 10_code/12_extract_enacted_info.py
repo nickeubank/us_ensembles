@@ -77,7 +77,8 @@ state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "48":"Texas","49":"Utah","51":"Virginia","50":"Vermont","53":"Washington",
 "55":"Wisconsin","54":"West_Virginia","56":"Wyoming"}
 
-    
+newdir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/"
+
         
 for state_fips in indices:
 
@@ -144,7 +145,7 @@ for state_fips in indices:
 
 
 
-    with open(newdir + "Start_Values.txt", "w") as f:
+    with open(newdir + "Start_Values_"+str(state_fips+".txt", "w") as f:
         f.write("Values for Starting Plan: Enacted Plan:\n \n ")
         f.write("Initial Cut: "+ str(len(initial_partition["cut_edges"])))
         f.write("\n")
