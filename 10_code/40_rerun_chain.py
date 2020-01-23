@@ -106,8 +106,6 @@ plan_name = "Enacted"
 
 election_name = election_names[0]
 
-num_districts = 7 #replace this with length of vote vector
-
 
 
 from gerrychain import Graph, Partition, Election
@@ -130,7 +128,7 @@ for state_fips in fips_list:
     #Point initialization happens here
     #check for crs matching!
     state_precincts = gpd.read_file(f"../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp")
-    state_points = gpd.read_file("../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_USHouse.shp") # THIS FILEANAME isn't quite right - need to check format values. 
+    state_points = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_USHouse.shp") # THIS FILEANAME isn't quite right - need to check format values. 
     print("loaded precincts/points")
 
     print(state_precincts.crs)
