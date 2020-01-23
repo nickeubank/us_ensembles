@@ -6,6 +6,7 @@ import gerrychain as gc
 from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
 from maup import assign
+from gerrychain.metrics import efficiency_gap, mean_median, partisan_bias, partisan_gini
 
 indices=['01',
         '04',
