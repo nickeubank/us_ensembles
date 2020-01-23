@@ -5,6 +5,7 @@ import numpy as np
 import gerrychain as gc
 from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
+from maup import assign
 
 indices=['01',
         '04',
