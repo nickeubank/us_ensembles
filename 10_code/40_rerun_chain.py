@@ -51,12 +51,13 @@ election_columns = [["P2008_D",  "P2008_R"]]
 
 fips_list = [
         '01',
+        #'02',
         '04',
         '05',
         '06',
         '08',
         '09',
-        '10',
+        #'10',
         '11',
         '12',
         '13',
@@ -74,6 +75,7 @@ fips_list = [
         '27',
         '28',
         '29',
+        #'30',
         '31',
         '32',
         '33',
@@ -81,22 +83,23 @@ fips_list = [
         '35',
         '36',
         '37',
-        '38',
+        #'38',
         '39',
         '40',
         '42',
         '44',
         '45',
-        '46',
+        #'46',
         '47',
         '48',
         '49',
-        '50',
+        #'50',
         '51',
         '53',
         '54',
         '55',
-        '56']
+        #'56'
+             ]
 
 plan_name = "Enacted"
 
@@ -115,6 +118,11 @@ for state_fips in fips_list:
 
     dlocs = []
     adlocs = []
+    Rdlocs = []
+    Ddlocs = []
+    Ravgdlocs = []
+    Davgdlocs = []
+    seats = []
 
 
     #Point initialization happens here
@@ -180,6 +188,11 @@ for state_fips in fips_list:
         
         dlocs.append([])
         adlocs.append([])
+        Rdlocs.append([])
+        Ddlocs.append([])
+        Ravgdlocs.append([])
+        Davgdlocs.append([])
+        seats.append([])
 
         for t in ts:
             print(t,run)
@@ -223,13 +236,21 @@ for state_fips in fips_list:
                 pdict = {x:pvec[id_dict[x]] for x in new_partition.parts.keys()}
  
     
-                state_points["dislocate"]=state_points["KnnShrDem"]-(state_points["current"].map(pdict) - 0.0369)
+                state_points["dislocate"] = (state_points["current"].map(pdict) - 0.0369) - state_points["KnnShrDem"]
+
+                state_points["abs_dislocate"] = np.abs(state_points["dislocate"])
+
             
                 #district_averages = {x: pf.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts}   # for now just average over whole state
             
             
                 dlocs[-1].append(np.mean(state_points["dislocate"]))
                 adlocs[-1].append(np.mean(np.abs(state_points["dislocate"])))
+                Rdlocs[-1].append(len(state_points[state_points["dislocate"]>0]))
+                Ddlocs[-1].append(len(state_points[state_points["dislocate"]<0]))
+                Ravgdlocs[-1].append(np.abs(np.mean(state_points[state_points["dislocate"]>0])))
+                Davgdlocs[-1].append(np.abs(np.mean(state_points[state_points["dislocate"]<0])))
+
 
 
                 #measure dislocation and write to file 
@@ -243,6 +264,26 @@ for state_fips in fips_list:
         with open(newdir + "adloc" + str(t) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
             writer.writerows(adlocs)
-            
+
+        with open(newdir + "Rdloc" + str(t) + ".csv", "w") as tf1:
+            writer = csv.writer(tf1, lineterminator="\n")
+            writer.writerows(Rdlocs)
+
+        with open(newdir + "Ddloc" + str(t) + ".csv", "w") as tf1:
+            writer = csv.writer(tf1, lineterminator="\n")
+            writer.writerows(Ddlocs)
+
+        with open(newdir + "Ravgdloc" + str(t) + ".csv", "w") as tf1:
+            writer = csv.writer(tf1, lineterminator="\n")
+            writer.writerows(Ravgdlocs)
+
+        with open(newdir + "Davgdloc" + str(t) + ".csv", "w") as tf1:
+            writer = csv.writer(tf1, lineterminator="\n")
+            writer.writerows(Davgdlocs)
+          
         dlocs = []
         adlocs = []
+        Rdlocs = []
+        Ddlocs = []
+        Ravgdlocs = []
+        Davgdlocs = []
