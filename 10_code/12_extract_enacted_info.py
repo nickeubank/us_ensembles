@@ -125,7 +125,7 @@ for state_fips in indices:
     id_dict = {tuple(initial_partition[election_name].races)[x]:x for x in range(len(initial_partition.parts.keys()))}
 
     
-    pdict = {x:pvec[id_dict[x]] for x in new_partition.parts.keys()}
+    pdict = {x:pvec[id_dict[x]] for x in initial_partition.parts.keys()}
  
     
     state_points["dislocate"] = -(state_points["KnnShrDem"] - (state_points["current"].map(pdict) - 0.0369))
