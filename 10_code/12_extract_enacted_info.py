@@ -78,6 +78,9 @@ state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "55":"Wisconsin","54":"West_Virginia","56":"Wyoming"}
 
 newdir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/"
+os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
+with open(newdir + "init.txt", "w") as f:
+    f.write("Created Folder")
 
         
 for state_fips in indices:
