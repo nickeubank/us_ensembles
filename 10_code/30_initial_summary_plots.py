@@ -84,6 +84,8 @@ sub_sample = 1
 
 for state_fips in fips_list:
     for run in ['0','1','2']:
+        print('starting', state_fips, run)
+
         
         datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/"        
         newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/Plots/"
