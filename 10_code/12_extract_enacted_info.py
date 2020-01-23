@@ -62,6 +62,8 @@ election_names = ["PRES2008"]
 
 election_columns = [["P2008_D",  "P2008_R"]]
 
+election_name = election_names[0]
+
 state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "06":"California","08":"Colorado","09":"Connecticut","10":"Delaware",
 "12":"Florida","13":"Georgia","66":"Guam","15":"Hawaii","19":"Iowa",
