@@ -158,7 +158,7 @@ for state_fips in indices:
         f.write("\n")
 
         for elect in range(num_elections):
-            f.write(election_names[elect] + "District Percentages" + str(sorted(initial_partition[election_names[elect]].percents("Democratic"))))
+            f.write(election_names[elect] + "District Percentages" + str(sorted(initial_partition[election_names[elect]].percents("Dem"))))
             f.write("\n")
             f.write("\n")
 
@@ -180,7 +180,7 @@ for state_fips in indices:
         
             f.write("\n")
             f.write("\n")             
-            f.write(election_names[elect] + "How Many Seats :" + str(initial_partition[election_names[elect]].wins("Democratic")))
+            f.write(election_names[elect] + "How Many Seats :" + str(initial_partition[election_names[elect]].wins("Dem")))
          
             f.write("\n")
             f.write("\n")    
