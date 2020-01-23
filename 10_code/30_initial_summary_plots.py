@@ -14,7 +14,57 @@ election_names = ["PRES2008"]
 
 election_columns = [["P2008_D",  "P2008_R"]]
 
-fips_list = ['01']
+fips_list = [
+        '01',
+        #'02',
+        '04',
+        '05',
+        '06',
+        '08',
+        '09',
+        #'10',
+        '11',
+        '12',
+        '13',
+        '16',
+        '17',
+        '18',
+        '19',
+        '20',
+        '21',
+        '22',
+        '23',
+        '24',
+        '25',
+        '26',
+        '27',
+        '28',
+        '29',
+        #'30',
+        '31',
+        '32',
+        '33',
+        '34',
+        '35',
+        '36',
+        '37',
+        #'38',
+        '39',
+        '40',
+        '42',
+        '44',
+        '45',
+        #'46',
+        '47',
+        '48',
+        '49',
+        #'50',
+        '51',
+        '53',
+        '54',
+        '55',
+        #'56'
+             ]
 
 plan_name = "Enacted"
 
@@ -35,9 +85,8 @@ sub_sample = 1
 for state_fips in fips_list:
     for run in ['0','1','2']:
         
-        datadir = f"../../../Dropbox/US_Ensembles/{state_fips}_run{run}/"
-        
-        newdir = f"../20_intermediate_files/initial_chain_plots/{state_fips}_run{run}/"
+        datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/"        
+        newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/Plots/"
         
         os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
         with open(newdir + "init.txt", "w") as f:
@@ -250,7 +299,7 @@ for state_fips in fips_list:
             plt.ylabel("Dem %")
             plt.ylim([0.25, 0.95])
         
-            plt.plot([0.5, num_districts + 1], [0.5, 0.5], color="green", label="50%")
+            plt.axhline(.5, color="green", label="50%")
             # plt.plot([],[],color=c,label="ReCom Ensemble")
         
             # fig, ax = plt.subplots()
