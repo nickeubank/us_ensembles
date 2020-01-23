@@ -5,6 +5,7 @@ import csv
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt 
+import seaborn as sns
 import networkx as nx
 from functools import partial
 import json
@@ -123,6 +124,7 @@ for state_fips in fips_list:
     Ravgdlocs = []
     Davgdlocs = []
     seats = []
+    wseats = []
 
 
     #Point initialization happens here
@@ -193,6 +195,7 @@ for state_fips in fips_list:
         Ravgdlocs.append([])
         Davgdlocs.append([])
         seats.append([])
+        wseats.append([])
 
         for t in ts:
             print(t,run)
@@ -242,10 +245,14 @@ for state_fips in fips_list:
 
             
                 #district_averages = {x: pf.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts}   # for now just average over whole state
+                
+                seats[-1].append(new_partition[election_name].wins("Dem"))
             
             
                 dlocs[-1].append(np.mean(state_points["dislocate"]))
                 adlocs[-1].append(np.mean(np.abs(state_points["dislocate"])))
+                if adlocs[-1][-1] < .05:
+                    wseats[-1].append(new_partition[election_name].wins("Dem"))
                 Rdlocs[-1].append(len(state_points[state_points["dislocate"]>0]))
                 Ddlocs[-1].append(len(state_points[state_points["dislocate"]<0]))
                 Ravgdlocs[-1].append(np.abs(np.mean(state_points[state_points["dislocate"]>0])))
@@ -255,12 +262,23 @@ for state_fips in fips_list:
 
                 #measure dislocation and write to file 
                 #dlocs.append()
+
+
+
+                if step == 0:
+                    plt.figure()
+                    state_precincts.plot(color = 'bisque', linewidth = 1, edgecolor = 'slategray')
+                    state_points.plot(column = 'dislocate', cmap = 'seismic')
+                    plt.savefig(newdir+"pointcolors"+str(t)+".png")
+                    plt.close()
+
+                 
             
             
         with open(newdir + "dloc" + str(t) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
             writer.writerows(dlocs)            
-
+                      
         with open(newdir + "adloc" + str(t) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
             writer.writerows(adlocs)
@@ -280,10 +298,45 @@ for state_fips in fips_list:
         with open(newdir + "Davgdloc" + str(t) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
             writer.writerows(Davgdlocs)
+
+
+        plt.figure()
+        sns.distplot(adlocs[-1], kde=False, bins=1000)
+        plt.savefig(newdir+"abs_disc.png")
+
+        plt.close()
+
+        plt.figure()
+        sns.distplot(Ravgdlocs[-1], kde=False, bins=1000,color='r')
+        sns.distplot(Davgdlocs[-1], kde=False, bins=1000,color='b')
+
+        plt.savefig(newdir+"party_disc.png")
+
+        plt.close()
+
+        plt.figure()
+        sns.distplot(Rdlocs[-1], kde=False, bins=100,color='r')
+        sns.distplot(Ddlocs[-1], kde=False, bins=100,color='b')
+
+        plt.savefig(newdir+"number_party_disc.png")
+
+        plt.close()
+
+        
+        plt.figure()
+        sns.distplot(seats[-1], kde=False, bins = [x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)], color='gray',label = 'All Plans')
+        sns.distplot(wseats[-1], kde=False, bins=[x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)],color='green',label='Small Dislocation')
+        plt.legend()
+        plt.savefig(newdir+"seats_comparison.png")
+
+        plt.close()
+
           
         dlocs = []
         adlocs = []
         Rdlocs = []
         Ddlocs = []
         Ravgdlocs = []
-        Davgdlocs = []
+        Davgdlocs = []      
+        seats = []
+        wseats = []
