@@ -3,6 +3,8 @@ import os
 import pickle
 import numpy as np
 import gerrychain as gc
+from gerrychain import Graph, Partition, Election
+from gerrychain.updaters import Tally, cut_edges
 
 indices=['01',
         '04',
@@ -172,4 +174,6 @@ for state_fips in indices:
          
             f.write("\n")
             f.write("\n")    
+
+
 
