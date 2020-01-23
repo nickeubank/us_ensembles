@@ -249,13 +249,13 @@ for state_fips in fips_list:
             
                 dlocs[-1].append(state_points["dislocate"].mean())
                 adlocs[-1].append((state_points["dislocate"].abs()).mean())
-                #if adlocs[-1][-1] < .05:
-                #    wseats[-1].append(new_partition[election_name].wins("Dem"))
+                if adlocs[-1][-1] < .05:
+                    wseats[-1].append(new_partition[election_name].wins("Dem"))
 
-                Rdlocs[-1].append(len(state_points[state_points["dislocate"]>0]))
-                Ddlocs[-1].append(len(state_points[state_points["dislocate"]<0]))
-                Ravgdlocs[-1].append(abs(state_points[state_points["dislocate"]>0].mean()))
-                Davgdlocs[-1].append(abs(state_points[state_points["dislocate"]<0].mean()))
+                #Rdlocs[-1].append(len(state_points[state_points["dislocate"]>0]))
+                #Ddlocs[-1].append(len(state_points[state_points["dislocate"]<0]))
+                #Ravgdlocs[-1].append(abs(state_points[state_points["dislocate"]>0].mean()))
+                #Davgdlocs[-1].append(abs(state_points[state_points["dislocate"]<0].mean()))
 
                 
             plt.figure()
@@ -276,7 +276,7 @@ for state_fips in fips_list:
         with open(newdir + "adloc" + str(t) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
             writer.writerows(adlocs)
-
+        """
         with open(newdir + "Rdloc" + str(t) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
             writer.writerows(Rdlocs)
@@ -292,14 +292,14 @@ for state_fips in fips_list:
         with open(newdir + "Davgdloc" + str(t) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
             writer.writerows(Davgdlocs)
-
+        """
 
         plt.figure()
         sns.distplot(adlocs[-1], kde=False, bins=1000)
         plt.savefig(newdir+"abs_disc.png")
 
         plt.close()
-
+        """
         plt.figure()
         sns.distplot(Ravgdlocs[-1], kde=False, bins=1000,color='r')
         sns.distplot(Davgdlocs[-1], kde=False, bins=1000,color='b')
@@ -315,7 +315,7 @@ for state_fips in fips_list:
         plt.savefig(newdir+"number_party_disc.png")
 
         plt.close()
-
+        """
         
         plt.figure()
         sns.distplot(seats[-1], kde=False, bins = [x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)], color='gray',label = 'All Plans')
