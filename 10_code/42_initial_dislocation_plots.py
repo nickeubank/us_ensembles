@@ -40,6 +40,7 @@ election_columns = [["P2008_D",  "P2008_R"]]
 
 
 #1 thourgh 16 only wrote a single file. 
+
 fips_list = [
         '01',
         '02',
@@ -115,13 +116,64 @@ for state_fips in fips_llist:
 
     
     for run in ['0']:#['0','1','2']:
+        max_steps = 100000
+
+        burn = 0
+        sub_sample = 1
+        step_size = 10000
+    
+        if int(state_fips)<17:
+            step_size = 100000
+            
+        ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]
         
-        datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/"
+        datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun2/"
+        
+        datadir2 = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/" 
         
         newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun2/"
         
         os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
         with open(newdir + "init.txt", "w") as f:
             f.write("Created Folder")
+            
+            
+        adlocs = np.zeros([1, max_steps])
+        seats = np.zeros([1, max_steps])
+        
+        for t in ts:
+            temp = np.loadtxt(datadir + "adloc" + str(t) + ".csv", delimiter=",")
+            adlocs[0, t - step_size  : t] = temp
+            temp = np.loadtxt(datadir2 + "hmss" + str(t) + ".csv", delimiter=",")
+            seats[:, t - step_size : t] = temp.T
+            
+        #wseats = []
+        
+        bound = np.percentile(adlocs,10)
+        
+        #for i in range(max_steps):
+        #    if
+        
+        wseats = hmss[(adlocs<bound)]    
+        
+            plt.figure()
+            sns.distplot(seats[-1], kde=False, bins = [x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)], color='gray',label = 'All Plans')
+            sns.distplot(wseats, kde=False, bins=[x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)],color='green',label='Small Dislocation')
+            plt.legend()
+            plt.savefig(newdir+"seats_comparison2.png")
+
+            plt.close()
+            
+            
+            
+            
+            
+            
+        
+            
+            
+            
+            
+            
 
 
