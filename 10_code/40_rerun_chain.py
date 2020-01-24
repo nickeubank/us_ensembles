@@ -125,8 +125,8 @@ def join_and_evaluate_dislocation(state_fips):
     Ddlocs = []
     Ravgdlocs = []
     Davgdlocs = []
-    seats = []
-    wseats = []
+    #seats = []
+    #wseats = []
 
 
     #Point initialization happens here
@@ -198,8 +198,8 @@ def join_and_evaluate_dislocation(state_fips):
         Ddlocs.append([])
         Ravgdlocs.append([])
         Davgdlocs.append([])
-        seats.append([])
-        wseats.append([])
+        #seats.append([])
+        #wseats.append([])
 
         for t in ts:
             print(t,run)
@@ -250,7 +250,7 @@ def join_and_evaluate_dislocation(state_fips):
             
                 #district_averages = {x: pf.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts}   # for now just average over whole state
                 
-                seats[-1].append(new_partition[election_name].wins("Dem"))
+                #seats[-1].append(new_partition[election_name].wins("Dem"))
             
             
                 dlocs[-1].append(state_points["dislocate"].mean())
@@ -321,7 +321,7 @@ def join_and_evaluate_dislocation(state_fips):
         plt.savefig(newdir+"number_party_disc.png")
 
         plt.close()
-        """
+        
         
         seats[-1] = np.array(seats[-1])
         
@@ -339,7 +339,7 @@ def join_and_evaluate_dislocation(state_fips):
 
         plt.close()
 
-          
+        """  
         dlocs = []
         adlocs = []
         Rdlocs = []
