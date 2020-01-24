@@ -39,7 +39,7 @@ state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "37":"North_Carolina","38":"North_Dakota","31":"Nebraska","33":"New_Hampshire",
 "34":"New_Jersey","35":"New_Mexico","32":"Nevada","36":"New_York","39":"Ohio",
 "40":"Oklahoma","41":"Oregon","42":"Pennsylvania","72":"Puerto_Rico",
-"44":"Rhode_Island","45":"South_Carolina","46":"South_Dakota","47":"Tenessee",
+"44":"Rhode_Island","45":"South_Carolina","46":"South_Dakota","47":"Tennessee",
 "48":"Texas","49":"Utah","51":"Virginia","50":"Vermont","53":"Washington",
 "55":"Wisconsin","54":"West_Virginia","56":"Wyoming"}
 
@@ -194,18 +194,19 @@ def join_and_evaluate_dislocation(state_fips):
 
         ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]
         
-        dlocs.append([])
-        adlocs.append([])
-        Rdlocs.append([])
-        Ddlocs.append([])
-        Ravgdlocs.append([])
-        Davgdlocs.append([])
+        
         #seats.append([])
         #wseats.append([])
 
         for t in ts:
-            print(t,run)
-            #dict_list = json.loads(datadir + f'flips_{t}.json')
+            print(state_fips, t,run)
+            dlocs.append([])
+            adlocs.append([])
+            Rdlocs.append([])
+            Ddlocs.append([])
+            Ravgdlocs.append([])
+            Davgdlocs.append([])
+             #dict_list = json.loads(datadir + f'flips_{t}.json')
             with open(datadir+f'flips_{t}.json') as f:
                 dict_list = ast.literal_eval(f.read())
 
