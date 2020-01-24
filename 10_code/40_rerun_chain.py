@@ -112,8 +112,12 @@ from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
 
     
-
-for state_fips in fips_list:
+##
+# Analysis function to parallelize
+##
+    
+    
+def join_and_evaluate_dislocation(state_fips):
 
     dlocs = []
     adlocs = []
@@ -142,7 +146,7 @@ for state_fips in fips_list:
 
     print("changed crs")
 
-    point_assign = assign(state_points,state_precincts)
+    point_assign = assign(state_points, state_precincts)
  
     print("Made Assignment")
     
@@ -334,3 +338,20 @@ for state_fips in fips_list:
         Davgdlocs = []      
         seats = []
         wseats = []
+
+        return state_fips
+        
+
+##
+# And... EXECUTE!
+##
+        
+from joblib import Parallel, delayed
+
+n_jobs = 3
+
+results = (Parallel(n_jobs=n_jobs, verbose=10)
+           (delayed(join_and_evaluate_dislocation)(fips) for fips in fips_list)
+          )
+
+
