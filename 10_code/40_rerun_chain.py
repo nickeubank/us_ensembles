@@ -50,6 +50,8 @@ election_names = ["PRES2008"]
 
 election_columns = [["P2008_D",  "P2008_R"]]
 
+
+#1 thourgh 16 only wrote a single file. 
 fips_list = [
         #'01',
         #'02',
@@ -275,79 +277,79 @@ def join_and_evaluate_dislocation(state_fips):
         
 
 
-        with open(newdir + "dloc" + str(t) + ".csv", "w") as tf1:
-            writer = csv.writer(tf1, lineterminator="\n")
-            writer.writerows(dlocs)            
-                      
-        with open(newdir + "adloc" + str(t) + ".csv", "w") as tf1:
-            writer = csv.writer(tf1, lineterminator="\n")
-            writer.writerows(adlocs)
-        """
-        with open(newdir + "Rdloc" + str(t) + ".csv", "w") as tf1:
-            writer = csv.writer(tf1, lineterminator="\n")
-            writer.writerows(Rdlocs)
+            with open(newdir + "dloc" + str(t) + ".csv", "w") as tf1:
+                writer = csv.writer(tf1, lineterminator="\n")
+                writer.writerows(dlocs)            
+                          
+            with open(newdir + "adloc" + str(t) + ".csv", "w") as tf1:
+                writer = csv.writer(tf1, lineterminator="\n")
+                writer.writerows(adlocs)
+            """
+            with open(newdir + "Rdloc" + str(t) + ".csv", "w") as tf1:
+                writer = csv.writer(tf1, lineterminator="\n")
+                writer.writerows(Rdlocs)
 
-        with open(newdir + "Ddloc" + str(t) + ".csv", "w") as tf1:
-            writer = csv.writer(tf1, lineterminator="\n")
-            writer.writerows(Ddlocs)
+            with open(newdir + "Ddloc" + str(t) + ".csv", "w") as tf1:
+                writer = csv.writer(tf1, lineterminator="\n")
+                writer.writerows(Ddlocs)
 
-        with open(newdir + "Ravgdloc" + str(t) + ".csv", "w") as tf1:
-            writer = csv.writer(tf1, lineterminator="\n")
-            writer.writerows(Ravgdlocs)
+            with open(newdir + "Ravgdloc" + str(t) + ".csv", "w") as tf1:
+                writer = csv.writer(tf1, lineterminator="\n")
+                writer.writerows(Ravgdlocs)
 
-        with open(newdir + "Davgdloc" + str(t) + ".csv", "w") as tf1:
-            writer = csv.writer(tf1, lineterminator="\n")
-            writer.writerows(Davgdlocs)
-        
+            with open(newdir + "Davgdloc" + str(t) + ".csv", "w") as tf1:
+                writer = csv.writer(tf1, lineterminator="\n")
+                writer.writerows(Davgdlocs)
+            
 
-        plt.figure()
-        sns.distplot(adlocs[-1], kde=False, bins=1000)
-        plt.savefig(newdir+"abs_disc.png")
+            plt.figure()
+            sns.distplot(adlocs[-1], kde=False, bins=1000)
+            plt.savefig(newdir+"abs_disc.png")
 
-        plt.close()
-        
-        plt.figure()
-        sns.distplot(Ravgdlocs[-1], kde=False, bins=1000,color='r')
-        sns.distplot(Davgdlocs[-1], kde=False, bins=1000,color='b')
+            plt.close()
+            
+            plt.figure()
+            sns.distplot(Ravgdlocs[-1], kde=False, bins=1000,color='r')
+            sns.distplot(Davgdlocs[-1], kde=False, bins=1000,color='b')
 
-        plt.savefig(newdir+"party_disc.png")
+            plt.savefig(newdir+"party_disc.png")
 
-        plt.close()
+            plt.close()
 
-        plt.figure()
-        sns.distplot(Rdlocs[-1], kde=False, bins=100,color='r')
-        sns.distplot(Ddlocs[-1], kde=False, bins=100,color='b')
+            plt.figure()
+            sns.distplot(Rdlocs[-1], kde=False, bins=100,color='r')
+            sns.distplot(Ddlocs[-1], kde=False, bins=100,color='b')
 
-        plt.savefig(newdir+"number_party_disc.png")
+            plt.savefig(newdir+"number_party_disc.png")
 
-        plt.close()
-        
-        
-        seats[-1] = np.array(seats[-1])
-        
-        adlocs = np.array(adlocs)
-        
-        bound = np.percentile(adlocs, 10)
-        
-        wseats = seats[-1][adlocs < bound]
-        
-        plt.figure()
-        sns.distplot(seats[-1], kde=False, bins = [x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)], color='gray',label = 'All Plans')
-        sns.distplot(wseats, kde=False, bins=[x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)],color='green',label='Small Dislocation')
-        plt.legend()
-        plt.savefig(newdir+"seats_comparison.png")
+            plt.close()
+            
+            
+            seats[-1] = np.array(seats[-1])
+            
+            adlocs = np.array(adlocs)
+            
+            bound = np.percentile(adlocs, 10)
+            
+            wseats = seats[-1][adlocs < bound]
+            
+            plt.figure()
+            sns.distplot(seats[-1], kde=False, bins = [x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)], color='gray',label = 'All Plans')
+            sns.distplot(wseats, kde=False, bins=[x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)],color='green',label='Small Dislocation')
+            plt.legend()
+            plt.savefig(newdir+"seats_comparison.png")
 
-        plt.close()
+            plt.close()
 
-        """  
-        dlocs = []
-        adlocs = []
-        Rdlocs = []
-        Ddlocs = []
-        Ravgdlocs = []
-        Davgdlocs = []      
-        seats = []
-        wseats = []
+            """  
+            dlocs = []
+            adlocs = []
+            Rdlocs = []
+            Ddlocs = []
+            Ravgdlocs = []
+            Davgdlocs = []      
+            seats = []
+            wseats = []
 
         return state_fips
         
