@@ -8,15 +8,15 @@ from gerrychain.updaters import Tally, cut_edges
 from maup import assign
 from gerrychain.metrics import efficiency_gap, mean_median, partisan_bias, partisan_gini
 
-indices=['01',
-        '04',
-        '05',
-        '06',
-        '08',
-        '09',
-        '10',
+indices=[#'01',
+        #'04',
+        #'05',
+        #'06',
+        #'08',
+        #'09',
+        #'10',
         #'11',
-        '12',
+        #'12',
         '13',
         '16',
         '17',
