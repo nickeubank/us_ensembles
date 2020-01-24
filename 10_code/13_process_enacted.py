@@ -130,6 +130,50 @@ for state_fips in indices:
                 adlocs.append(float(line[38:]))
                 
                 
-plt.figure()                
+plt.figure()   
+plt.plot(vshare,adlocs, 'ob')
+plt.xlabel('Vote Share')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'DvsVS.png')
+plt.close()
+
+plt.figure()   
+plt.plot(np.abs(mms),adlocs, 'ob')
+plt.xlabel('Mean-Median')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'DvsMM.png')
+plt.close()
+
+
+plt.figure()   
+plt.plot(np.abs(egs),adlocs, 'ob')
+plt.xlabel('Efficincy Gap')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'DvsEG.png')
+plt.close()
+
+
+plt.figure()   
+plt.plot(np.abs(pbs),adlocs, 'ob')
+plt.xlabel('Partisan Bias')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'DvsPB.png')
+plt.close()
+
+
+plt.figure()   
+plt.plot(np.abs(mms),adlocs, 'ob')
+plt.xlabel('Partisan Gini')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'DvsPG.png')
+plt.close()
+
+
+plt.figure()   
+plt.plot(seats,adlocs, 'ob')
+plt.xlabel('Seat Share')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'DvsSS.png')
+plt.close()
                 
 
