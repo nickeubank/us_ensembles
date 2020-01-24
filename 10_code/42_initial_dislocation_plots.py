@@ -144,7 +144,14 @@ for state_fips in fips_list:
         
         for t in ts:
             temp = np.loadtxt(datadir + "adloc" + str(t) + ".csv", delimiter=",")
+            #print(t,len(temp))
             adlocs[0, t - step_size  : t] = temp
+            
+        step_size = 10000
+            
+        ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]    
+         
+        for t in ts:       
             temp = np.loadtxt(datadir2 + "hmss" + str(t) + ".csv", delimiter=",")
             seats[:, t - step_size : t] = temp.T
             
@@ -155,7 +162,7 @@ for state_fips in fips_list:
         #for i in range(max_steps):
         #    if
         
-        wseats = hmss[(adlocs<bound)]    
+        wseats = seats[(adlocs<bound)]    
         
         plt.figure()
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats))-1,int(max(seats))+2)], color='gray',label = 'All Plans')
