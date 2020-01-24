@@ -49,7 +49,7 @@ fips_list = [
         '06',
         '08',
         '09',
-        '10',
+        #'10',
         #'12',
         '13',
         '16',
@@ -129,6 +129,9 @@ for state_fips in fips_list:
         ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]
         
         datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun2/"
+        
+        if state_fips == '06':
+            datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun/"
         
         datadir2 = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/" 
         
