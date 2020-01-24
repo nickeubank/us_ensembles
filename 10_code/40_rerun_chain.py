@@ -264,11 +264,11 @@ def join_and_evaluate_dislocation(state_fips):
                 #Davgdlocs[-1].append(abs(state_points[state_points["dislocate"]<0].mean()))
 
                 
-            plt.figure()
-            state_precincts.plot(color = 'bisque', linewidth = 1, edgecolor = 'slategray')
-            state_points.plot(column = 'dislocate', cmap = 'seismic',markersize=5)
-            plt.savefig(newdir+"pointcolors"+str(t)+".png")
-            plt.close()
+            #plt.figure()
+            #state_precincts.plot(color = 'bisque', linewidth = 1, edgecolor = 'slategray')
+            #state_points.plot(column = 'dislocate', cmap = 'seismic',markersize=5)
+            #plt.savefig(newdir+"pointcolors"+str(t)+".png")
+            #plt.close()
 
                  
             
@@ -298,14 +298,14 @@ def join_and_evaluate_dislocation(state_fips):
         with open(newdir + "Davgdloc" + str(t) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
             writer.writerows(Davgdlocs)
-        """
+        
 
         plt.figure()
         sns.distplot(adlocs[-1], kde=False, bins=1000)
         plt.savefig(newdir+"abs_disc.png")
 
         plt.close()
-        """
+        
         plt.figure()
         sns.distplot(Ravgdlocs[-1], kde=False, bins=1000,color='r')
         sns.distplot(Davgdlocs[-1], kde=False, bins=1000,color='b')
@@ -358,7 +358,7 @@ def join_and_evaluate_dislocation(state_fips):
         
 from joblib import Parallel, delayed
 
-n_jobs = 5
+n_jobs = 4
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(join_and_evaluate_dislocation)(fips) for fips in fips_list)
