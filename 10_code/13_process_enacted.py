@@ -147,7 +147,7 @@ plt.close()
 
 plt.figure()   
 plt.plot(np.abs(egs),adlocs, 'ob')
-plt.xlabel('Efficincy Gap')
+plt.xlabel('Efficiency Gap')
 plt.ylabel('Absolute Average Dislocation')
 plt.savefig(newdir+ 'DvsEG.png')
 plt.close()
