@@ -59,8 +59,8 @@ fips_list = [
         '08',
         '09',
         #'10',
-        '11',
-        '12',
+        #'11',
+        #'12',
         '13',
         '16',
         '17',
@@ -142,6 +142,8 @@ def join_and_evaluate_dislocation(state_fips):
 
     print(state_precincts.crs)
     print(state_points.crs)
+    
+    state_precincts.to_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Precincts.shp")
 
 
     print("changed crs")
@@ -159,7 +161,7 @@ def join_and_evaluate_dislocation(state_fips):
         
         datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/"
         
-        newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun/"
+        newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun2/"
         
         os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
         with open(newdir + "init.txt", "w") as f:
@@ -253,8 +255,8 @@ def join_and_evaluate_dislocation(state_fips):
             
                 dlocs[-1].append(state_points["dislocate"].mean())
                 adlocs[-1].append((state_points["dislocate"].abs()).mean())
-                if adlocs[-1][-1] < .05:
-                    wseats[-1].append(new_partition[election_name].wins("Dem"))
+                #if adlocs[-1][-1] < .05:
+                #    wseats[-1].append(new_partition[election_name].wins("Dem"))
 
                 #Rdlocs[-1].append(len(state_points[state_points["dislocate"]>0]))
                 #Ddlocs[-1].append(len(state_points[state_points["dislocate"]<0]))
@@ -264,7 +266,7 @@ def join_and_evaluate_dislocation(state_fips):
                 
             plt.figure()
             state_precincts.plot(color = 'bisque', linewidth = 1, edgecolor = 'slategray')
-            state_points.plot(column = 'dislocate', cmap = 'seismic')
+            state_points.plot(column = 'dislocate', cmap = 'seismic',markersize=5)
             plt.savefig(newdir+"pointcolors"+str(t)+".png")
             plt.close()
 
@@ -321,9 +323,17 @@ def join_and_evaluate_dislocation(state_fips):
         plt.close()
         """
         
+        seats[-1] = np.array(seats[-1])
+        
+        adlocs = np.array(adlocs)
+        
+        bound = np.percentile(adlocs, 10)
+        
+        wseats = seates[-1][adlocs < bound]
+        
         plt.figure()
         sns.distplot(seats[-1], kde=False, bins = [x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)], color='gray',label = 'All Plans')
-        sns.distplot(wseats[-1], kde=False, bins=[x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)],color='green',label='Small Dislocation')
+        sns.distplot(wseats, kde=False, bins=[x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)],color='green',label='Small Dislocation')
         plt.legend()
         plt.savefig(newdir+"seats_comparison.png")
 
@@ -348,7 +358,7 @@ def join_and_evaluate_dislocation(state_fips):
         
 from joblib import Parallel, delayed
 
-n_jobs = 3
+n_jobs = 12
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(join_and_evaluate_dislocation)(fips) for fips in fips_list)
