@@ -157,7 +157,7 @@ def join_and_evaluate_dislocation(state_fips):
     #state_points['precinct'] = state_points['precinct'].map(state_precincts.index)
     #Maybe unnecessary?
     
-    for run in ['0','1','2']:
+    for run in ['0']:#['0','1','2']:
         
         datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/"
         
