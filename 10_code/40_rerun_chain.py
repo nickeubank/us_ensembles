@@ -329,7 +329,7 @@ def join_and_evaluate_dislocation(state_fips):
         
         bound = np.percentile(adlocs, 10)
         
-        wseats = seates[-1][adlocs < bound]
+        wseats = seats[-1][adlocs < bound]
         
         plt.figure()
         sns.distplot(seats[-1], kde=False, bins = [x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)], color='gray',label = 'All Plans')
@@ -358,7 +358,7 @@ def join_and_evaluate_dislocation(state_fips):
         
 from joblib import Parallel, delayed
 
-n_jobs = 10
+n_jobs = 5
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(join_and_evaluate_dislocation)(fips) for fips in fips_list)
