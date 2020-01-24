@@ -55,7 +55,7 @@ fips_list = [
         #'02',
         '04',
         '05',
-        '06',
+        #'06',
         '08',
         '09',
         #'10',
@@ -358,7 +358,7 @@ def join_and_evaluate_dislocation(state_fips):
         
 from joblib import Parallel, delayed
 
-n_jobs = 6
+n_jobs = 10
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(join_and_evaluate_dislocation)(fips) for fips in fips_list)
