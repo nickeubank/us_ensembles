@@ -43,7 +43,7 @@ election_columns = [["P2008_D",  "P2008_R"]]
 
 fips_list = [
         '01',
-        '02',
+        #'02',
         '04',
         '05',
         '06',
@@ -165,8 +165,8 @@ for state_fips in fips_list:
         wseats = seats[(adlocs<bound)]    
         
         plt.figure()
-        sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats))-1,int(max(seats))+2)], color='gray',label = 'All Plans')
-        sns.distplot(wseats, kde=False, bins=[x for x in range(int(min(seats))-1,int(max(seats))+2)],color='green',label='Small Dislocation')
+        sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans')
+        sns.distplot(wseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation')
         plt.legend()
         plt.savefig(newdir+"seats_comparison2.png")
 
