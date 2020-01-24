@@ -61,7 +61,8 @@ fips_list = [
         '22',
         '23',
         '24',
-        '25',
+        '25']
+""",
         '26',
         '27',
         '28',
@@ -89,15 +90,15 @@ fips_list = [
         '53',
         '54',
         '55',
-        #'56'
-             ]
+        #'56']
+"""
 
 plan_name = "Enacted"
 
 election_name = election_names[0]
 
 
-for state_fips in fips_llist:
+for state_fips in fips_list:
 
     
 ##
@@ -156,13 +157,13 @@ for state_fips in fips_llist:
         
         wseats = hmss[(adlocs<bound)]    
         
-            plt.figure()
-            sns.distplot(seats[-1], kde=False, bins = [x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)], color='gray',label = 'All Plans')
-            sns.distplot(wseats, kde=False, bins=[x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)],color='green',label='Small Dislocation')
-            plt.legend()
-            plt.savefig(newdir+"seats_comparison2.png")
+        plt.figure()
+        sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats))-1,int(max(seats))+2)], color='gray',label = 'All Plans')
+        sns.distplot(wseats, kde=False, bins=[x for x in range(int(min(seats))-1,int(max(seats))+2)],color='green',label='Small Dislocation')
+        plt.legend()
+        plt.savefig(newdir+"seats_comparison2.png")
 
-            plt.close()
+        plt.close()
             
             
             
