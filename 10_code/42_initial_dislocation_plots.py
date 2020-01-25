@@ -166,21 +166,21 @@ for state_fips in fips_list:
         #for i in range(max_steps):
         #    if
         
-        wseats = seats[(adlocs<lbound)]    
+        lwseats = seats[(adlocs<lbound)]    
+        uwseats = seats[(adlocs>ubound)]    
         
         plt.figure()
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans')
-        sns.distplot(wseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation')
+        sns.distplot(lwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation')
         plt.legend()
         plt.savefig(newdir+"seats_comparison2l10.png")
 
         plt.close()
             
-        wseats = seats[(adlocs>ubound)]    
         
         plt.figure()
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans')
-        sns.distplot(wseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation')
+        sns.distplot(uwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Large Dislocation')
         plt.legend()
         plt.savefig(newdir+"seats_comparison2u10.png")
 
@@ -188,17 +188,16 @@ for state_fips in fips_list:
             
         plt.figure()
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans')
-        sns.distplot(wseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green', norm_hist = True, label='Small Dislocation')
+        sns.distplot(lwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green', norm_hist = True, label='Small Dislocation')
         plt.legend()
         plt.savefig(newdir+"seats_comparison3l10.png")
 
         plt.close()
             
-        wseats = seats[(adlocs>ubound)]    
         
         plt.figure()
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans')
-        sns.distplot(wseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green', norm_hist = True, label='Small Dislocation')
+        sns.distplot(uwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green', norm_hist = True, label='Large Dislocation')
         plt.legend()
         plt.savefig(newdir+"seats_comparison3u10.png")
 
