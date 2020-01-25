@@ -259,18 +259,18 @@ for state_fips in fips_list:
         plt.close()
             
         plt.figure()
-        sns.distplot([x for x in lwseats], kde=False, bins=[x-.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation',hist_kws={"rwidth":.2,"align":"left"})
-        sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans',hist_kws={"rwidth":.2,"align":"left"})
-        sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange',label='Large Dislocation',hist_kws={"rwidth":.2,"align":"left"})
+        sns.distplot([x for x in lwseats], kde=False, bins=[x-.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation',hist_kws={"rwidth":.25,"align":"left"})
+        sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans',hist_kws={"rwidth":.25,"align":"left"})
+        sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange',label='Large Dislocation',hist_kws={"rwidth":.25,"align":"left"})
         plt.legend()
         plt.savefig(newdir+"seats_comparison2all10sss.png")
 
         plt.close()
             
         plt.figure()
-        sns.distplot([x for x in lwseats], kde=False, bins=[x-.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green', norm_hist = True, label='Small Dislocation',hist_kws={"rwidth":.2,"align":"left"})
-        sns.distplot(seats, kde=False, bins = [x+.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans',hist_kws={"rwidth":.2,"align":"left"})
-        sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange', norm_hist = True, label='Large Dislocation',hist_kws={"rwidth":.2,"align":"left"})
+        sns.distplot([x for x in lwseats], kde=False, bins=[x-.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green', norm_hist = True, label='Small Dislocation',hist_kws={"rwidth":.25,"align":"left"})
+        sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans',hist_kws={"rwidth":.25,"align":"left"})
+        sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange', norm_hist = True, label='Large Dislocation',hist_kws={"rwidth":.25,"align":"left"})
         plt.legend()
         plt.savefig(newdir+"seats_comparison3all10sss.png")
 
@@ -375,18 +375,18 @@ for state_fips in fips_list:
         plt.close()
             
         plt.figure()
-        sns.distplot([x for x in lwseats], kde=False, bins=[x-.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation',hist_kws={"rwidth":.2,"align":"left"})
-        sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans',hist_kws={"rwidth":.2,"align":"left"})
-        sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange',label='Large Dislocation',hist_kws={"rwidth":.2,"align":"left"})
+        sns.distplot([x for x in lwseats], kde=False, bins=[x-.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation',hist_kws={"rwidth":.25,"align":"left"})
+        sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans',hist_kws={"rwidth":.25,"align":"left"})
+        sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange',label='Large Dislocation',hist_kws={"rwidth":.25,"align":"left"})
         plt.legend()
         plt.savefig(newdir+"seats_comparison2all5sss.png")
 
         plt.close()
             
         plt.figure()
-        sns.distplot([x for x in lwseats], kde=False, bins=[x-.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green', norm_hist = True, label='Small Dislocation',hist_kws={"rwidth":.2,"align":"left"})
-        sns.distplot(seats, kde=False, bins = [x+.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans',hist_kws={"rwidth":.2,"align":"left"})
-        sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange', norm_hist = True, label='Large Dislocation',hist_kws={"rwidth":.2,"align":"left"})
+        sns.distplot([x for x in lwseats], kde=False, bins=[x-.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green', norm_hist = True, label='Small Dislocation',hist_kws={"rwidth":.25,"align":"left"})
+        sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans',hist_kws={"rwidth":.25,"align":"left"})
+        sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange', norm_hist = True, label='Large Dislocation',hist_kws={"rwidth":.25,"align":"left"})
         plt.legend()
         plt.savefig(newdir+"seats_comparison3all5sss.png")
 
