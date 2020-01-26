@@ -128,8 +128,44 @@ for state_fips in indices:
             if index == 19:
                 #print(line[38:])
                 adlocs.append(float(line[38:]))
-                
-                
+
+
+with open(newdir + "enacted_indices.csv", "w") as tf1:
+    writer = csv.writer(tf1, lineterminator="\n")
+    writer.writerows(indices)
+
+with open(newdir + "enacted_names.csv", "w") as tf1:
+    writer = csv.writer(tf1, lineterminator="\n")
+    writer.writerows(names)
+
+with open(newdir + "enacted_mms.csv", "w") as tf1:
+    writer = csv.writer(tf1, lineterminator="\n")
+    writer.writerows(mms)
+
+with open(newdir + "enacted_egs.csv", "w") as tf1:
+    writer = csv.writer(tf1, lineterminator="\n")
+    writer.writerows(egs)
+
+with open(newdir + "enacted_pbs.csv", "w") as tf1:
+    writer = csv.writer(tf1, lineterminator="\n")
+    writer.writerows(pbs)
+
+with open(newdir + "enacted_pgs.csv", "w") as tf1:
+    writer = csv.writer(tf1, lineterminator="\n")
+    writer.writerows(pgs)
+
+with open(newdir + "enacted_seats.csv", "w") as tf1:
+    writer = csv.writer(tf1, lineterminator="\n")
+    writer.writerows(seats)
+
+with open(newdir + "enacted_vshare.csv", "w") as tf1:
+    writer = csv.writer(tf1, lineterminator="\n")
+    writer.writerows(vshare)
+
+with open(newdir + "enacted_adlocs.csv", "w") as tf1:
+    writer = csv.writer(tf1, lineterminator="\n")
+    writer.writerows(adlocs)
+               
 plt.figure()   
 plt.plot(vshare,adlocs, 'ob')
 plt.xlabel('Vote Share')
@@ -162,7 +198,7 @@ plt.close()
 
 
 plt.figure()   
-plt.plot(np.abs(mms),adlocs, 'ob')
+plt.plot(np.abs(pgs),adlocs, 'ob')
 plt.xlabel('Partisan Gini')
 plt.ylabel('Absolute Average Dislocation')
 plt.savefig(newdir+ 'DvsPG.png')
@@ -174,6 +210,66 @@ plt.plot(seats,adlocs, 'ob')
 plt.xlabel('Seat Share')
 plt.ylabel('Absolute Average Dislocation')
 plt.savefig(newdir+ 'DvsSS.png')
+plt.close()
+
+
+                
+fig, ax = plt.subplots()
+plt.plot(vshare,adlocs, 'ob')
+plt.xlabel('Vote Share')
+plt.ylabel('Absolute Average Dislocation')
+for i, txt in enumerate(names):
+    ax.annotate(txt, (vshare[i], adlocs[i]))
+plt.savefig(newdir+ 'DvsVS_L.png')
+plt.close()
+
+fig, ax = plt.subplots()
+plt.plot(np.abs(mms),adlocs, 'ob')
+for i, txt in enumerate(names):
+    ax.annotate(txt, (np.abs(mms)[i], adlocs[i]))
+plt.xlabel('Mean-Median')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'DvsMM_L.png')
+plt.close()
+
+
+fig, ax = plt.subplots()
+plt.plot(np.abs(egs),adlocs, 'ob')
+for i, txt in enumerate(names):
+    ax.annotate(txt, (np.abs(egs)[i], adlocs[i]))
+plt.xlabel('Efficiency Gap')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'DvsEG_L.png')
+plt.close()
+
+
+fig, ax = plt.subplots()
+plt.plot(np.abs(pbs),adlocs, 'ob')
+for i, txt in enumerate(names):
+    ax.annotate(txt, (np.abs(pbs)[i], adlocs[i]))
+plt.xlabel('Partisan Bias')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'DvsPB_L.png')
+plt.close()
+
+
+fig, ax = plt.subplots()
+plt.plot(np.abs(pgs),adlocs, 'ob')
+for i, txt in enumerate(names):
+    ax.annotate(txt, (np.abs(pgs)[i], adlocs[i]))
+plt.xlabel('Partisan Gini')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'DvsPG_L.png')
+plt.close()
+
+
+plt.figure()   
+plt.plot(np.abs(seats),adlocs, 'ob')
+for i, txt in enumerate(names):
+    ax.annotate(txt, (np.abs(seats)[i], adlocs[i]))
+plt.xlabel('Seat Share')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'DvsSS_L.png')
 plt.close()
                 
 
