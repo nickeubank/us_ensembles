@@ -187,6 +187,8 @@ for state_fips in fips_list:
         lwseats = seats[(adlocs<lbound)]    
         uwseats = seats[(adlocs>ubound)]    
         
+
+        """
         plt.figure()
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans')
         sns.distplot(lwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation')
@@ -409,7 +411,7 @@ for state_fips in fips_list:
         plt.savefig(newdir+"seats_comparison3all5sss.png")
 
         plt.close()
-            
+        """
                    
         meds.append(np.percentile(adlocs,50))
         p5.append(np.percentile(adlocs,5))
@@ -428,7 +430,7 @@ for i in range(len(meds)):
     plt.plot([i,i],[p25[i],p75[i]],'k',linewidth=5)
     plt.plot([i,i],[p75[i],p95[i]],'orange',linewidth=2)
     plt.plot([i-.25,i+.25],[meds[i],meds[i]],'green',linewidth=2)
-plt.yticks(range(len(meds)),names)
+plt.xticks(range(len(meds)),names)
 plt.savefig(newdir+"compare_dislocations.png")
 plt.close()
 
