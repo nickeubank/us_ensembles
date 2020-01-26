@@ -9,7 +9,7 @@ from maup import assign
 from gerrychain.metrics import efficiency_gap, mean_median, partisan_bias, partisan_gini
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+import csv
 sns.set_style("white")
 
 
