@@ -97,7 +97,12 @@ plan_name = "Enacted"
 
 election_name = election_names[0]
 
-
+meds = []
+p95 = []
+p75 = []
+p25 = []
+p5 = []
+names = []
 for state_fips in fips_list:
 
     
@@ -117,6 +122,7 @@ for state_fips in fips_list:
 
     
     for run in ['0']:#['0','1','2']:
+        names.append(state_names[state_fips])
         max_steps = 100000
 
         burn = 0
@@ -392,7 +398,30 @@ for state_fips in fips_list:
 
         plt.close()
             
-            
-            
+                   
+        meds.append(np.percentile(adlocs,50))
+        p5.append(np.percentile(adlocs,5))
+        p25.append(np.percentile(adlocs,25))
+
+        p75.append(np.percentile(adlocs,75))
+        p95.append(np.percentile(adlocs,95))
+
+
+newdir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/"
+
+plt.figure()
+
+for i in range(len(meds)):
+    plt.plot([i,i],[p5[i],p25[i]],'orange',linewidth=2)
+    plt.plot([i,i],[p25[i],p75[i]],'k',linewidth=5)
+    plt.plot([i,i],[p75[i],p95[i]],'orange',linewidth=2)
+    plt.plot([i-.25,i+.25],[meds[i],meds[i]],'green',linewidth=2)
+plt.yticks(range(len(meds)),names)
+plt.savefig(newdir+"compare_dislocations.png")
+plt.close()
+
+
+
+
 
 
