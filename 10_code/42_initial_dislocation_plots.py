@@ -117,6 +117,7 @@ p5 = []
 names = []
 mins = []
 maxs = []
+enacted = []
 for state_fips in fips_list:
 
     
@@ -422,6 +423,11 @@ for state_fips in fips_list:
         p95.append(np.percentile(adlocs,95))
         mins.append(np.min(adlocs))
         maxs.append(np.max(adlocs))
+        with open(newdir + "Start_Values_"+str(state_fips)+".txt", "r") as f:
+            for index, line in enumerate(f):
+                if index == 19:
+                #print(line[38:])
+                    enacted.append(float(line[38:]))
 
 
 newdir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/"
@@ -432,21 +438,51 @@ for i in range(len(meds)):
     plt.plot([i,i],[p5[i],p25[i]],'orange',linewidth=3)
     plt.plot([i,i],[p75[i],p95[i]],'orange',linewidth=3)
     plt.plot([i,i],[p25[i],p75[i]],'k',linewidth=6)
-    plt.plot([i-.25,i+.25],[meds[i],meds[i]],'lime',linewidth=3)
+    plt.plot([i-.25,i+.25],[meds[i],meds[i]],'lime',linewidth=3,label='Median')
+plt.legend()
 plt.xticks(range(len(meds)),names,rotation=90,fontsize=6)
 plt.savefig(newdir+"compare_dislocations.png")
 plt.close()
 
+plt.figure()
 for i in range(len(meds)):
     plt.plot([i,i],[p5[i],mins[i]],'red',linewidth=1)
     plt.plot([i,i],[p95[i],maxs[i]],'red',linewidth=1)
     plt.plot([i,i],[p5[i],p25[i]],'orange',linewidth=3)
     plt.plot([i,i],[p75[i],p95[i]],'orange',linewidth=3)
     plt.plot([i,i],[p25[i],p75[i]],'k',linewidth=6)
-    plt.plot([i-.25,i+.25],[meds[i],meds[i]],'lime',linewidth=3)
+    plt.plot([i-.25,i+.25],[meds[i],meds[i]],'lime',linewidth=3,label='Median')
+plt.legend()
 plt.xticks(range(len(meds)),names,rotation=90,fontsize=6)
 plt.savefig(newdir+"compare_dislocations_mm.png")
 plt.close()
+
+plt.figure()
+
+for i in range(len(meds)):
+    plt.plot([i,i],[p5[i],p25[i]],'orange',linewidth=3)
+    plt.plot([i,i],[p75[i],p95[i]],'orange',linewidth=3)
+    plt.plot([i,i],[p25[i],p75[i]],'k',linewidth=6)
+    plt.plot([i-.25,i+.25],[meds[i],meds[i]],'lime',linewidth=3,label='Median')
+plt.legend()
+plt.xticks(range(len(meds)),names,rotation=90,fontsize=6)
+plt.savefig(newdir+"compare_dislocations_e.png")
+plt.close()
+
+plt.figure()
+for i in range(len(meds)):
+    plt.plot([i,i],[p5[i],mins[i]],'red',linewidth=1)
+    plt.plot([i,i],[p95[i],maxs[i]],'red',linewidth=1)
+    plt.plot([i,i],[p5[i],p25[i]],'orange',linewidth=3)
+    plt.plot([i,i],[p75[i],p95[i]],'orange',linewidth=3)
+    plt.plot([i,i],[p25[i],p75[i]],'k',linewidth=6)
+    plt.plot([i-.25,i+.25],[meds[i],meds[i]],'lime',linewidth=3,label='Median')
+    plt.plot([i],[enacted[i]],'magenta', markersize=5,label='Enacted')
+plt.legend()
+plt.xticks(range(len(meds)),names,rotation=90,fontsize=6)
+plt.savefig(newdir+"compare_dislocations_mm_e.png")
+plt.close()
+
 
 
 
