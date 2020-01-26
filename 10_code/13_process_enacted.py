@@ -132,39 +132,39 @@ for state_fips in indices:
 
 with open(newdir + "enacted_indices.csv", "w") as tf1:
     writer = csv.writer(tf1, lineterminator="\n")
-    writer.writerows(indices)
+    writer.writerows([indices])
 
 with open(newdir + "enacted_names.csv", "w") as tf1:
     writer = csv.writer(tf1, lineterminator="\n")
-    writer.writerows(names)
+    writer.writerows([names])
 
 with open(newdir + "enacted_mms.csv", "w") as tf1:
     writer = csv.writer(tf1, lineterminator="\n")
-    writer.writerows(mms)
+    writer.writerows([mms])
 
 with open(newdir + "enacted_egs.csv", "w") as tf1:
     writer = csv.writer(tf1, lineterminator="\n")
-    writer.writerows(egs)
+    writer.writerows([egs])
 
 with open(newdir + "enacted_pbs.csv", "w") as tf1:
     writer = csv.writer(tf1, lineterminator="\n")
-    writer.writerows(pbs)
+    writer.writerows([pbs])
 
 with open(newdir + "enacted_pgs.csv", "w") as tf1:
     writer = csv.writer(tf1, lineterminator="\n")
-    writer.writerows(pgs)
+    writer.writerows([pgs])
 
 with open(newdir + "enacted_seats.csv", "w") as tf1:
     writer = csv.writer(tf1, lineterminator="\n")
-    writer.writerows(seats)
+    writer.writerows([seats])
 
 with open(newdir + "enacted_vshare.csv", "w") as tf1:
     writer = csv.writer(tf1, lineterminator="\n")
-    writer.writerows(vshare)
+    writer.writerows([vshare])
 
 with open(newdir + "enacted_adlocs.csv", "w") as tf1:
     writer = csv.writer(tf1, lineterminator="\n")
-    writer.writerows(adlocs)
+    writer.writerows([adlocs])
                
 plt.figure()   
 plt.plot(vshare,adlocs, 'ob')
