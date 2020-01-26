@@ -423,6 +423,9 @@ for state_fips in fips_list:
         p95.append(np.percentile(adlocs,95))
         mins.append(np.min(adlocs))
         maxs.append(np.max(adlocs))
+
+        newdir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/"
+
         with open(newdir + "Start_Values_"+str(state_fips)+".txt", "r") as f:
             for index, line in enumerate(f):
                 if index == 19:
