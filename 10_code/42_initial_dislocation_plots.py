@@ -430,7 +430,7 @@ plt.figure()
 
 for i in range(len(meds)):
     plt.plot([i,i],[p5[i],p25[i]],'orange',linewidth=3)
-    plt.plot([i,i],[p25[i],p75[i]],'k',linewidth=5)
+    plt.plot([i,i],[p25[i],p75[i]],'k',linewidth=6)
     plt.plot([i,i],[p75[i],p95[i]],'orange',linewidth=3)
     plt.plot([i-.25,i+.25],[meds[i],meds[i]],'lime',linewidth=3)
 plt.xticks(range(len(meds)),names,rotation=90,fontsize=6)
@@ -441,7 +441,7 @@ for i in range(len(meds)):
     plt.plot([i,i],[p5[i],mins[i]],'red',linewidth=1)
     plt.plot([i,i],[p95[i],maxs[i]],'red',linewidth=1)
     plt.plot([i,i],[p5[i],p25[i]],'orange',linewidth=3)
-    plt.plot([i,i],[p25[i],p75[i]],'k',linewidth=5)
+    plt.plot([i,i],[p25[i],p75[i]],'k',linewidth=6)
     plt.plot([i,i],[p75[i],p95[i]],'orange',linewidth=3)
     plt.plot([i-.25,i+.25],[meds[i],meds[i]],'lime',linewidth=3)
 plt.xticks(range(len(meds)),names,rotation=90,fontsize=6)
