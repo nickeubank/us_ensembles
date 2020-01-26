@@ -420,8 +420,8 @@ for state_fips in fips_list:
         p25.append(np.percentile(adlocs,25))
         p75.append(np.percentile(adlocs,75))
         p95.append(np.percentile(adlocs,95))
-        mins.append(min(adlocs))
-        maxs.append(max(adlocs))
+        mins.append(np.min(adlocs))
+        maxs.append(np.max(adlocs))
 
 
 newdir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/"
@@ -429,20 +429,20 @@ newdir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/"
 plt.figure()
 
 for i in range(len(meds)):
-    plt.plot([i,i],[p5[i],p25[i]],'orange',linewidth=2)
+    plt.plot([i,i],[p5[i],p25[i]],'orange',linewidth=3)
     plt.plot([i,i],[p25[i],p75[i]],'k',linewidth=5)
-    plt.plot([i,i],[p75[i],p95[i]],'orange',linewidth=2)
+    plt.plot([i,i],[p75[i],p95[i]],'orange',linewidth=3)
     plt.plot([i-.25,i+.25],[meds[i],meds[i]],'lime',linewidth=3)
 plt.xticks(range(len(meds)),names,rotation=90,fontsize=6)
 plt.savefig(newdir+"compare_dislocations.png")
 plt.close()
 
 for i in range(len(meds)):
-    plt.plot([i,i],[p5[i],mins[i]],'red',linewidth=2)
-    plt.plot([i,i],[p95[i],maxs[i]],'red',linewidth=2)
-    plt.plot([i,i],[p5[i],p25[i]],'orange',linewidth=2)
+    plt.plot([i,i],[p5[i],mins[i]],'red',linewidth=1)
+    plt.plot([i,i],[p95[i],maxs[i]],'red',linewidth=1)
+    plt.plot([i,i],[p5[i],p25[i]],'orange',linewidth=3)
     plt.plot([i,i],[p25[i],p75[i]],'k',linewidth=5)
-    plt.plot([i,i],[p75[i],p95[i]],'orange',linewidth=2)
+    plt.plot([i,i],[p75[i],p95[i]],'orange',linewidth=3)
     plt.plot([i-.25,i+.25],[meds[i],meds[i]],'lime',linewidth=3)
 plt.xticks(range(len(meds)),names,rotation=90,fontsize=6)
 plt.savefig(newdir+"compare_dislocations_mm.png")
