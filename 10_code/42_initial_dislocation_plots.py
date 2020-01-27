@@ -216,7 +216,7 @@ for state_fips in fips_list:
   
         plt.figure()
         sns.distplot(mms, bins=1000, color='gray',label = 'All Plans')     
-        sns.distplot(umms, bins=1000, color='green',label = 'Small Dislocation')   
+        sns.distplot(umms, bins=1000, color='orange',label = 'Large Dislocation')   
         plt.legend()
         plt.savefig(newdir+"mms_comparisonul1.png")
 
@@ -232,7 +232,7 @@ for state_fips in fips_list:
   
         plt.figure()
         sns.distplot(pbs, bins=1000, color='gray',label = 'All Plans')     
-        sns.distplot(upbs, bins=1000, color='green',label = 'Small Dislocation')   
+        sns.distplot(upbs, bins=1000, color='orange',label = 'Large Dislocation')   
         plt.legend()
         plt.savefig(newdir+"pbs_comparisonul1.png")
 
@@ -249,7 +249,7 @@ for state_fips in fips_list:
   
         plt.figure()
         sns.distplot(pgs, bins=1000, color='gray',label = 'All Plans')     
-        sns.distplot(upgs, bins=1000, color='green',label = 'Small Dislocation')   
+        sns.distplot(upgs, bins=1000, color='orange',label = 'Large Dislocation')   
         plt.legend()
         plt.savefig(newdir+"pgs_comparisonul1.png")
 
@@ -280,7 +280,7 @@ for state_fips in fips_list:
   
         plt.figure()
         sns.distplot(mms, bins=1000, color='gray',label = 'All Plans')     
-        sns.distplot(umms, bins=1000, color='green',label = 'Small Dislocation')   
+        sns.distplot(umms, bins=1000, color='orange',label = 'Large Dislocation')   
         plt.legend()
         plt.savefig(newdir+"mms_comparisonul5.png")
 
@@ -296,7 +296,7 @@ for state_fips in fips_list:
   
         plt.figure()
         sns.distplot(pbs, bins=1000, color='gray',label = 'All Plans')     
-        sns.distplot(upbs, bins=1000, color='green',label = 'Small Dislocation')   
+        sns.distplot(upbs, bins=1000, color='orange',label = 'Large Dislocation')   
         plt.legend()
         plt.savefig(newdir+"pbs_comparisonul5.png")
 
@@ -313,7 +313,7 @@ for state_fips in fips_list:
   
         plt.figure()
         sns.distplot(pgs, bins=1000, color='gray',label = 'All Plans')     
-        sns.distplot(upgs, bins=1000, color='green',label = 'Small Dislocation')   
+        sns.distplot(upgs, bins=1000, color='orange',label = 'Large Dislocation')   
         plt.legend()
         plt.savefig(newdir+"pgs_comparisonul5.png")
 
