@@ -16,20 +16,6 @@ import ast
 #from dislocation_chain_utility import * 
 
 
-#state_run = os.getenv('STATE_RUN')
-#state_index = int(state_run) // 3
-#run = int(state_run) % 3
-
-
-#f='../20_intermediate_files/sequential_to_fips.pickle'
-#state_fips = pickle.load(open(f, "rb" ))[state_index]
-
-
-#newdir = f"../20_intermediate_files/chain_ouputs/{state_fips}_run{run}/"
-#os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
-#with open(newdir + "init.txt", "w") as f:
-#    f.write("Created Folder")
-
 state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "06":"California","08":"Colorado","09":"Connecticut","10":"Delaware",
 "12":"Florida","13":"Georgia","66":"Guam","15":"Hawaii","19":"Iowa",
@@ -57,7 +43,7 @@ fips_list = [
         #'02',
         '04',
         '05',
-        #'06',
+        '06',
         '08',
         '09',
         #'10',
@@ -126,27 +112,20 @@ def join_and_evaluate_dislocation(state_fips):
     Rdlocs = []
     Ddlocs = []
     Ravgdlocs = []
-    Davgdlocs = []
-    #seats = []
-    #wseats = []
+    Davgdlocs = [] 
+    dists = []
+    dists_q = []
+    percs = []
 
 
     #Point initialization happens here
     #check for crs matching!
-    state_precincts = gpd.read_file(f"../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp")
+    state_precincts = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Precincts.shp")
     state_points = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_USHouse.shp") # THIS FILEANAME isn't quite right - need to check format values. 
     print("loaded precincts/points")
 
     print(state_precincts.crs)
     print(state_points.crs)
-    #state_points['geometry'] = state_points['geometry'].to_crs(state_precincts.crs)
-    state_precincts = state_precincts.to_crs(state_points.crs)
-
-    print(state_precincts.crs)
-    print(state_points.crs)
-    
-    state_precincts.to_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Precincts.shp")
-
 
     print("changed crs")
 
@@ -156,14 +135,13 @@ def join_and_evaluate_dislocation(state_fips):
     
     state_points['precinct'] = point_assign
 
-    #state_points['precinct'] = state_points['precinct'].map(state_precincts.index)
-    #Maybe unnecessary?
+    state_points.to_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Points.shp")
     
-    for run in ['1','2']:#['0','1','2']:
+    for run in ['0']:#['0','1','2']:
         
         datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/"
         
-        newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun2/"
+        newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun3/"
         
         os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
         with open(newdir + "init.txt", "w") as f:
@@ -206,7 +184,11 @@ def join_and_evaluate_dislocation(state_fips):
             Ddlocs.append([])
             Ravgdlocs.append([])
             Davgdlocs.append([])
-             #dict_list = json.loads(datadir + f'flips_{t}.json')
+            dists.append([])
+            dists_q.append([])
+            percs.append([])
+
+            #dict_list = json.loads(datadir + f'flips_{t}.json')
             with open(datadir+f'flips_{t}.json') as f:
                 dict_list = ast.literal_eval(f.read())
 
@@ -248,23 +230,28 @@ def join_and_evaluate_dislocation(state_fips):
     
                 state_points["dislocate"] = -(state_points["KnnShrDem"] - (state_points["current"].map(pdict) - 0.0369))
 
-                #dstate_points["abs_dislocate"] = np.abs(state_points["dislocate"])
+                state_points["abs_dislocate"] = state_points["dislocate"].abs()
 
-            
-                #district_averages = {x: pf.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts}   # for now just average over whole state
+                state_points["quadratic"] = state_points["dislocate"].pow(2)
+
                 
-                #seats[-1].append(new_partition[election_name].wins("Dem"))
+                percs.append(state_points['abs_dislocate'].quantile([.05* x for x in range(21)])
+                dists.append([state_points.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts])
+                dists_q.append([state_points.groupby('current')['quadratic'].mean()[x] for x in new_partition.parts])
+                #district_averages = [state_points.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts] 
+                #district_averages_q = [state_points.groupby('current')['quadratic'].mean()[x] for x in new_partition.parts] 
+
+                #{x: pf.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts}   # for now just average over whole state
+                
             
             
                 dlocs[-1].append(state_points["dislocate"].mean())
                 adlocs[-1].append((state_points["dislocate"].abs()).mean())
-                #if adlocs[-1][-1] < .05:
-                #    wseats[-1].append(new_partition[election_name].wins("Dem"))
 
-                #Rdlocs[-1].append(len(state_points[state_points["dislocate"]>0]))
-                #Ddlocs[-1].append(len(state_points[state_points["dislocate"]<0]))
-                #Ravgdlocs[-1].append(abs(state_points[state_points["dislocate"]>0].mean()))
-                #Davgdlocs[-1].append(abs(state_points[state_points["dislocate"]<0].mean()))
+                Rdlocs[-1].append(len(state_points[state_points["dislocate"]>0]))
+                Ddlocs[-1].append(len(state_points[state_points["dislocate"]<0]))
+                Ravgdlocs[-1].append(abs(state_points[state_points["dislocate"]>0].mean()))
+                Davgdlocs[-1].append(abs(state_points[state_points["dislocate"]<0].mean()))
 
                 
             #plt.figure()
@@ -285,7 +272,7 @@ def join_and_evaluate_dislocation(state_fips):
             with open(newdir + "adloc" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(adlocs)
-            """
+            
             with open(newdir + "Rdloc" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(Rdlocs)
@@ -301,6 +288,18 @@ def join_and_evaluate_dislocation(state_fips):
             with open(newdir + "Davgdloc" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(Davgdlocs)
+
+            with open(newdir + "dists" + str(t) + ".csv", "w") as tf1:
+                writer = csv.writer(tf1, lineterminator="\n")
+                writer.writerows(dists)
+
+            with open(newdir + "dists_q" + str(t) + ".csv", "w") as tf1:
+                writer = csv.writer(tf1, lineterminator="\n")
+                writer.writerows(dists_q)
+
+            with open(newdir + "percs" + str(t) + ".csv", "w") as tf1:
+                writer = csv.writer(tf1, lineterminator="\n")
+                writer.writerows(percs)
             
 
             plt.figure()
@@ -326,31 +325,15 @@ def join_and_evaluate_dislocation(state_fips):
             plt.close()
             
             
-            seats[-1] = np.array(seats[-1])
-            
-            adlocs = np.array(adlocs)
-            
-            bound = np.percentile(adlocs, 10)
-            
-            wseats = seats[-1][adlocs < bound]
-            
-            plt.figure()
-            sns.distplot(seats[-1], kde=False, bins = [x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)], color='gray',label = 'All Plans')
-            sns.distplot(wseats, kde=False, bins=[x for x in range(int(min(seats[-1]))-1,int(max(seats[-1]))+2)],color='green',label='Small Dislocation')
-            plt.legend()
-            plt.savefig(newdir+"seats_comparison.png")
-
-            plt.close()
-
-            """  
             dlocs = []
             adlocs = []
             Rdlocs = []
             Ddlocs = []
             Ravgdlocs = []
             Davgdlocs = []      
-            seats = []
-            wseats = []
+            dists = []
+            dists_q = []
+            percs = []
 
         return state_fips
         
