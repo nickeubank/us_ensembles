@@ -235,7 +235,7 @@ def join_and_evaluate_dislocation(state_fips):
                 state_points["quadratic"] = state_points["dislocate"].pow(2)
 
                 
-                percs.append(state_points['abs_dislocate'].quantile([.05* x for x in range(21)])
+                percs.append(state_points['abs_dislocate'].quantile([.05* x for x in range(21)]))
                 dists.append([state_points.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts])
                 dists_q.append([state_points.groupby('current')['quadratic'].mean()[x] for x in new_partition.parts])
                 #district_averages = [state_points.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts] 
