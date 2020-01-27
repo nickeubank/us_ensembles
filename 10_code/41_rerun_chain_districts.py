@@ -43,17 +43,17 @@ fips_list = [
         #'02',
         #'04',
         #'05',
-        #'06',
-        '08',
-        '09',
-        #'10',
-        #'11',
-        #'12',
-        '13',
-        '16',
-        '17',
-        '18',
-        '19',
+        ##'06',
+        #'08',
+        #'09',
+        ##'10',
+        ##'11',
+        ##'12',
+        #'13',
+        #'16',
+        #'17',
+        #'18',
+        #'19',
         '20',
         '21',
         '22',
@@ -130,10 +130,14 @@ def join_and_evaluate_dislocation(state_fips):
     print("changed crs")
 
     point_assign = assign(state_points, state_precincts)
+    
+    state_precincts = []
  
     print("Made Assignment")
     
     state_points['precinct'] = point_assign
+    
+    point_assign = []
 
     state_points.to_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Points.shp")
     
