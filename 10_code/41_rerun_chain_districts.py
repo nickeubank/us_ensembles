@@ -301,7 +301,7 @@ def join_and_evaluate_dislocation(state_fips):
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(percs)
             
-
+            """
             plt.figure()
             sns.distplot(adlocs[-1], kde=False, bins=1000)
             plt.savefig(newdir+"abs_disc.png")
@@ -323,7 +323,7 @@ def join_and_evaluate_dislocation(state_fips):
             plt.savefig(newdir+"number_party_disc.png")
 
             plt.close()
-            
+            """          
             
             dlocs = []
             adlocs = []
