@@ -245,13 +245,13 @@ def join_and_evaluate_dislocation(state_fips):
                 
             
             
-                dlocs[-1].append(state_points["dislocate"].mean())
-                adlocs[-1].append((state_points["dislocate"].abs()).mean())
+                #dlocs[-1].append(state_points["dislocate"].mean())
+                #adlocs[-1].append((state_points["dislocate"].abs()).mean())
 
-                Rdlocs[-1].append(len(state_points[state_points["dislocate"]>0]))
-                Ddlocs[-1].append(len(state_points[state_points["dislocate"]<0]))
-                Ravgdlocs[-1].append(abs(state_points[state_points["dislocate"]>0].mean()))
-                Davgdlocs[-1].append(abs(state_points[state_points["dislocate"]<0].mean()))
+                #Rdlocs[-1].append(len(state_points[state_points["dislocate"]>0]))
+                #Ddlocs[-1].append(len(state_points[state_points["dislocate"]<0]))
+                #Ravgdlocs[-1].append(abs(state_points[state_points["dislocate"]>0].mean()))
+                #Davgdlocs[-1].append(abs(state_points[state_points["dislocate"]<0].mean()))
 
                 
             #plt.figure()
@@ -264,7 +264,7 @@ def join_and_evaluate_dislocation(state_fips):
             
         
 
-
+            """
             with open(newdir + "dloc" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(dlocs)            
@@ -288,7 +288,7 @@ def join_and_evaluate_dislocation(state_fips):
             with open(newdir + "Davgdloc" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(Davgdlocs)
-
+            """
             with open(newdir + "dists" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(dists)
