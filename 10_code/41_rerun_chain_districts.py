@@ -39,21 +39,21 @@ election_columns = [["P2008_D",  "P2008_R"]]
 
 #1 thourgh 16 only wrote a single file. 
 fips_list = [
-        #'01',
-        #'02',
-        #'04',
-        #'05',
-        ##'06',
-        #'08',
-        #'09',
-        ##'10',
-        ##'11',
-        ##'12',
-        #'13',
-        #'16',
-        #'17',
-        #'18',
-        #'19',
+        '01',
+        '02',
+        '04',
+        '05',
+        #'06',
+        '08',
+        '09',
+        #'10',
+        #'11',
+        #'12',
+        '13',
+        '16',
+        '17',
+        '18',
+        '19',
         '20',
         '21',
         '22',
@@ -121,10 +121,18 @@ def join_and_evaluate_dislocation(state_fips):
 
     #Point initialization happens here
     #check for crs matching!
-    state_precincts = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Precincts.shp")
+    
+    
+    #state_precincts = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Precincts.shp")
+    
+    
+    state_precincts = gpd.read_file(f"../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp")#ONLY FOR CA!!!! use above for everywhere else. 
+    
+    
     state_points = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_USHouse.shp") # THIS FILEANAME isn't quite right - need to check format values. 
     print("loaded precincts/points")
-
+    
+    state_precincts = state_precincts.to_crs(state_points.crs)
     print(state_precincts.crs)
     print(state_points.crs)
 
@@ -132,6 +140,7 @@ def join_and_evaluate_dislocation(state_fips):
 
     point_assign = assign(state_points, state_precincts)
     
+    state_precincts.to_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Precincts.shp")
     state_precincts = []
  
     print("Made Assignment")
