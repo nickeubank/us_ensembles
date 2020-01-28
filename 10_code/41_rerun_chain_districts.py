@@ -90,6 +90,7 @@ fips_list = [
         #'56'
              ]
 
+fips_list = ['06']
 plan_name = "Enacted"
 
 election_name = election_names[0]
