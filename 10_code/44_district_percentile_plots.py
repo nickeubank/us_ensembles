@@ -157,6 +157,7 @@ for state_fips in fips_list:
             for s in range(step_size):
                 dists.append(np.sort(tempvotes[s,:]))
                 max_dist.append(max(tempvotes[s,:]))
+            
             tempvotes=np.loadtxt(datadir+"percs"+str(t)+".csv", delimiter=',')
             for s in range(step_size):
                 percs.append(tempvotes[s,:])
@@ -164,7 +165,7 @@ for state_fips in fips_list:
                 
                 
                 
-                
+        """        
         dists = np.array(dists)
         percs = np.array(percs)
         
@@ -188,10 +189,12 @@ for state_fips in fips_list:
         plt.ylabel("Average Absolute Dislocation")
         plt.savefig(newdir+"percentile_boxes.png")
         plt.close()        
+        """
+        print(f"finished {state_fips}")
         
 
 fig, ax = plt.subplots()
-draw_plot(np.array(all_states5), 0, "black", "None")
+draw_plot(np.transpose(np.array(all_states5)), 0, "black", "None")
 plt.xlabel("States by Fips")
 plt.ylabel("95th Percentile")
 plt.savefig(f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/95th_comparison.png")
