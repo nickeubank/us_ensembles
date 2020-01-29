@@ -110,7 +110,7 @@ def join_and_evaluate_dislocation(state_fips):
 
     dlocs = []
     dlocs_q = []
-    adlocs = []
+    new_adlocs = []
     Rdlocs = []
     Ddlocs = []
     Ravgdlocs = []
@@ -165,7 +165,7 @@ def join_and_evaluate_dislocation(state_fips):
         
         datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/"
         
-        newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun3/"
+        newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun4/"
         
         os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
         with open(newdir + "init.txt", "w") as f:
@@ -203,7 +203,7 @@ def join_and_evaluate_dislocation(state_fips):
         for t in ts:
             print(state_fips, t,run)
             dlocs.append([])
-            adlocs.append([])
+            new_adlocs.append([])
             Rdlocs.append([])
             Ddlocs.append([])
             Ravgdlocs.append([])
@@ -253,15 +253,17 @@ def join_and_evaluate_dislocation(state_fips):
                 pdict = {x:pvec[id_dict[x]] for x in new_partition.parts.keys()}
  
     
-                state_points["dislocate"] = -(state_points["KnnShrDem"] - (state_points["current"].map(pdict) - 0.0369))
+                state_points["dislocate"] = (state_points["KnnShrDem"] - (state_points["current"].map(pdict) - 0.0369)).abs()
 
                 #state_points["abs_dislocate"] = state_points["dislocate"].abs()
+                #state_points["dislocate"] = state_points["dislocate"].abs()
+                
 
                 state_points["quadratic"] = state_points["dislocate"].pow(2)
 
                 
                 #percs.append(state_points['abs_dislocate'].quantile([.05* x for x in range(21)]))
-                #dists.append([state_points.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts])
+                dists.append([state_points.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts])
                 
                 dlocs_q[-1].append(state_points['quadratic'].mean())
                 
@@ -275,7 +277,7 @@ def join_and_evaluate_dislocation(state_fips):
             
             
                 #dlocs[-1].append(state_points["dislocate"].mean())
-                #adlocs[-1].append((state_points["dislocate"].abs()).mean())
+                new_adlocs[-1].append(state_points["dislocate"].mean())
 
                 #Rdlocs[-1].append(len(state_points[state_points["dislocate"]>0]))
                 #Ddlocs[-1].append(len(state_points[state_points["dislocate"]<0]))
@@ -317,11 +319,14 @@ def join_and_evaluate_dislocation(state_fips):
             with open(newdir + "Davgdloc" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(Davgdlocs)
-            
+            """
+            with open(newdir + "new_adloc" + str(t) + ".csv", "w") as tf1:
+                writer = csv.writer(tf1, lineterminator="\n")
+                writer.writerows(new_adlocs)
             with open(newdir + "dists" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(dists)
-            """
+            
             with open(newdir + "dists_q" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(dists_q)
@@ -358,7 +363,7 @@ def join_and_evaluate_dislocation(state_fips):
             """          
             
             dlocs = []
-            adlocs = []
+            new_adlocs = []
             Rdlocs = []
             Ddlocs = []
             Ravgdlocs = []
