@@ -197,7 +197,7 @@ plt.close()
 dshvkha         
         
         
-        """    
+"""    
         step_size = 10000
             
         ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]    
@@ -647,7 +647,7 @@ plt.xticks(range(len(meds)),names,rotation=90,fontsize=6)
 plt.savefig(newdir+"compare_dislocations_mm_e.png")
 plt.close()
 """
-
+"""
 
 
 
