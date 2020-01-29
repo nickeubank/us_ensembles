@@ -120,7 +120,7 @@ mins = []
 maxs = []
 enacted = []
 for state_fips in fips_list:
-print(f"Starting {state_fips}")
+    print(f"Starting {state_fips}")
     
 ##
 # Analysis function to parallelize
