@@ -190,8 +190,8 @@ for state_fips in fips_list:
             
         #wseats = []
         
-        lbound = .01#np.percentile(dlocs, 1)
-        ubound = .05#np.percentile(dlocs, 99)
+        lbound = np.percentile(np.abs(dlocs), 1)#.01#np.percentile(dlocs, 1)
+        ubound = np.percentile(np.abs(dlocs), 99)#.05#np.percentile(dlocs, 99)
         
         #for i in range(max_steps):
         #    if
