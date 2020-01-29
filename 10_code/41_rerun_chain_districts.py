@@ -90,7 +90,7 @@ fips_list = [
         #'56'
              ]
 
-fips_list = ['06']
+#fips_list = ['06']
 plan_name = "Enacted"
 
 election_name = election_names[0]
@@ -109,6 +109,7 @@ from gerrychain.updaters import Tally, cut_edges
 def join_and_evaluate_dislocation(state_fips):
 
     dlocs = []
+    dlocs_q = []
     adlocs = []
     Rdlocs = []
     Ddlocs = []
@@ -200,6 +201,7 @@ def join_and_evaluate_dislocation(state_fips):
             Davgdlocs.append([])
             dists.append([])
             dists_q.append([])
+            dlocs_q.append([])
             percs.append([])
 
             #dict_list = json.loads(datadir + f'flips_{t}.json')
@@ -244,14 +246,18 @@ def join_and_evaluate_dislocation(state_fips):
     
                 state_points["dislocate"] = -(state_points["KnnShrDem"] - (state_points["current"].map(pdict) - 0.0369))
 
-                state_points["abs_dislocate"] = state_points["dislocate"].abs()
+                #state_points["abs_dislocate"] = state_points["dislocate"].abs()
 
                 state_points["quadratic"] = state_points["dislocate"].pow(2)
 
                 
-                percs.append(state_points['abs_dislocate'].quantile([.05* x for x in range(21)]))
-                dists.append([state_points.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts])
-                #dists_q.append([state_points.groupby('current')['quadratic'].mean()[x] for x in new_partition.parts])
+                #percs.append(state_points['abs_dislocate'].quantile([.05* x for x in range(21)]))
+                #dists.append([state_points.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts])
+                
+                dlocs_q.append(state_points['quadratic'].mean())
+                
+                dists_q.append([state_points.groupby('current')['quadratic'].mean()[x] for x in new_partition.parts])
+                
                 #district_averages = [state_points.groupby('current')['dislocate'].mean()[x] for x in new_partition.parts] 
                 #district_averages_q = [state_points.groupby('current')['quadratic'].mean()[x] for x in new_partition.parts] 
 
@@ -302,19 +308,22 @@ def join_and_evaluate_dislocation(state_fips):
             with open(newdir + "Davgdloc" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(Davgdlocs)
-            """
+            
             with open(newdir + "dists" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(dists)
-
+            """
             with open(newdir + "dists_q" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(dists_q)
 
-            with open(newdir + "percs" + str(t) + ".csv", "w") as tf1:
+            #with open(newdir + "percs" + str(t) + ".csv", "w") as tf1:
+            #    writer = csv.writer(tf1, lineterminator="\n")
+            #    writer.writerows(percs)
+                
+            with open(newdir + "dloc_q" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
-                writer.writerows(percs)
-            
+                writer.writerows(dlocs_q)
             """
             plt.figure()
             sns.distplot(adlocs[-1], kde=False, bins=1000)
@@ -347,6 +356,7 @@ def join_and_evaluate_dislocation(state_fips):
             Davgdlocs = []      
             dists = []
             dists_q = []
+            dlocs_q = []
             percs = []
 
         return state_fips
@@ -358,7 +368,7 @@ def join_and_evaluate_dislocation(state_fips):
         
 from joblib import Parallel, delayed
 
-n_jobs = 1
+n_jobs = 2
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(join_and_evaluate_dislocation)(fips) for fips in fips_list)
