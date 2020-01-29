@@ -18,7 +18,7 @@ import numpy as np
 def draw_plot(data, offset, edge_color, fill_color):
     pos = np.arange(data.shape[1])+1+offset
     #bp = ax.boxplot(data, positions= pos, widths=0.3, patch_artist=True, manage_xticks=False)
-    bp = ax.boxplot(data, positions= pos,widths=.15, whis=[1,99],showfliers=False, patch_artist=True, manage_xticks=False,zorder=4)
+    bp = ax.boxplot(data, positions= pos,widths=.15, whis=[1,99],showfliers=False, patch_artist=True, manage_ticks=False,zorder=4)
     for element in ['boxes', 'whiskers', 'medians', 'caps']:
         plt.setp(bp[element], color=edge_color,zorder=4)
     for patch in bp['boxes']:
@@ -106,99 +106,101 @@ all_states5 = []
 
 names = []
 
-for state_fips in fips_list:
+for percent in range(21):
+    for state_fips in fips_list:
 
 
-    
-##
-# Analysis function to parallelize
-##
-    
-    
-    #dists = []
-    #percs = []
-    #seats = []
-    #wseats = []
+        
+    ##
+    # Analysis function to parallelize
+    ##
+        
+        
+        #dists = []
+        #percs = []
+        #seats = []
+        #wseats = []
 
-    
-    for run in ['0']:#['0','1','2']:
-        names.append(state_names[state_fips])
-        all_states5.append([])
-        max_steps = 100000
+        
+        for run in ['0']:#['0','1','2']:
+            names.append(state_names[state_fips])
+            all_states5.append([])
+            max_steps = 100000
 
-        burn = 0
-        sub_sample = 1
-        step_size = 10000
-    
-        #if int(state_fips)<17:
-        #    step_size = 100000
+            burn = 0
+            sub_sample = 1
+            step_size = 10000
+        
+            #if int(state_fips)<17:
+            #    step_size = 100000
+                
+            ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]
             
-        ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]
-        
-        datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun3/"
-        
-        
-        datadir2 = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/" 
-        
-        newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun3/"
-        
-        os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
-        with open(newdir + "init.txt", "w") as f:
-            f.write("Created Folder")
+            datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun3/"
             
             
-        dists = []
-        max_dist = []
-        percs = []
-
-        
-        for t in ts:
-            tempvotes=np.loadtxt(datadir+"dists"+str(t)+".csv", delimiter=',')
-            for s in range(step_size):
-                dists.append(np.sort(tempvotes[s,:]))
-                max_dist.append(max(tempvotes[s,:]))
+            datadir2 = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/" 
             
-            tempvotes=np.loadtxt(datadir+"percs"+str(t)+".csv", delimiter=',')
-            for s in range(step_size):
-                percs.append(tempvotes[s,:])
-                all_states5[-1].append(tempvotes[s,-2])
+            newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun3/"
+            
+            os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
+            with open(newdir + "init.txt", "w") as f:
+                f.write("Created Folder")
                 
                 
-                
-        """        
-        dists = np.array(dists)
-        percs = np.array(percs)
-        
-        plt.figure()
-        sns.distplot(max_dist,kde=False, bins=1000)
-        plt.xlabel("Worst District Dislocation")
-        plt.ylabel("Frequency")
-        plt.savefig(newdir+"worst_district.png")
-        plt.close()
-        
-        fig, ax = plt.subplots()
-        draw_plot(dists, 0, "black", "None")
-        plt.xlabel("Sorted District Index")
-        plt.ylabel("Average Dislocation")
-        plt.savefig(newdir+"district_boxes.png")
-        plt.close()
-        
-        fig, ax = plt.subplots()
-        draw_plot(percs, 0, "black", "None")
-        plt.xlabel("Percentile Values")
-        plt.ylabel("Average Absolute Dislocation")
-        plt.savefig(newdir+"percentile_boxes.png")
-        plt.close()        
-        """
-        print(f"finished {state_fips}")
-        
+            dists = []
+            max_dist = []
+            percs = []
 
-fig, ax = plt.subplots()
-draw_plot(np.transpose(np.array(all_states5)), 0, "black", "None")
-plt.xlabel("States by Fips")
-plt.ylabel("95th Percentile")
-plt.savefig(f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/95th_comparison.png")
-plt.close()    
+            
+            for t in ts:
+                tempvotes=np.loadtxt(datadir+"dists"+str(t)+".csv", delimiter=',')
+                for s in range(step_size):
+                    dists.append(np.sort(tempvotes[s,:]))
+                    max_dist.append(max(tempvotes[s,:]))
+                
+                tempvotes=np.loadtxt(datadir+"percs"+str(t)+".csv", delimiter=',')
+                for s in range(step_size):
+                    percs.append(tempvotes[s,:])
+                    all_states5[-1].append(tempvotes[s,percent])
+                    
+                    
+                    
+            """        
+            dists = np.array(dists)
+            percs = np.array(percs)
+            
+            plt.figure()
+            sns.distplot(max_dist,kde=False, bins=1000)
+            plt.xlabel("Worst District Dislocation")
+            plt.ylabel("Frequency")
+            plt.savefig(newdir+"worst_district.png")
+            plt.close()
+            
+            fig, ax = plt.subplots()
+            draw_plot(dists, 0, "black", "None")
+            plt.xlabel("Sorted District Index")
+            plt.ylabel("Average Dislocation")
+            plt.savefig(newdir+"district_boxes.png")
+            plt.close()
+            
+            fig, ax = plt.subplots()
+            draw_plot(percs, 0, "black", "None")
+            plt.xlabel("Percentile Values")
+            plt.ylabel("Average Absolute Dislocation")
+            plt.savefig(newdir+"percentile_boxes.png")
+            plt.close()        
+            """
+            print(f"finished {state_fips}")
+            
+
+    fig, ax = plt.subplots()
+    draw_plot(np.transpose(np.array(all_states5)), 0, "black", "None")
+    plt.xlabel("States by Fips")
+    plt.ylabel(f"{5*percent}th Percentile Absolute Dislocation")
+    plt.xticks(range(len(names)),names,rotation=90,fontsize=6)
+    plt.savefig(f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/{5*percent}th_comparison.png")
+    plt.close()    
 
 dshvkha         
         
