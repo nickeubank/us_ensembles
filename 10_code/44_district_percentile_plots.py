@@ -13,23 +13,16 @@ import random
 from maup import assign
 import numpy as np
 import ast
-#from dislocation_chain_utility import * 
+import numpy as np
 
-
-#state_run = os.getenv('STATE_RUN')
-#state_index = int(state_run) // 3
-#run = int(state_run) % 3
-
-
-#f='../20_intermediate_files/sequential_to_fips.pickle'
-#state_fips = pickle.load(open(f, "rb" ))[state_index]
-
-
-#newdir = f"../20_intermediate_files/chain_ouputs/{state_fips}_run{run}/"
-#os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
-#with open(newdir + "init.txt", "w") as f:
-#    f.write("Created Folder")
-
+def draw_plot(data, offset, edge_color, fill_color):
+    pos = np.arange(data.shape[1])+1+offset
+    #bp = ax.boxplot(data, positions= pos, widths=0.3, patch_artist=True, manage_xticks=False)
+    bp = ax.boxplot(data, positions= pos,widths=.15, whis=[1,99],showfliers=False, patch_artist=True, manage_xticks=False,zorder=4)
+    for element in ['boxes', 'whiskers', 'medians', 'caps']:
+        plt.setp(bp[element], color=edge_color,zorder=4)
+    for patch in bp['boxes']:
+        patch.set(facecolor=fill_color,zorder=4)
 
 
 num_elections = 1
@@ -39,7 +32,7 @@ election_names = ["PRES2008"]
 election_columns = [["P2008_D",  "P2008_R"]]
 
 
-#1 thourgh 16 only wrote a single file. 
+
 
 fips_list = [
         '01',
@@ -109,15 +102,8 @@ plan_name = "Enacted"
 
 election_name = election_names[0]
 
-meds = []
-p95 = []
-p75 = []
-p25 = []
-p5 = []
-names = []
-mins = []
-maxs = []
-enacted = []
+all_states5 = []
+
 for state_fips in fips_list:
 
     
@@ -126,18 +112,15 @@ for state_fips in fips_list:
 ##
     
     
-    dlocs = []
-    adlocs = []
-    Rdlocs = []
-    Ddlocs = []
-    Ravgdlocs = []
-    Davgdlocs = []
+    #dists = []
+    #percs = []
     #seats = []
     #wseats = []
 
     
     for run in ['0']:#['0','1','2']:
         names.append(state_names[state_fips])
+        all_states5.append([])
         max_steps = 100000
 
         burn = 0
@@ -161,17 +144,60 @@ for state_fips in fips_list:
             f.write("Created Folder")
             
             
-        adlocs = np.zeros([1, max_steps])
-        seats = np.zeros([1, max_steps])
-        mms = np.zeros([1, max_steps]) 
-        pbs = np.zeros([1, max_steps]) 
-        pgs = np.zeros([1, max_steps]) 
+        dists = []
+        max_dist = []
+        percs = []
+
         
         for t in ts:
-            temp = np.loadtxt(datadir + "adloc" + str(t) + ".csv", delimiter=",")
-            #print(t,len(temp))
-            adlocs[0, t - step_size  : t] = temp
-            
+            tempvotes=np.loadtxt(datadir+"dists"+str(t)+".csv", delimiter=',')
+            for s in range(step_size):
+                dists.append(np.sort(tempvotes[s,:]))
+                max_dist.append(max(tempvotes[s,:]))
+            tempvotes=np.loadtxt(datadir+"percs"+str(t)+".csv", delimiter=',')
+            for s in range(step_size):
+                percs.append(tempvotes[s,:])
+                all_states5[-1].append(tempvotes[s,-2])
+                
+                
+                
+                
+        dists = np.array(dists)
+        percs = np.array(percs)
+        
+        plt.figure()
+        sns.distplot(max_dist,kde=False, bins=1000)
+        plt.xlabel("Worst District Dislocation")
+        plt.ylabel("Frequency")
+        plt.savefig(newdir+"worst_district.png")
+        plt.close()
+        
+        plt.figure()
+        draw_plot(dists, 0, "black", "None")
+        plt.xlabel("Sorted District Index")
+        plt.ylabel("Average Absolute Dislocation")
+        plt.savefig(newdir+"district_boxes.png")
+        plt.close()
+        
+        plt.figure()
+        draw_plot(percs, 0, "black", "None")
+        plt.xlabel("Percentile Values")
+        plt.ylabel("Average Absolute Dislocation")
+        plt.savefig(newdir+"district_boxes.png")
+        plt.close()        
+        
+
+plt.figure()
+draw_plot(np.array(all_states5, 0, "black", "None")
+plt.xlabel("States by Fips")
+plt.ylabel("95th Percentile")
+plt.savefig(f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/95th_comparison.png")
+plt.close()    
+
+dshvkha         
+        
+        
+        """    
         step_size = 10000
             
         ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]    
@@ -185,7 +211,7 @@ for state_fips in fips_list:
             pbs[:, t - step_size : t] = temp.T
             temp = np.loadtxt(datadir2 + "pgs" + str(t) + ".csv", delimiter=",")
             pgs[:, t - step_size : t] = temp.T
-            
+        """    
         #wseats = []
         
         lbound = np.percentile(adlocs, 1)
