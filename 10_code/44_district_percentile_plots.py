@@ -45,7 +45,8 @@ fips_list = [
         #'10',
         #'12',
         '13',
-        '16',
+        '16']#,
+'''
         '17',
         '18',
         '19',
@@ -84,7 +85,7 @@ fips_list = [
         '55',
         #'56'
              ]
-
+'''
 state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "06":"California","08":"Colorado","09":"Connecticut","10":"Delaware",
 "12":"Florida","13":"Georgia","66":"Guam","15":"Hawaii","19":"Iowa",
@@ -139,12 +140,12 @@ for state_fips in fips_list:
             
         ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]
         
-        datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun3/"
+        datadir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun4/"
         
         
         datadir2 = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/" 
         
-        newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun3/"
+        newdir = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/rerun4/"
         
         os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
         with open(newdir + "init.txt", "w") as f:
