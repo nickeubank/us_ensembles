@@ -102,11 +102,13 @@ plan_name = "Enacted"
 
 election_name = election_names[0]
 
-all_states5 = []
-
-names = []
 
 for percent in range(21):
+
+    all_states5 = []
+
+    names = []
+
     for state_fips in fips_list:
 
 
@@ -123,6 +125,7 @@ for percent in range(21):
 
         
         for run in ['0']:#['0','1','2']:
+            #if percent = 0:
             names.append(state_names[state_fips])
             all_states5.append([])
             max_steps = 100000
@@ -198,7 +201,7 @@ for percent in range(21):
     draw_plot(np.transpose(np.array(all_states5)), 0, "black", "None")
     plt.xlabel("States by Fips")
     plt.ylabel(f"{5*percent}th Percentile Absolute Dislocation")
-    plt.xticks(range(len(names)),names,rotation=90,fontsize=6)
+    plt.xticks(range(1,len(names)+1),names,rotation=90,fontsize=6)
     plt.savefig(f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/{5*percent}th_comparison.png")
     plt.close()    
 
