@@ -188,7 +188,7 @@ for state_fips in fips_list:
         
 
 plt.figure()
-draw_plot(np.array(all_states5, 0, "black", "None")
+draw_plot(np.array(all_states5), 0, "black", "None")
 plt.xlabel("States by Fips")
 plt.ylabel("95th Percentile")
 plt.savefig(f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/95th_comparison.png")
