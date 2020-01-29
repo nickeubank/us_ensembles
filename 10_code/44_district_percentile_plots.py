@@ -178,7 +178,7 @@ for state_fips in fips_list:
         fig, ax = plt.subplots()
         draw_plot(dists, 0, "black", "None")
         plt.xlabel("Sorted District Index")
-        plt.ylabel("Average Absolute Dislocation")
+        plt.ylabel("Average Dislocation")
         plt.savefig(newdir+"district_boxes.png")
         plt.close()
         
@@ -186,7 +186,7 @@ for state_fips in fips_list:
         draw_plot(percs, 0, "black", "None")
         plt.xlabel("Percentile Values")
         plt.ylabel("Average Absolute Dislocation")
-        plt.savefig(newdir+"district_boxes.png")
+        plt.savefig(newdir+"percentile_boxes.png")
         plt.close()        
         
 
