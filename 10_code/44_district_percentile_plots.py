@@ -163,9 +163,9 @@ for state_fips in fips_list:
                 dists.append(np.sort(tempvotes[s,:]))
                 max_dist.append(max(tempvotes[s,:]))
             
-            tempvotes=np.loadtxt(datadir+"percs"+str(t)+".csv", delimiter=',')
-            for s in range(step_size):
-                percs.append(tempvotes[s,:])
+            #tempvotes=np.loadtxt(datadir+"percs"+str(t)+".csv", delimiter=',')
+            #for s in range(step_size):
+            #    percs.append(tempvotes[s,:])
                 #all_states5[-1].append(tempvotes[s,percent])
                 
                 
@@ -188,12 +188,12 @@ for state_fips in fips_list:
         plt.savefig(newdir+"district_boxes.png")
         plt.close()
         
-        fig, ax = plt.subplots()
-        draw_plot(percs, 0, "black", "None")
-        plt.xlabel("Percentile Values")
-        plt.ylabel("Average Absolute Dislocation")
-        plt.savefig(newdir+"percentile_boxes.png")
-        plt.close()        
+        #fig, ax = plt.subplots()
+        #draw_plot(percs, 0, "black", "None")
+        #plt.xlabel("Percentile Values")
+        #plt.ylabel("Average Absolute Dislocation")
+        #plt.savefig(newdir+"percentile_boxes.png")
+        #plt.close()        
         # """
         print(f"finished {state_fips}")
         
