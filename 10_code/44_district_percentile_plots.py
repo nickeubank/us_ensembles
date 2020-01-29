@@ -106,6 +106,7 @@ all_states5 = []
 
 for state_fips in fips_list:
 
+names = []
     
 ##
 # Analysis function to parallelize
