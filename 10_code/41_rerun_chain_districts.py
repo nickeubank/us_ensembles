@@ -39,8 +39,8 @@ election_columns = [["P2008_D",  "P2008_R"]]
 
 #1 thourgh 16 only wrote a single file. 
 fips_list = [
-        '01',
-        '02',
+        #'01',
+        #'02',
         '04',
         '05',
         #'06',
