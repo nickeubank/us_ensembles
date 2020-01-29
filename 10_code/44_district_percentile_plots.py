@@ -104,9 +104,11 @@ election_name = election_names[0]
 
 all_states5 = []
 
+names = []
+
 for state_fips in fips_list:
 
-names = []
+
     
 ##
 # Analysis function to parallelize
