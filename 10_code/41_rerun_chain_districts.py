@@ -127,11 +127,14 @@ def join_and_evaluate_dislocation(state_fips):
     #state_precincts = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Precincts.shp")
     
     
-    state_precincts = gpd.read_file(f"../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp")#ONLY FOR CA!!!! use above for everywhere else. 
+    #state_precincts = gpd.read_file(f"../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp")#ONLY FOR CA!!!! use above for everywhere else. 
     
     
-    state_points = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_USHouse.shp") # THIS FILEANAME isn't quite right - need to check format values. 
-    print("loaded precincts/points")
+    #state_points = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_USHouse.shp") # THIS FILEANAME isn't quite right - need to check format values. 
+
+    
+    
+    """
     
     state_precincts = state_precincts.to_crs(state_points.crs)
     print(state_precincts.crs)
@@ -143,14 +146,20 @@ def join_and_evaluate_dislocation(state_fips):
     
     state_precincts.to_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Precincts.shp")
     state_precincts = []
- 
+    
     print("Made Assignment")
     
     state_points['precinct'] = point_assign
     
     point_assign = []
+    
 
     state_points.to_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Points.shp")
+    """
+    
+    state_points = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Points.shp")
+    
+    print("loaded precincts/points")
     
     for run in ['0']:#['0','1','2']:
         
