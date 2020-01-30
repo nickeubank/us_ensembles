@@ -39,7 +39,7 @@ election_columns = [["P2008_D",  "P2008_R"]]
 
 #1 thourgh 16 only wrote a single file. 
 fips_list = [
-        #'01',
+        '01',
         #'02',
         '04',
         '05',
@@ -90,7 +90,7 @@ fips_list = [
         #'56'
              ]
 
-#fips_list = ['06']
+fips_list = ['06']
 plan_name = "Enacted"
 
 election_name = election_names[0]
