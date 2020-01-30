@@ -236,14 +236,14 @@ for state_fips in fips_list:
         #for i in range(max_steps):
         #    if
         
-        lwseats = seats[(adlocs<lbound)]    
-        uwseats = seats[(adlocs>ubound)]  
-        lmms = mms[(adlocs<lbound)]   
-        umms = mms[(adlocs>ubound)] 
-        lpbs = pbs[(adlocs<lbound)]   
-        upbs = pbs[(adlocs>ubound)] 
-        lpgs = pgs[(adlocs<lbound)]   
-        upgs = pgs[(adlocs>ubound)] 
+        lwseats = seats[(max_dist<lbound)]    
+        uwseats = seats[(max_dist>ubound)]  
+        lmms = mms[(max_dist<lbound)]   
+        umms = mms[(max_dist>ubound)] 
+        lpbs = pbs[(max_dist<lbound)]   
+        upbs = pbs[(max_dist>ubound)] 
+        lpgs = pgs[(max_dist<lbound)]   
+        upgs = pgs[(max_dist>ubound)] 
 
         
         plt.figure()
@@ -296,18 +296,18 @@ for state_fips in fips_list:
         plt.close()
 
 
-        lbound = np.percentile(adlocs, 5)
-        ubound = np.percentile(adlocs, 95)
+        lbound = np.percentile(max_dist, 5)
+        ubound = np.percentile(max_dist, 95)
         
         #for i in range(max_steps):
         #    if
         
-        lmms = mms[(adlocs<lbound)]   
-        umms = mms[(adlocs>ubound)] 
-        lpbs = pbs[(adlocs<lbound)]   
-        upbs = pbs[(adlocs>ubound)] 
-        lpgs = pgs[(adlocs<lbound)]   
-        upgs = pgs[(adlocs>ubound)] 
+        lmms = mms[(max_dist<lbound)]   
+        umms = mms[(max_dist>ubound)] 
+        lpbs = pbs[(max_dist<lbound)]   
+        upbs = pbs[(max_dist>ubound)] 
+        lpgs = pgs[(max_dist<lbound)]   
+        upgs = pgs[(max_dist>ubound)] 
 
         
         plt.figure()
