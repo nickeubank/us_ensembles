@@ -159,7 +159,7 @@ for state_fips in fips_list:
         for t in ts:
             tempvotes=np.loadtxt(datadir+"dists_q"+str(t)+".csv", delimiter=',')
             for s in range(step_size):
-                #dists.append(np.sort(tempvotes[s,:]))
+                dists.append(np.sort(tempvotes[s,:]))
                 #max_dist.append(max(tempvotes[s,:]))
                 max_dist[0,counting_index] = max(tempvotes[s,:])
                 counting_index += 1           
