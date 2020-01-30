@@ -154,14 +154,15 @@ for state_fips in fips_list:
         dists = []
         max_dist = []
         percs = []
-
-        
+        max_dist = np.zeros([1, max_steps]) 
+        counting_index = 0
         for t in ts:
             tempvotes=np.loadtxt(datadir+"dists"+str(t)+".csv", delimiter=',')
             for s in range(step_size):
                 #dists.append(np.sort(tempvotes[s,:]))
-                max_dist.append(max(tempvotes[s,:]))
-            
+                #max_dist.append(max(tempvotes[s,:]))
+                max_dist[counting_index] = max(tempvotes[s,:]))
+                counting_index += 1           
             #tempvotes=np.loadtxt(datadir+"percs"+str(t)+".csv", delimiter=',')
             #for s in range(step_size):
             #    percs.append(tempvotes[s,:])
@@ -217,6 +218,8 @@ for state_fips in fips_list:
         mms = np.zeros([1, max_steps]) 
         pbs = np.zeros([1, max_steps]) 
         pgs = np.zeros([1, max_steps]) 
+        
+
          
         for t in ts:       
             temp = np.loadtxt(datadir2 + "hmss" + str(t) + ".csv", delimiter=",")
@@ -235,7 +238,8 @@ for state_fips in fips_list:
         
         #for i in range(max_steps):
         #    if
-        
+        print(seats.shape)
+        print(np.array(max_dist).shape)
         lwseats = seats[(max_dist<lbound)]    
         uwseats = seats[(max_dist>ubound)]  
         lmms = mms[(max_dist<lbound)]   
