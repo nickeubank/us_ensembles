@@ -45,8 +45,7 @@ fips_list = [
         #'10',
         #'12',
         '13',
-        '16']#,
-'''
+        '16',
         '17',
         '18',
         '19',
@@ -85,7 +84,7 @@ fips_list = [
         '55',
         #'56'
              ]
-'''
+
 state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "06":"California","08":"Colorado","09":"Connecticut","10":"Delaware",
 "12":"Florida","13":"Georgia","66":"Guam","15":"Hawaii","19":"Iowa",
