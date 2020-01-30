@@ -167,8 +167,7 @@ for state_fips in fips_list:
             #for s in range(step_size):
             #    percs.append(tempvotes[s,:])
                 #all_states5[-1].append(tempvotes[s,percent])
-                
-                
+                                
                 
         #"""        
         dists = np.array(dists)
