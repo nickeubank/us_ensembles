@@ -89,7 +89,15 @@ def join_and_evaluate_dislocation(state_fips):
 
     print(state_precincts.crs)
     print(state_points.crs)
-    state_points['geometry'] = state_points.to_crs(state_precincts.crs)
+    
+    
+    #state_points['geometry'] = state_points.to_crs(state_precincts.crs)#this one didn't work!
+    
+    state_points = state_points.to_crs({'init': 'epsg:3085'})
+
+    
+    
+    
     #state_precincts = state_precincts.to_crs(state_points.crs)
 
     print(state_precincts.crs)
