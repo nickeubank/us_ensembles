@@ -157,7 +157,7 @@ for state_fips in fips_list:
         max_dist = np.zeros([1, max_steps]) 
         counting_index = 0
         for t in ts:
-            tempvotes=np.loadtxt(datadir+"dists"+str(t)+".csv", delimiter=',')
+            tempvotes=np.loadtxt(datadir+"dists_q"+str(t)+".csv", delimiter=',')
             for s in range(step_size):
                 #dists.append(np.sort(tempvotes[s,:]))
                 #max_dist.append(max(tempvotes[s,:]))
@@ -170,7 +170,7 @@ for state_fips in fips_list:
                 
                 
                 
-        """        
+        #"""        
         dists = np.array(dists)
         percs = np.array(percs)
         
@@ -178,23 +178,23 @@ for state_fips in fips_list:
         sns.distplot(max_dist,kde=False, bins=1000)
         plt.xlabel("Worst District Dislocation")
         plt.ylabel("Frequency")
-        plt.savefig(newdir+"worst_district_worstdistrict.png")
+        plt.savefig(newdir+"worst_district_worstdistrict_quad.png")
         plt.close()
         
         fig, ax = plt.subplots()
         draw_plot(dists, 0, "black", "None")
         plt.xlabel("Sorted District Index")
         plt.ylabel("Average Dislocation")
-        plt.savefig(newdir+"district_boxes_worstdistrict.png")
+        plt.savefig(newdir+"district_boxes_worstdistrict_quad.png")
         plt.close()
         
         #fig, ax = plt.subplots()
         #draw_plot(percs, 0, "black", "None")
         #plt.xlabel("Percentile Values")
         #plt.ylabel("Average Absolute Dislocation")
-        #plt.savefig(newdir+"percentile_boxes_worstdistrict.png")
+        #plt.savefig(newdir+"percentile_boxes_worstdistrict_quad.png")
         #plt.close()        
-        """
+        #"""
         print(f"middle of {state_fips}")
         
 
@@ -203,7 +203,7 @@ for state_fips in fips_list:
 #plt.xlabel("States by Fips")
 #plt.ylabel(f"{5*percent}th Percentile Absolute Dislocation")
 #plt.xticks(range(1,len(names)+1),names,rotation=90,fontsize=6)
-#plt.savefig(f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/{5*percent}th_comparison_worstdistrict.png")
+#plt.savefig(f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/{5*percent}th_comparison_worstdistrict_quad.png")
 #plt.close()    
 
 #dshvkha         
@@ -254,7 +254,7 @@ for state_fips in fips_list:
         sns.distplot(mms,kde=False, bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(lmms,kde=False, bins=100, color='green',label = 'Small Dislocation')   
         plt.legend()
-        plt.savefig(newdir+"mms_comparison2l1_worstdistrict.png")
+        plt.savefig(newdir+"mms_comparison2l1_worstdistrict_quad.png")
 
         plt.close()
   
@@ -262,7 +262,7 @@ for state_fips in fips_list:
         sns.distplot(mms,kde=False, bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(umms,kde=False, bins=100, color='orange',label = 'Large Dislocation')   
         plt.legend()
-        plt.savefig(newdir+"mms_comparisonul1_worstdistrict.png")
+        plt.savefig(newdir+"mms_comparisonul1_worstdistrict_quad.png")
 
         plt.close()
 
@@ -270,7 +270,7 @@ for state_fips in fips_list:
         sns.distplot(pbs,kde=False, bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(lpbs,kde=False, bins=100, color='green',label = 'Small Dislocation')   
         plt.legend()
-        plt.savefig(newdir+"pbs_comparison2l1_worstdistrict.png")
+        plt.savefig(newdir+"pbs_comparison2l1_worstdistrict_quad.png")
 
         plt.close()
   
@@ -278,7 +278,7 @@ for state_fips in fips_list:
         sns.distplot(pbs,kde=False, bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(upbs,kde=False, bins=100, color='orange',label = 'Large Dislocation')   
         plt.legend()
-        plt.savefig(newdir+"pbs_comparisonul1_worstdistrict.png")
+        plt.savefig(newdir+"pbs_comparisonul1_worstdistrict_quad.png")
 
         plt.close()
 
@@ -287,7 +287,7 @@ for state_fips in fips_list:
         sns.distplot(pgs,kde=False, bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(lpgs, kde=False,bins=100, color='green',label = 'Small Dislocation')   
         plt.legend()
-        plt.savefig(newdir+"pgs_comparison2l1_worstdistrict.png")
+        plt.savefig(newdir+"pgs_comparison2l1_worstdistrict_quad.png")
 
         plt.close()
   
@@ -295,7 +295,7 @@ for state_fips in fips_list:
         sns.distplot(pgs,kde=False, bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(upgs,kde=False, bins=100, color='orange',label = 'Large Dislocation')   
         plt.legend()
-        plt.savefig(newdir+"pgs_comparisonul1_worstdistrict.png")
+        plt.savefig(newdir+"pgs_comparisonul1_worstdistrict_quad.png")
 
         plt.close()
 
@@ -318,7 +318,7 @@ for state_fips in fips_list:
         sns.distplot(mms, kde=False,bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(lmms,kde=False, bins=100, color='green',label = 'Small Dislocation')   
         plt.legend()
-        plt.savefig(newdir+"mms_comparison2l5_worstdistrict.png")
+        plt.savefig(newdir+"mms_comparison2l5_worstdistrict_quad.png")
 
         plt.close()
   
@@ -326,7 +326,7 @@ for state_fips in fips_list:
         sns.distplot(mms,kde=False, bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(umms, kde=False,bins=100, color='orange',label = 'Large Dislocation')   
         plt.legend()
-        plt.savefig(newdir+"mms_comparisonul5_worstdistrict.png")
+        plt.savefig(newdir+"mms_comparisonul5_worstdistrict_quad.png")
 
         plt.close()
 
@@ -334,7 +334,7 @@ for state_fips in fips_list:
         sns.distplot(pbs,kde=False, bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(lpbs,kde=False, bins=100, color='green',label = 'Small Dislocation')   
         plt.legend()
-        plt.savefig(newdir+"pbs_comparison2l5_worstdistrict.png")
+        plt.savefig(newdir+"pbs_comparison2l5_worstdistrict_quad.png")
 
         plt.close()
   
@@ -342,7 +342,7 @@ for state_fips in fips_list:
         sns.distplot(pbs, kde=False,bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(upbs,kde=False, bins=100, color='orange',label = 'Large Dislocation')   
         plt.legend()
-        plt.savefig(newdir+"pbs_comparisonul5_worstdistrict.png")
+        plt.savefig(newdir+"pbs_comparisonul5_worstdistrict_quad.png")
 
         plt.close()
 
@@ -351,7 +351,7 @@ for state_fips in fips_list:
         sns.distplot(pgs, kde=False,bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(lpgs,kde=False, bins=100, color='green',label = 'Small Dislocation')   
         plt.legend()
-        plt.savefig(newdir+"pgs_comparison2l5_worstdistrict.png")
+        plt.savefig(newdir+"pgs_comparison2l5_worstdistrict_quad.png")
 
         plt.close()
   
@@ -359,7 +359,7 @@ for state_fips in fips_list:
         sns.distplot(pgs,kde=False, bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(upgs,kde=False, bins=100, color='orange',label = 'Large Dislocation')   
         plt.legend()
-        plt.savefig(newdir+"pgs_comparisonul5_worstdistrict.png")
+        plt.savefig(newdir+"pgs_comparisonul5_worstdistrict_quad.png")
 
         plt.close()
 
@@ -369,7 +369,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans')
         sns.distplot(lwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation')
         plt.legend()
-        plt.savefig(newdir+"seats_comparison2l1_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison2l1_worstdistrict_quad.png")
 
         plt.close()
             
@@ -378,7 +378,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans')
         sns.distplot(uwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange',label='Large Dislocation')
         plt.legend()
-        plt.savefig(newdir+"seats_comparison2u1_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison2u1_worstdistrict_quad.png")
 
         plt.close()
             
@@ -386,7 +386,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans')
         sns.distplot(lwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green', norm_hist = True, label='Small Dislocation')
         plt.legend()
-        plt.savefig(newdir+"seats_comparison3l1_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison3l1_worstdistrict_quad.png")
 
         plt.close()
             
@@ -395,7 +395,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans')
         sns.distplot(uwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange', norm_hist = True, label='Large Dislocation')
         plt.legend()
-        plt.savefig(newdir+"seats_comparison3u1_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison3u1_worstdistrict_quad.png")
 
         plt.close()
             
@@ -404,7 +404,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x-.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans',hist_kws={"rwidth":.3,"align":"left"})
         sns.distplot([x+1 for x in lwseats], kde=False, bins=[x+.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation',hist_kws={"rwidth":.3,"align":"left"})
         plt.legend()
-        plt.savefig(newdir+"seats_comparison2l1ss_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison2l1ss_worstdistrict_quad.png")
 
         plt.close()
             
@@ -413,7 +413,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x-.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans',hist_kws={"rwidth":.3,"align":"left"})
         sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange',label='Large Dislocation',hist_kws={"rwidth":.3,"align":"left"})
         plt.legend()
-        plt.savefig(newdir+"seats_comparison2u1ss_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison2u1ss_worstdistrict_quad.png")
 
         plt.close()
             
@@ -421,7 +421,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x-.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans',hist_kws={"rwidth":.3,"align":"left"})
         sns.distplot([x+1 for x in lwseats], kde=False, bins=[x+.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green', norm_hist = True, label='Small Dislocation',hist_kws={"rwidth":.3,"align":"left"})
         plt.legend()
-        plt.savefig(newdir+"seats_comparison3l1ss_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison3l1ss_worstdistrict_quad.png")
 
         plt.close()
             
@@ -430,7 +430,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x-.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans',hist_kws={"rwidth":.3,"align":"left"})
         sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange', norm_hist = True, label='Large Dislocation',hist_kws={"rwidth":.3,"align":"left"})
         plt.legend()
-        plt.savefig(newdir+"seats_comparison3u1ss_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison3u1ss_worstdistrict_quad.png")
 
         plt.close()
             
@@ -440,7 +440,7 @@ for state_fips in fips_list:
         sns.distplot(lwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation')
         sns.distplot(uwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange',label='Large Dislocation')
         plt.legend()
-        plt.savefig(newdir+"seats_comparison2all1_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison2all1_worstdistrict_quad.png")
 
         plt.close()
         
@@ -450,7 +450,7 @@ for state_fips in fips_list:
         sns.distplot(lwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation', norm_hist = True)
         sns.distplot(uwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange',label='Large Dislocation', norm_hist = True)
         plt.legend()
-        plt.savefig(newdir+"seats_comparison3all1_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison3all1_worstdistrict_quad.png")
 
         plt.close()
             
@@ -459,7 +459,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans',hist_kws={"rwidth":.25,"align":"left"})
         sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange',label='Large Dislocation',hist_kws={"rwidth":.25,"align":"left"})
         plt.legend()
-        plt.savefig(newdir+"seats_comparison2all1sss_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison2all1sss_worstdistrict_quad.png")
 
         plt.close()
             
@@ -468,7 +468,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans',hist_kws={"rwidth":.25,"align":"left"})
         sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange', norm_hist = True, label='Large Dislocation',hist_kws={"rwidth":.25,"align":"left"})
         plt.legend()
-        plt.savefig(newdir+"seats_comparison3all1sss_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison3all1sss_worstdistrict_quad.png")
 
         plt.close()
 
@@ -487,7 +487,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans')
         sns.distplot(lwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation')
         plt.legend()
-        plt.savefig(newdir+"seats_comparison2l5_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison2l5_worstdistrict_quad.png")
 
         plt.close()
             
@@ -496,7 +496,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans')
         sns.distplot(uwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange',label='Large Dislocation')
         plt.legend()
-        plt.savefig(newdir+"seats_comparison2u5_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison2u5_worstdistrict_quad.png")
 
         plt.close()
             
@@ -504,7 +504,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans')
         sns.distplot(lwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green', norm_hist = True, label='Small Dislocation')
         plt.legend()
-        plt.savefig(newdir+"seats_comparison3l5_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison3l5_worstdistrict_quad.png")
 
         plt.close()
             
@@ -513,7 +513,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans')
         sns.distplot(uwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange', norm_hist = True, label='Large Dislocation')
         plt.legend()
-        plt.savefig(newdir+"seats_comparison3u5_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison3u5_worstdistrict_quad.png")
 
         plt.close()
             
@@ -522,7 +522,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x-.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans',hist_kws={"rwidth":.3,"align":"left"})
         sns.distplot([x+1 for x in lwseats], kde=False, bins=[x+.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation',hist_kws={"rwidth":.3,"align":"left"})
         plt.legend()
-        plt.savefig(newdir+"seats_comparison2l5ss_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison2l5ss_worstdistrict_quad.png")
 
         plt.close()
             
@@ -531,7 +531,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x-.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans',hist_kws={"rwidth":.3,"align":"left"})
         sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange',label='Large Dislocation',hist_kws={"rwidth":.3,"align":"left"})
         plt.legend()
-        plt.savefig(newdir+"seats_comparison2u5ss_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison2u5ss_worstdistrict_quad.png")
 
         plt.close()
             
@@ -539,7 +539,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x-.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans',hist_kws={"rwidth":.3,"align":"left"})
         sns.distplot([x+1 for x in lwseats], kde=False, bins=[x+.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green', norm_hist = True, label='Small Dislocation',hist_kws={"rwidth":.3,"align":"left"})
         plt.legend()
-        plt.savefig(newdir+"seats_comparison3l5ss_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison3l5ss_worstdistrict_quad.png")
 
         plt.close()
             
@@ -548,7 +548,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x-.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans',hist_kws={"rwidth":.3,"align":"left"})
         sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange', norm_hist = True, label='Large Dislocation',hist_kws={"rwidth":.3,"align":"left"})
         plt.legend()
-        plt.savefig(newdir+"seats_comparison3u5ss_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison3u5ss_worstdistrict_quad.png")
 
         plt.close()
             
@@ -558,7 +558,7 @@ for state_fips in fips_list:
         sns.distplot(lwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation')
         sns.distplot(uwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange',label='Large Dislocation')
         plt.legend()
-        plt.savefig(newdir+"seats_comparison2all5_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison2all5_worstdistrict_quad.png")
 
         plt.close()
         
@@ -568,7 +568,7 @@ for state_fips in fips_list:
         sns.distplot(lwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green',label='Small Dislocation', norm_hist = True)
         sns.distplot(uwseats, kde=False, bins=[x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange',label='Large Dislocation', norm_hist = True)
         plt.legend()
-        plt.savefig(newdir+"seats_comparison3all5_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison3all5_worstdistrict_quad.png")
 
         plt.close()
             
@@ -577,7 +577,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray',label = 'All Plans',hist_kws={"rwidth":.25,"align":"left"})
         sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange',label='Large Dislocation',hist_kws={"rwidth":.25,"align":"left"})
         plt.legend()
-        plt.savefig(newdir+"seats_comparison2all5sss_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison2all5sss_worstdistrict_quad.png")
 
         plt.close()
             
@@ -586,7 +586,7 @@ for state_fips in fips_list:
         sns.distplot(seats, kde=False, bins = [x for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans',hist_kws={"rwidth":.25,"align":"left"})
         sns.distplot([x+1 for x in uwseats], kde=False, bins=[x+.25 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='orange', norm_hist = True, label='Large Dislocation',hist_kws={"rwidth":.25,"align":"left"})
         plt.legend()
-        plt.savefig(newdir+"seats_comparison3all5sss_worstdistrict.png")
+        plt.savefig(newdir+"seats_comparison3all5sss_worstdistrict_quad.png")
 
         plt.close()
         
@@ -620,7 +620,7 @@ for i in range(len(meds)):
     plt.plot([i-.25,i+.25],[meds[i],meds[i]],'lime',linewidth=3)
 plt.legend()
 plt.xticks(range(len(meds)),names,rotation=90,fontsize=6)
-plt.savefig(newdir+"compare_dislocations_worstdistrict.png")
+plt.savefig(newdir+"compare_dislocations_worstdistrict_quad.png")
 plt.close()
 
 plt.figure()
@@ -633,7 +633,7 @@ for i in range(len(meds)):
     plt.plot([i-.25,i+.25],[meds[i],meds[i]],'lime',linewidth=3)
 plt.legend()
 plt.xticks(range(len(meds)),names,rotation=90,fontsize=6)
-plt.savefig(newdir+"compare_dislocations_mm_worstdistrict.png")
+plt.savefig(newdir+"compare_dislocations_mm_worstdistrict_quad.png")
 plt.close()
 
 plt.figure()
@@ -648,7 +648,7 @@ plt.plot([],[],'g',label='Median')
 plt.plot([],[],'o',color='magenta',label='Enacted')
 plt.legend()
 plt.xticks(range(len(meds)),names,rotation=90,fontsize=6)
-plt.savefig(newdir+"compare_dislocations_e_worstdistrict.png")
+plt.savefig(newdir+"compare_dislocations_e_worstdistrict_quad.png")
 plt.close()
 
 plt.figure()
@@ -664,7 +664,7 @@ plt.plot([],[],'g',label='Median')
 plt.plot([],[],'o',color='magenta',label='Enacted')
 plt.legend()
 plt.xticks(range(len(meds)),names,rotation=90,fontsize=6)
-plt.savefig(newdir+"compare_dislocations_mm_e_worstdistrict.png")
+plt.savefig(newdir+"compare_dislocations_mm_e_worstdistrict_quad.png")
 plt.close()
 """
 #'''
