@@ -213,6 +213,11 @@ for state_fips in fips_list:
             
         ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]    
          
+        seats = np.zeros([1, max_steps])
+        mms = np.zeros([1, max_steps]) 
+        pbs = np.zeros([1, max_steps]) 
+        pgs = np.zeros([1, max_steps]) 
+         
         for t in ts:       
             temp = np.loadtxt(datadir2 + "hmss" + str(t) + ".csv", delimiter=",")
             seats[:, t - step_size : t] = temp.T
