@@ -233,7 +233,7 @@ pos = {node:(float(graph.nodes[node]['C_X']), float(graph.nodes[node]['C_Y'])) f
 
 
 samples = 10
-reset_steps = 20
+reset_steps = 100
 opt_steps = 10000
 
 intermediate_dlocs = []
