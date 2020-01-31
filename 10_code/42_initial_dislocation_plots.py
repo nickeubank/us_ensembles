@@ -174,6 +174,15 @@ for state_fips in fips_list:
             #print(t,len(temp))
             adlocs[0, t - step_size  : t] = temp
             
+            
+            
+        plt.figure()
+        sns.distplot(adlocs[-1], kde=False, bins=1000)
+        plt.savefig(newdir+"abs_disc2.png")
+
+        plt.close()
+        
+        '''    
         step_size = 10000
             
         ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]    
@@ -624,6 +633,7 @@ plt.savefig(newdir+"compare_dislocations_mm_e.png")
 plt.close()
 """
 
+        '''
 
 
 
