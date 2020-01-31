@@ -107,6 +107,12 @@ def join_and_evaluate_dislocation(state_fips):
 
 
     print("changed crs")
+    
+    state_points.to_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Points_TEMPORARY.shp")
+    
+    print("saved temporary")
+    
+    state_points = state_points[~state_points.index.duplicated()]
 
     point_assign = assign(state_points, state_precincts)
     
