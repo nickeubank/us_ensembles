@@ -39,21 +39,21 @@ election_columns = [["P2008_D",  "P2008_R"]]
 
 #1 thourgh 16 only wrote a single file. 
 fips_list = [
-        '01',
+        #'01',
         #'02',
-        '04',
-        '05',
+        #'04',
+        #'05',
         #'06',
-        '08',
-        '09',
+        #'08',
+        #'09',
         #'10',
         #'11',
         #'12',
-        '13',
-        '16',
-        '17',
-        '18',
-        '19',
+        #'13',
+        #'16',
+        #'17',
+        #'18',
+        #'19',
         '20',
         '21',
         '22',
@@ -370,7 +370,7 @@ def join_and_evaluate_dislocation(state_fips):
         
 from joblib import Parallel, delayed
 
-n_jobs = 2
+n_jobs = 1
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(join_and_evaluate_dislocation)(fips) for fips in fips_list)
