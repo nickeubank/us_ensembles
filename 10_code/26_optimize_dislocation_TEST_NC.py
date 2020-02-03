@@ -48,8 +48,8 @@ state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 #f='../20_intermediate_files/sequential_to_fips.pickle'
 #state_fips = pickle.load(open(f, "rb" ))[state_index]
 
-state_fips='37'
-run='0'
+state_fips='48'
+run='1'
 
 newdir = f"../20_intermediate_files/optimization_ouputs/{state_fips}_run{run}/"
 os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
@@ -233,7 +233,7 @@ pos = {node:(float(graph.nodes[node]['C_X']), float(graph.nodes[node]['C_Y'])) f
 
 
 samples = 10
-reset_steps = 100
+reset_steps = 200
 opt_steps = 10000
 
 intermediate_dlocs = []
@@ -294,7 +294,7 @@ for sample in range(samples):
         proposal=propose_random_flip, #tree_proposal, #
         constraints=[
             constraints.within_percent_of_ideal_population(initial_partition, .02),
-             single_flip_contiguous#no_more_discontiguous
+             single_flip_contiguous, compactness_bound#no_more_discontiguous
         ],
         accept=dloc_accept, 
         initial_state=reset_partition,
@@ -362,6 +362,10 @@ with open(newdir + "pgs" + str(step_index) + ".csv", "w") as tf1:
 with open(newdir + "hmss" + str(step_index) + ".csv", "w") as tf1:
     writer = csv.writer(tf1, lineterminator="\n")
     writer.writerows(hmss)
+    
+with open(newdir + "adloc" + str(step_index) + ".csv", "w") as tf1:
+    writer = csv.writer(tf1, lineterminator="\n")
+    writer.writerows(adlocs)
 
 with open(newdir + "pop" + str(step_index) + ".csv", "w") as tf1:
     writer = csv.writer(tf1, lineterminator="\n")
