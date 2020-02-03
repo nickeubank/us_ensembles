@@ -49,9 +49,9 @@ state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 #state_fips = pickle.load(open(f, "rb" ))[state_index]
 
 state_fips='48'
-run='1'
+run='2'
 
-newdir = f"../20_intermediate_files/optimization_ouputs/{state_fips}_run{run}/"
+newdir = f"../../../Dropbox/dislocation_intermediate_files/105_Optimized_Outputs/{state_fips}_run{run}/"
 os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
 with open(newdir + "init.txt", "w") as f:
     f.write("Created Folder")
@@ -260,6 +260,8 @@ assignments = []
 
 step_index = samples
 
+part = initial_partition
+
 for sample in range(samples):
     print(f"Constructing sample: {sample}")
 
@@ -270,7 +272,7 @@ for sample in range(samples):
         #compactness_bound, #single_flip_contiguous#no_more_discontiguous
     ],
     accept=accept.always_accept,
-    initial_state=initial_partition,
+    initial_state=part,
     total_steps=reset_steps
         )
         
