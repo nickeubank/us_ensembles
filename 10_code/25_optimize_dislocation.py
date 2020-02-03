@@ -465,5 +465,5 @@ from joblib import Parallel, delayed
 n_jobs = 5
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
-           (delayed(optimize_dislocatoin)(fips) for fips in fips_list)
+           (delayed(optimize_dislocation)(fips) for fips in fips_list)
           )    
