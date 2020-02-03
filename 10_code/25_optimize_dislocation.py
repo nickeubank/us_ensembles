@@ -118,24 +118,6 @@ fips_list = [
 from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
 
-# Ignore errors: some overlap issues, but shouldn't matter for adjacency
-graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed{run}.json')
-
-election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
-
-initial_partition = Partition(
-    graph,
-    assignment='New_Seed',
-    updaters={
-        "cut_edges": cut_edges,
-        "population": Tally("population", alias="population"),
-        "PRES2008": election
-    }
-)
-
-if len(initial_partition.parts) == 1:
-    import sys
-    sys.exit()
 
 ############
 # Uniform Tree Utilities
@@ -261,6 +243,12 @@ def optimize_dislocation(state_fips):
     ############
     # Run a simulation!
     ############
+    
+    graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed{run}.json')
+
+    election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
+
+
 
     initial_partition = Partition(
         graph,
