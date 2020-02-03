@@ -211,6 +211,13 @@ def my_uu_bipartition_tree_random(
 
 
 def optimize_dislocation(state_fips):
+    print(f"Starting State {state_fips}")
+
+    newdir = f"../../../Dropbox/dislocation_intermediate_files/105_Optimized_Outputs/{state_fips}_run{run}/"
+    os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
+    with open(newdir + "init.txt", "w") as f:
+        f.write("Created Folder")
+
 
     state_points = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Points.shp")
 
