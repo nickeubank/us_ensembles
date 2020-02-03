@@ -384,9 +384,7 @@ for elect in range(num_elections):
     ) as tf1:
         writer = csv.writer(tf1, lineterminator="\n")
         writer.writerows(votes[elect])  
-
-
-        
+     
 
         
     
