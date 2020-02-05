@@ -83,51 +83,70 @@ state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "48":"Texas","49":"Utah","51":"Virginia","50":"Vermont","53":"Washington",
 "55":"Wisconsin","54":"West_Virginia","56":"Wyoming"}
 
-newdir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/"
+e_dir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/"
+newdir = f"../../../Dropbox/dislocation_intermediate_files/Outlier_Comparisons/"
 os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
 with open(newdir + "init.txt", "w") as f:
     f.write("Created Folder")
 
 
-mms = []
-egs = []
-pbs = []
-pgs = []
+e_mms = []
+e_egs = []
+e_pbs = []
+e_pgs = []
 
-seats = []
+e_seats = []
 
-adlocs = []
+e_adlocs = []
 
-vshare = []
+e_vshare = []
 
 names = []
+
+
+m_mms = []
+m_egs = []
+m_pbs = []
+m_pgs = []
+
+m_seats = []
+
+m_adlocs = []
+
+m_vshare = []
+
+
 
 #indices = ['44']
 
 for state_fips in indices:
     names.append(state_names[state_fips])
-    with open(newdir + "Start_Values_"+str(state_fips)+".txt", "r") as f:
+    with open(e_dir + "Start_Values_"+str(state_fips)+".txt", "r") as f:
         for index, line in enumerate(f):
             if index == 5:
                 temp = line[29:-3].split(',')
-                vshare.append(np.mean([float(x) for x in temp]))
+                e_vshare.append(np.mean([float(x) for x in temp]))
             if index == 7:
                 #print(line[21:])
-                mms.append(float(line[21:]))
+                e_mms.append(float(line[21:]))
             if index == 9: 
-                egs.append(float(line[24:]))
+                e_egs.append(float(line[24:]))
             if index == 11:
-                pbs.append(float(line[23:]))
+                e_pbs.append(float(line[23:]))
                 #print(line[23:])
             if index == 13:
-                pgs.append(float(line[23:]))
+                e_pgs.append(float(line[23:]))
             if index == 15:
-                seats.append(float(line[24:])/len(temp))
+                e_seats.append(float(line[24:])/len(temp))
                 #print(seats)
                 #print(line[24:])
             if index == 19:
                 #print(line[38:])
-                adlocs.append(float(line[38:]))
+                e_adlocs.append(float(line[38:]))
+                
+                
+                
+                
 
 
 with open(newdir + "enacted_indices.csv", "w") as tf1:
