@@ -146,17 +146,31 @@ for state_fips in fips_list:
     print(f"Starting {state_fips}")
     names.append(state_names[state_fips])    
 
+    with open(e_dir + "Start_Values_"+str(state_fips)+".txt", "r") as f:
+        for index, line in enumerate(f):
+            if index == 5:
+                temp = line[29:-3].split(',')
+                e_vshare.append(np.mean([float(x) for x in temp]))
+            if index == 7:
+                #print(line[21:])
+                e_mms.append(float(line[21:]))
+            if index == 9: 
+                e_egs.append(float(line[24:]))
+            if index == 11:
+                e_pbs.append(float(line[23:]))
+                #print(line[23:])
+            if index == 13:
+                e_pgs.append(float(line[23:]))
+            if index == 15:
+                e_seats.append(float(line[24:])/len(temp))
+                #print(seats)
+                #print(line[24:])
+            if index == 19:
+                #print(line[38:])
+                e_adlocs.append(float(line[38:]))    
     
     
-    
-    dlocs = []
-    qdlocs = []
-    Rdlocs = []
-    Ddlocs = []
-    Ravgdlocs = []
-    Davgdlocs = []
-    #seats = []
-    #wseats = []
+
 
     
     for run in ['0']:#['0','1','2']:
@@ -183,6 +197,7 @@ for state_fips in fips_list:
         mms = np.zeros([1, max_steps]) 
         pbs = np.zeros([1, max_steps]) 
         pgs = np.zeros([1, max_steps]) 
+        egs = np.zeros([1, max_steps])
         
         for t in ts:
             temp = np.loadtxt(datadir + "new_adloc" + str(t) + ".csv", delimiter=",")
@@ -202,11 +217,92 @@ for state_fips in fips_list:
             pbs[:, t - step_size : t] = temp.T
             temp = np.loadtxt(datadir2 + "pgs" + str(t) + ".csv", delimiter=",")
             pgs[:, t - step_size : t] = temp.T
+            temp = np.loadtxt(datadir2 + "egs" + str(t) + ".csv", delimiter=",")
+            egs[:, t - step_size : t] = temp.T
             
+        
+        m_mms.append(np.mean(mms))
+        m_egs.append(np.mean(egs))
+        m_pbs.append(np.mean(pbs))
+        m_pgs.append(np.mean(pgs))
+
+        m_seats.append(np.mean(seats))
+
+        m_adlocs.append(np.mean(adlocs))
+        
+        
+            
+plt.figure()   
+plt.plot([abs(m_seats[x]-e_seats[x]) for x in range(len(fips_list))],e_adlocs, 'ob')
+plt.xlabel('Distance to Ensemble Seat Share Mean')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'adlocVSseat_distance.png')
+plt.close()
+    
+plt.figure()   
+plt.plot([abs(m_mms[x]-e_mms[x]) for x in range(len(fips_list))],e_adlocs, 'ob')
+plt.xlabel('Distance to Ensemble Mean-Median Mean')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'adlocVSmm_distance.png')
+plt.close()
+
+plt.figure()   
+plt.plot([abs(m_egs[x]-e_egs[x]) for x in range(len(fips_list))],e_adlocs, 'ob')
+plt.xlabel('Distance to Ensemble Efficiency Gap Mean')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'adlocVSeg_distance.png')
+plt.close()
 
 
+plt.figure()   
+plt.plot([abs(m_pgs[x]-e_pgs[x]) for x in range(len(fips_list))],e_adlocs, 'ob')
+plt.xlabel('Distance to Ensemble Partisan Gini Mean')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'adlocVSpg_distance.png')
+plt.close()
+
+plt.figure()   
+plt.plot([abs(m_pbs[x]-e_pbs[x]) for x in range(len(fips_list))],e_adlocs, 'ob')
+plt.xlabel('Distance to Ensemble Partisan Bias Mean')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'adlocVSpb_distance.png')
+plt.close()
 
 
+            
+plt.figure()   
+plt.plot([abs(m_seats[x]-e_seats[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
+plt.xlabel('Distance to Ensemble Seat Share Mean')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'dist_adlocVSseat_distance.png')
+plt.close()
+    
+plt.figure()   
+plt.plot([abs(m_mms[x]-e_mms[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
+plt.xlabel('Distance to Ensemble Mean-Median Mean')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'dist_adlocVSmm_distance.png')
+plt.close()
+
+plt.figure()   
+plt.plot([abs(m_egs[x]-e_egs[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
+plt.xlabel('Distance to Ensemble Efficiency Gap Mean')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'dist_adlocVSeg_distance.png')
+plt.close()
 
 
+plt.figure()   
+plt.plot([abs(m_pgs[x]-e_pgs[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
+plt.xlabel('Distance to Ensemble Partisan Gini Mean')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'dist_adlocVSpg_distance.png')
+plt.close()
+
+plt.figure()   
+plt.plot([abs(m_pbs[x]-e_pbs[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
+plt.xlabel('Distance to Ensemble Partisan Bias Mean')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'dist_adlocVSpb_distance.png')
+plt.close()
 
