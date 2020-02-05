@@ -402,6 +402,7 @@ plt.plot([abs(m_pbs[x]-e_pbs[x]) for x in range(len(fips_list))],[abs(m_adlocs[x
 plt.xlabel('Distance to Ensemble Partisan Bias Mean')
 plt.ylabel('Distance to Ensemble Absolute Average Dislocation Mean')
 for i, txt in enumerate(names):
-    ax.annotate(txt, (([abs(m_pbs[x]-e_pbs[x]) for x in range(len(fips_list))][i],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))][i]))
+    ax.annotate(txt, ([abs(m_pbs[x]-e_pbs[x]) for x in range(len(fips_list))][i],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))][i]))
+    
 plt.savefig(newdir+ 'N_dist_adlocVSpb_distance.png')
 plt.close()
