@@ -273,21 +273,21 @@ plt.close()
 plt.figure()   
 plt.plot([abs(m_seats[x]-e_seats[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
 plt.xlabel('Distance to Ensemble Seat Share Mean')
-plt.ylabel('Absolute Average Dislocation')
+plt.ylabel('Distance to Ensemble Absolute Average Dislocation Mean')
 plt.savefig(newdir+ 'dist_adlocVSseat_distance.png')
 plt.close()
     
 plt.figure()   
 plt.plot([abs(m_mms[x]-e_mms[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
 plt.xlabel('Distance to Ensemble Mean-Median Mean')
-plt.ylabel('Absolute Average Dislocation')
+plt.ylabel('Distance to Ensemble Absolute Average Dislocation Mean')
 plt.savefig(newdir+ 'dist_adlocVSmm_distance.png')
 plt.close()
 
 plt.figure()   
 plt.plot([abs(m_egs[x]-e_egs[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
 plt.xlabel('Distance to Ensemble Efficiency Gap Mean')
-plt.ylabel('Absolute Average Dislocation')
+plt.ylabel('Distance to Ensemble Absolute Average Dislocation Mean')
 plt.savefig(newdir+ 'dist_adlocVSeg_distance.png')
 plt.close()
 
@@ -295,14 +295,113 @@ plt.close()
 plt.figure()   
 plt.plot([abs(m_pgs[x]-e_pgs[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
 plt.xlabel('Distance to Ensemble Partisan Gini Mean')
-plt.ylabel('Absolute Average Dislocation')
+plt.ylabel('Distance to Ensemble Absolute Average Dislocation Mean')
 plt.savefig(newdir+ 'dist_adlocVSpg_distance.png')
 plt.close()
 
 plt.figure()   
 plt.plot([abs(m_pbs[x]-e_pbs[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
 plt.xlabel('Distance to Ensemble Partisan Bias Mean')
-plt.ylabel('Absolute Average Dislocation')
+plt.ylabel('Distance to Ensemble Absolute Average Dislocation Mean')
 plt.savefig(newdir+ 'dist_adlocVSpb_distance.png')
 plt.close()
 
+
+
+
+
+
+
+fig, ax = plt.subplots()
+plt.plot([abs(m_seats[x]-e_seats[x]) for x in range(len(fips_list))],e_adlocs, 'ob')
+plt.xlabel('Distance to Ensemble Seat Share Mean')
+plt.ylabel('Absolute Average Dislocation')
+for i, txt in enumerate(names):
+    ax.annotate(txt, ([abs(m_seats[x]-e_seats[x]) for x in range(len(fips_list))][i],e_adlocs[i]))
+plt.savefig(newdir+ 'N_adlocVSseat_distance.png')
+plt.close()
+    
+fig, ax = plt.subplots()   
+plt.plot([abs(m_mms[x]-e_mms[x]) for x in range(len(fips_list))],e_adlocs, 'ob')
+plt.xlabel('Distance to Ensemble Mean-Median Mean')
+plt.ylabel('Absolute Average Dislocation')
+for i, txt in enumerate(names):
+    ax.annotate(txt, ([abs(m_mms[x]-e_mms[x]) for x in range(len(fips_list))][i],e_adlocs[i]))
+plt.savefig(newdir+ 'N_adlocVSmm_distance.png')
+plt.close()
+
+fig, ax = plt.subplots()   
+plt.plot([abs(m_egs[x]-e_egs[x]) for x in range(len(fips_list))],e_adlocs, 'ob')
+plt.xlabel('Distance to Ensemble Efficiency Gap Mean')
+plt.ylabel('Absolute Average Dislocation')
+for i, txt in enumerate(names):
+    ax.annotate(txt, ([abs(m_egs[x]-e_egs[x]) for x in range(len(fips_list))][i],e_adlocs[i]))
+plt.savefig(newdir+ 'N_adlocVSeg_distance.png')
+plt.close()
+
+
+fig, ax = plt.subplots()   
+plt.plot([abs(m_pgs[x]-e_pgs[x]) for x in range(len(fips_list))],e_adlocs, 'ob')
+plt.xlabel('Distance to Ensemble Partisan Gini Mean')
+plt.ylabel('Absolute Average Dislocation')
+for i, txt in enumerate(names):
+    ax.annotate(txt, ([abs(m_pgs[x]-e_pgs[x]) for x in range(len(fips_list))][i],e_adlocs[i]))
+plt.savefig(newdir+ 'N_adlocVSpg_distance.png')
+plt.close()
+
+fig, ax = plt.subplots()   
+plt.plot([abs(m_pbs[x]-e_pbs[x]) for x in range(len(fips_list))],e_adlocs, 'ob')
+plt.xlabel('Distance to Ensemble Partisan Bias Mean')
+plt.ylabel('Absolute Average Dislocation')
+for i, txt in enumerate(names):
+    ax.annotate(txt, ([abs(m_pbs[x]-e_pbs[x]) for x in range(len(fips_list))][i],e_adlocs[i]))
+plt.savefig(newdir+ 'N_adlocVSpb_distance.png')
+plt.close()
+
+
+            
+fig, ax = plt.subplots()   
+plt.plot([abs(m_seats[x]-e_seats[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
+plt.xlabel('Distance to Ensemble Seat Share Mean')
+plt.ylabel('Distance to Ensemble Absolute Average Dislocation Mean')
+for i, txt in enumerate(names):
+    ax.annotate(txt, ([abs(m_seats[x]-e_seats[x]) for x in range(len(fips_list))][i],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))][i]))
+plt.savefig(newdir+ 'N_dist_adlocVSseat_distance.png')
+plt.close()
+    
+fig, ax = plt.subplots()   
+plt.plot([abs(m_mms[x]-e_mms[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
+plt.xlabel('Distance to Ensemble Mean-Median Mean')
+plt.ylabel('Distance to Ensemble Absolute Average Dislocation Mean')
+for i, txt in enumerate(names):
+    ax.annotate(txt, ([abs(m_mms[x]-e_mms[x]) for x in range(len(fips_list))][i],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))][i]))
+plt.savefig(newdir+ 'N_dist_adlocVSmm_distance.png')
+plt.close()
+
+fig, ax = plt.subplots()   
+plt.plot([abs(m_egs[x]-e_egs[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
+plt.xlabel('Distance to Ensemble Efficiency Gap Mean')
+plt.ylabel('Distance to Ensemble Absolute Average Dislocation Mean')
+for i, txt in enumerate(names):
+    ax.annotate(txt, ([abs(m_egs[x]-e_egs[x]) for x in range(len(fips_list))][i],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))][i]))
+plt.savefig(newdir+ 'N_dist_adlocVSeg_distance.png')
+plt.close()
+
+
+fig, ax = plt.subplots()   
+plt.plot([abs(m_pgs[x]-e_pgs[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
+plt.xlabel('Distance to Ensemble Partisan Gini Mean')
+plt.ylabel('Distance to Ensemble Absolute Average Dislocation Mean')
+for i, txt in enumerate(names):
+    ax.annotate(txt, ([abs(m_pgs[x]-e_pgs[x]) for x in range(len(fips_list))][i],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))][i]))
+plt.savefig(newdir+ 'N_dist_adlocVSpg_distance.png')
+plt.close()
+
+fig, ax = plt.subplots()   
+plt.plot([abs(m_pbs[x]-e_pbs[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
+plt.xlabel('Distance to Ensemble Partisan Bias Mean')
+plt.ylabel('Distance to Ensemble Absolute Average Dislocation Mean')
+for i, txt in enumerate(names):
+    ax.annotate(txt, (([abs(m_pbs[x]-e_pbs[x]) for x in range(len(fips_list))][i],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))][i]))
+plt.savefig(newdir+ 'N_dist_adlocVSpb_distance.png')
+plt.close()
