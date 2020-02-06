@@ -240,7 +240,7 @@ for state_fips in fips_list:
         o_mms[0,:] = np.loadtxt(o_datadir + "mms100.csv", delimiter=",") 
         o_pbs[0,:] = np.loadtxt(o_datadir + "pbs100.csv", delimiter=",")
         o_pgs[0,:] = np.loadtxt(o_datadir + "pgs100.csv", delimiter=",")
-        o_egs[0,:] = np.loadtxt(o_datadir + "ega100.csv", delimiter=",")    
+        o_egs[0,:] = np.loadtxt(o_datadir + "egs100.csv", delimiter=",")    
         
         plt.figure()
         sns.distplot(mms,kde=False, bins=1000, color='gray', norm_hist = True, label = 'All Plans')     
