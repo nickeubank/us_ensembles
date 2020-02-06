@@ -189,7 +189,7 @@ def pp_accept(partition):
     bound = 1
 
     if partition.parent is not None:
-        if np.mean(list(partition.parent["pp"].values())) < np.mean(list(partition["pp"].values())):
+        if np.mean(list(partition.parent["pp"].values())) > np.mean(list(partition["pp"].values())):
             bound = 0 
     
     return bound
