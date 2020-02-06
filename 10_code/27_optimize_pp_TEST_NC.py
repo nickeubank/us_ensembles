@@ -338,7 +338,7 @@ for sample in range(samples):
     plt.close()
         
         
-    print(f"Sample {sample}: Dem Seats  {hmss[-1][-1]} Dislocation  {adlocs[-1][-1]}\n PP: {}")     
+    print(f"Sample {sample}: Dem Seats  {hmss[-1][-1]} Dislocation  {adlocs[-1][-1]}\n PP: {pps[-1][-1]}")     
     
     plt.figure()
     plt.plot(intermediate_pp)
