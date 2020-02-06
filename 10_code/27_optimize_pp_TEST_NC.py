@@ -9,6 +9,7 @@ import networkx as nx
 from functools import partial
 import json
 import random
+import numpy as np
 ###########
 # Get environment var from SLURM
 # and convert
@@ -188,7 +189,7 @@ def pp_accept(partition):
     bound = 1
 
     if partition.parent is not None:
-        if partition.parent["pp"] < partition["pp"]:
+        if np.mean(partition.parent["pp"].values()) < np.mean(partition["pp"].values()):
             bound = 0 
     
     return bound
