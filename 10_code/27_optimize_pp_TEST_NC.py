@@ -197,6 +197,17 @@ def pp_accept(partition):
 # Run a simulation!
 ############
 
+from gerrychain.updaters import (
+    Tally,
+    boundary_nodes,
+    cut_edges,
+    cut_edges_by_part,
+    exterior_boundaries,
+    interior_boundaries,
+    perimeter,
+)
+
+
 initial_partition = GeographicPartition(
     graph,
     assignment='New_Seed',
@@ -204,6 +215,12 @@ initial_partition = GeographicPartition(
         "cut_edges": cut_edges,
         "population": Tally("population", alias="population"),
         "PRES2008": election,
+         "perimeter": perimeter,
+        "exterior_boundaries": exterior_boundaries,
+        "interior_boundaries": interior_boundaries,
+        "boundary_nodes": boundary_nodes,
+        "cut_edges": cut_edges,
+        "area": Tally("area", alias="area"),
         #"abs_dislocation": abs_dislocation
     }
 )
