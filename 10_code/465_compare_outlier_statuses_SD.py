@@ -293,7 +293,7 @@ plt.close()
 
 
 plt.figure()   
-plt.plot([abs(m_pgs[x]-e_pgs[x])/np.std(m_pgs) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))/np.std(m_adlocs)], 'ob')
+plt.plot([abs(m_pgs[x]-e_pgs[x])/np.std(m_pgs) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x])/np.std(m_adlocs) for x in range(len(fips_list))], 'ob')
 plt.xlabel('Standard Deviations to Ensemble Partisan Gini Mean')
 plt.ylabel('Standard Deviations to Ensemble Absolute Average Dislocation Mean')
 plt.savefig(newdir+ 'dist_adlocVSpg_distance_SD.png')
