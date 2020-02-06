@@ -49,7 +49,7 @@ state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 #f='../20_intermediate_files/sequential_to_fips.pickle'
 #state_fips = pickle.load(open(f, "rb" ))[state_index]
 
-state_fips='37'
+state_fips='22'
 run='0'
 
 newdir = f"../../../Dropbox/dislocation_intermediate_files/105_Optimized_Outputs/PP/{state_fips}_run{run}/"
