@@ -326,14 +326,14 @@ for sample in range(samples):
                 
         
     for part in opt_chain:
-        intermediate_pp.append(np.mean(list(partition["pp"].values())))
+        intermediate_pp.append(np.mean(list(part["pp"].values())))
 
 
     assignments.append(dict(part.assignment))
     pop_vec.append(sorted(list(part["population"].values())))
     cut_vec.append(len(part["cut_edges"]))
     adlocs[-1].append(abs_dislocation(part))
-    pps[-1].append(np.mean(list(partition["pp"].values())))
+    pps[-1].append(np.mean(list(part["pp"].values())))
     for elect in range(num_elections):
     
         votes[elect].append(sorted(part[election_names[elect]].percents("Dem")))
@@ -350,7 +350,7 @@ for sample in range(samples):
     plt.close()
         
         
-    print(f"Sample {sample}: Dem Seats  {hmss[-1][-1]} Dislocation  {adlocs[-1][-1]}\n PP: {pps[-1][-1]}")     
+    print(f"Sample {sample}: Dem Seats  {hmss[-1][-1]} Dislocation  {adlocs[-1][-1]}\n Mean PP: {pps[-1][-1]} all PPs {part['pp']}")     
     
     plt.figure()
     plt.plot(intermediate_pp)
