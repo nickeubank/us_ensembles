@@ -254,7 +254,7 @@ for state_fips in fips_list:
         
         plt.figure()
         sns.distplot(adlocs,kde=False, bins=1000, color='gray', norm_hist = True, label = 'All Plans')     
-        sns.distplot(o_sdlocs,kde=False, color='green', norm_hist = True, label = 'Optimized Plans') 
+        sns.distplot(o_adlocs,kde=False, color='green', norm_hist = True, label = 'Optimized Plans') 
         plt.axvline(x=e_adlocs[-1],color='red',label='Enacted') 
         plt.ylabel("Frequency")
         plt.xlabel("Absolute Dislocation")    
