@@ -326,14 +326,14 @@ for sample in range(samples):
                 
         
     for part in opt_chain:
-        intermediate_pp.append(part['pp'])
+        intermediate_pp.append(np.mean(list(partition["pp"].values())))
 
 
     assignments.append(dict(part.assignment))
     pop_vec.append(sorted(list(part["population"].values())))
     cut_vec.append(len(part["cut_edges"]))
     adlocs[-1].append(abs_dislocation(part))
-    pps[-1].append(part['pp'])
+    pps[-1].append(np.mean(list(partition["pp"].values())))
     for elect in range(num_elections):
     
         votes[elect].append(sorted(part[election_names[elect]].percents("Dem")))
