@@ -237,7 +237,7 @@ for state_fips in fips_list:
                
         o_adlocs[0,:] = np.loadtxt(o_datadir + "adloc100.csv", delimiter=",")
         o_seats[0,:] = np.loadtxt(o_datadir + "hmss100.csv", delimiter=",")
-        o_mms[0,:] = np.loadtxt(o_datadir + "mmsadloc100.csv", delimiter=",") 
+        o_mms[0,:] = np.loadtxt(o_datadir + "mms100.csv", delimiter=",") 
         o_pbs[0,:] = np.loadtxt(o_datadir + "pbs100.csv", delimiter=",")
         o_pgs[0,:] = np.loadtxt(o_datadir + "pgs100.csv", delimiter=",")
         o_egs[0,:] = np.loadtxt(o_datadir + "ega100.csv", delimiter=",")    
