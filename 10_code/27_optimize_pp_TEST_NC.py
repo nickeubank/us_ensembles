@@ -215,12 +215,6 @@ initial_partition = GeographicPartition(
         "cut_edges": cut_edges,
         "population": Tally("population", alias="population"),
         "PRES2008": election,
-         "perimeter": perimeter,
-        "exterior_boundaries": exterior_boundaries,
-        "interior_boundaries": interior_boundaries,
-        "boundary_nodes": boundary_nodes,
-        "cut_edges": cut_edges,
-        "area": Tally("area", alias="area"),
         #"abs_dislocation": abs_dislocation
     }
 )
@@ -306,7 +300,7 @@ for sample in range(samples):
         1+1
         
 
-    reset_partition = Partition(graph, dict(reset_part.assignment),updaters={
+    reset_partition = GeographicPartition(graph, dict(reset_part.assignment),updaters={
         "cut_edges": cut_edges,
         "population": Tally("population", alias="population"),
         "PRES2008": election,
