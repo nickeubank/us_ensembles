@@ -243,7 +243,7 @@ for state_fips in fips_list:
             c = 'k'
             for t in ts:
                 tempvotes = np.loadtxt(
-                    datadir2 + election_names[elect] + "_" + str(t) + ".csv", delimiter=","
+                    o_datadir + election_names[elect] + "_" + str(t) + ".csv", delimiter=","
                 )
                 for s in range(step_size):
                     a.append(tempvotes[s, :])
@@ -255,7 +255,12 @@ for state_fips in fips_list:
             o_seats = []
             
             for i in range(100):
-                o_seats.append(sum([x>.5 for x in b[i,:]]))        
+                o_seats.append(sum([x>.5 for x in b[i,:]])) 
+                  
+                #if i == 42 or i == 30:
+                #    print(o_seats[-1], b[i,:])
+                
+            #print(o_seats)     
         
 
         
