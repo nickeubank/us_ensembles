@@ -244,8 +244,8 @@ for state_fips in fips_list:
             tempvotes = np.loadtxt(
                     o_datadir + election_names[elect] + "_100.csv", delimiter=","
                 )
-                for s in range(100):
-                    a.append(tempvotes[s, :])
+            for s in range(100):
+                a.append(tempvotes[s, :])
         
             a = np.array(a)
             
