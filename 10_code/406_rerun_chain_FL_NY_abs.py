@@ -92,7 +92,7 @@ def join_and_evaluate_dislocation(state_fips):
     object_dict = dict()
     
     for index, row in state_precincts.iterrows():
-        object_dict[row["OJECTID"]] = index
+        object_dict[row["OBJECTID"]] = index
     
 
     state_points['precinct'] = state_points["OBJECTID"].map(object_dict)
