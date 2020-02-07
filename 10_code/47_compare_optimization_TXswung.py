@@ -226,7 +226,9 @@ for state_fips in fips_list:
         
         """
 
-        seats = np.loadtxt(datadir2+"swungseats.csv", delimiter=",")
+        seats = list(np.loadtxt(datadir2+"swungseats.csv", delimiter=","))
+        
+        #print(seats.shape)
         
         o_datadir = f"../../../Dropbox/dislocation_intermediate_files/105_Optimized_Outputs/{state_fips}_run0/"       
         
