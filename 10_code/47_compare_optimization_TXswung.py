@@ -226,7 +226,13 @@ for state_fips in fips_list:
         
         """
 
-        seats = list(np.loadtxt(datadir2+"swungseats.csv", delimiter=","))
+        loaded_seats = np.loadtxt(datadir2+"swungseats.csv", delimiter=",")
+        
+        seats = [x for x in loaded_seats]
+        
+     
+        
+        
         
         #print(seats.shape)
         
@@ -323,8 +329,8 @@ for state_fips in fips_list:
         plt.close()
         """
         plt.figure()        
-        sns.distplot(seats, kde=False, bins = [x-.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)], color='gray', norm_hist = True, label = 'All Plans',hist_kws={"rwidth":.3,"align":"left"})
-        sns.distplot([x+1 for x in o_seats], kde=False, bins=[x+.15 for x in range(int(min(seats[0,:]))-1,int(max(seats[0,:]))+2)],color='green', norm_hist = True, label='Optimized Plans',hist_kws={"rwidth":.3,"align":"left"}) 
+        sns.distplot(seats, kde=False, bins = [x-.15 for x in range(int(min(seats))-1,int(max(seats))+2)], color='gray', norm_hist = True, label = 'All Plans',hist_kws={"rwidth":.3,"align":"left"})
+        sns.distplot([x+1 for x in o_seats], kde=False, bins=[x+.15 for x in range(int(min(seats))-1,int(max(seats))+2)],color='green', norm_hist = True, label='Optimized Plans',hist_kws={"rwidth":.3,"align":"left"}) 
         plt.axvline(x=e_seats[-1],color='red',label='Enacted') 
         plt.ylabel("Frequency")
         plt.xlabel("Dem Seats")    
