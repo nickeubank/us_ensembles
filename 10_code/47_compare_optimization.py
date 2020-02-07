@@ -141,11 +141,11 @@ m_vshare = []
 
 for state_fips in fips_list:
     print(f"Starting {state_fips}")
-    newdir = f"../../../Dropbox/dislocation_intermediate_files/105_Optimized_Outputs/{state_fips}_run0/Comparison_Plots/"
-    os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
-    with open(newdir + "init.txt", "w") as f:
-        f.write("Created Folder")
-        names.append(state_names[state_fips])    
+    newdir = f"../../../Dropbox/dislocation_intermediate_files/105_Optimized_Outputs/Comparison_Plots/{state_fips}_"
+    #os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
+    #with open(newdir + "init.txt", "w") as f:
+    #    f.write("Created Folder")
+    #    names.append(state_names[state_fips])    
 
     with open(e_dir + "Start_Values_"+str(state_fips)+".txt", "r") as f:
         for index, line in enumerate(f):
