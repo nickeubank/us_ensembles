@@ -116,7 +116,7 @@ for state_fips in fips_list:
             swung_seats = []
             
             for i in range(max_steps):
-                swung_seats.append(sum([x>.5 for x in a[i,:]]))
+                swung_seats.append(sum([x>.5 for x in b[i,:]]))
                 
             with open(newdir + "swungseats.csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
