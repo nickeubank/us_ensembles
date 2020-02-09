@@ -40,18 +40,18 @@ election_names = ["PRES2008"]
 election_columns = [["P2008_D",  "P2008_R"]]
 
 
-#1 thourgh 16 only wrote a single file. 
+#1 through 16 only wrote a single file. 
 
 fips_list = [
         '01',
         #'02',
         '04',
         '05',
-        #'06',
+        '06',
         '08',
         '09',
         #'10',
-        #'12',
+        '12',
         '13',
         '16',
         '17',
@@ -73,7 +73,7 @@ fips_list = [
         '33',
         '34',
         '35',
-        #'36',
+        '36',
         '37',
         #'38',
         '39',
@@ -140,14 +140,14 @@ m_adlocs = []
 m_vshare = []
 
 
-fips_list = ['48']
+#fips_list = ['48']
 
 for state_fips in fips_list:
     print(f"Starting {state_fips}")
     newdir = f"../../../Dropbox/dislocation_intermediate_files/105_Optimized_Outputs/Comparison_Plots_Swung/{state_fips}_"
-    os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
-    with open(newdir + "init.txt", "w") as f:
-        f.write("Created Folder")
+    #os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
+    #with open(newdir + "init.txt", "w") as f:
+    #    f.write("Created Folder")
     names.append(state_names[state_fips])    
 
     with open(e_dir + "Start_Values_"+str(state_fips)+".txt", "r") as f:
@@ -155,6 +155,7 @@ for state_fips in fips_list:
             if index == 5:
                 temp = line[29:-3].split(',')
                 e_vshare.append(np.mean([float(x) for x in temp]))
+                e_swung_votes = [float(x) - 0.0369 for x in temp]
             if index == 7:
                 #print(line[21:])
                 e_mms.append(float(line[21:]))
@@ -166,15 +167,16 @@ for state_fips in fips_list:
             if index == 13:
                 e_pgs.append(float(line[23:]))
             if index == 15:
-                e_seats.append(float(line[24:]))#/len(temp))
+                #e_seats.append(float(line[24:]))#/len(temp))
                 #print(seats)
                 #print(line[24:])
+                e_seats.append(sum([x>.5 for x in e_swung_votes]))
             if index == 19:
                 #print(line[38:])
                 e_adlocs.append(float(line[38:]))    
     
     
-    e_seats = [11] #for TX swung
+    #e_seats = [11] #for TX swung
 
     
     for run in ['0']:#['0','1','2']:
@@ -243,7 +245,7 @@ for state_fips in fips_list:
         dgi = []
         
         for j in range(max_steps):
-            dgi.append(math.sqrt(sum([(medians[i]-loaded_vec[j,i])**2 for i in range(36)])))
+            dgi.append(math.sqrt(sum([(medians[i]-loaded_vec[j,i])**2 for i in range(len(medians))])))
             
         
         
@@ -271,7 +273,7 @@ for state_fips in fips_list:
             o_dgi = []
             
             for j in range(100):
-                o_dgi.append(math.sqrt(sum([(medians[i]-b[j,i])**2 for i in range(36)])))
+                o_dgi.append(math.sqrt(sum([(medians[i]-b[j,i])**2 for i in range(len(medians))])))
             
             
             #o_seats = []
@@ -287,11 +289,12 @@ for state_fips in fips_list:
         plt.figure()
         sns.distplot(dgi,kde=False, bins=1000, color='gray', norm_hist = True, label = 'All Plans')     
         sns.distplot(o_dgi,kde=False, bins=100, color='green', norm_hist = True, label = 'Optimized Plans') 
-        plt.axvline(x=.196,color='red',label='Enacted') 
+        plt.axvline(x=math.sqrt(sum([(medians[i]-e_swung_votes[i])**2 for i in range(len(medians)])),color='red',label='Enacted') 
         plt.ylabel("Frequency")
         plt.xlabel("Gerrymandering Index")    
         plt.legend()
         plt.savefig(newdir+"Opt_DGI.png")
+        plt.close()
   
 
 
