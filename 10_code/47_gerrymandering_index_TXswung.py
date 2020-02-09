@@ -289,7 +289,7 @@ for state_fips in fips_list:
         plt.figure()
         sns.distplot(dgi,kde=False, bins=1000, color='gray', norm_hist = True, label = 'All Plans')     
         sns.distplot(o_dgi,kde=False, bins=100, color='green', norm_hist = True, label = 'Optimized Plans') 
-        plt.axvline(x=math.sqrt(sum([(medians[i]-e_swung_votes[i])**2 for i in range(len(medians)])),color='red',label='Enacted') 
+        plt.axvline(x=math.sqrt(sum([(medians[i]-e_swung_votes[i])**2 for i in range(len(medians))])),color='red',label='Enacted') 
         plt.ylabel("Frequency")
         plt.xlabel("Gerrymandering Index")    
         plt.legend()
