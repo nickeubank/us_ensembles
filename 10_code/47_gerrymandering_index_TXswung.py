@@ -249,7 +249,7 @@ for state_fips in fips_list:
             
         
         
-     
+        seats = np.loadtxt(datadir2+"swungseats.csv", delimiter=",")
         
         
         
@@ -276,10 +276,10 @@ for state_fips in fips_list:
                 o_dgi.append(math.sqrt(sum([(medians[i]-b[j,i])**2 for i in range(len(medians))])))
             
             
-            #o_seats = []
+            o_seats = []
             
-            #for i in range(100):
-            #    o_seats.append(sum([x>.5 for x in b[i,:]])) 
+            for i in range(100):
+                o_seats.append(sum([x>.5 for x in b[i,:]])) 
                   
                 #if i == 42 or i == 30:
                 #    print(o_seats[-1], b[i,:])
@@ -368,7 +368,7 @@ for state_fips in fips_list:
         plt.savefig(newdir+"Opt_pg.png")
         plt.close()
         """
-        """
+        #"""
         plt.figure()        
         sns.distplot(seats, kde=False, bins = [x-.15 for x in range(int(min(seats))-1,int(max(seats))+2)], color='gray', norm_hist = True, label = 'All Plans',hist_kws={"rwidth":.3,"align":"left"})
         sns.distplot([x+1 for x in o_seats], kde=False, bins=[x+.15 for x in range(int(min(seats))-1,int(max(seats))+2)],color='green', norm_hist = True, label='Optimized Plans',hist_kws={"rwidth":.3,"align":"left"}) 
@@ -378,4 +378,4 @@ for state_fips in fips_list:
         plt.legend()
         plt.savefig(newdir+"Opt_seats.png")
         plt.close()       
-        """
+        #"""
