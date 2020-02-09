@@ -237,7 +237,7 @@ for state_fips in fips_list:
         print(loaded_vec[:,0].shape)
         #advjsn
         
-        medians = [np.median(loaded_vec[:,i]) for i in range(loaded_vec[:,0])]
+        medians = [np.median(loaded_vec[:,i]) for i in range(len(list(loaded_vec[0,:])))]
         
         print(medians)
         #fdvd
