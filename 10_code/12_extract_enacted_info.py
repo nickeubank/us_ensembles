@@ -163,8 +163,8 @@ for state_fips in indices:
             f.write("\n")
             f.write("\n")   
             
-            overall_result = tempvec
-            race_results = sorted(election_results.percents(party), reverse=True)
+            overall_result = np.mean(tempvec)
+            race_results = sorted(tempvec, reverse=True)
             seats_votes = [overall_result - r + 0.5 for r in race_results]
 
             # Apply reflection of seats-votes curve about (.5, .5)
