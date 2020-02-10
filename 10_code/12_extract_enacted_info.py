@@ -154,10 +154,11 @@ for state_fips in indices:
             f.write("\n")
             f.write("\n")
         
-            f.write(election_names[elect] + "Efficiency Gap :" + str(2*(initial_partition[election_names[elect]].percent("Dem") - 0.0369) - sum([x>.5 for x in tempvec])/len(tempvec) -.5 ))
+            #f.write(election_names[elect] + "Efficiency Gap :" + str(2*(initial_partition[election_names[elect]].percent("Dem") - 0.0369) - sum([x>.5 for x in tempvec])/len(tempvec) -.5 ))
             
             #2v-s-.5
-        
+            f.write(election_names[elect] + "Efficiency Gap :" + str(efficiency_gap(initial_partition[election_names[elect]])))
+            
             f.write("\n")
             f.write("\n")
 
