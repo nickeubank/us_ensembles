@@ -171,7 +171,7 @@ for state_fips in fips_list:
         for index, line in enumerate(f):
             if index == 5:
                 temp = line[29:-3].split(',')
-                tempvec = line[29:-3].split(',')
+                tempvec = [float(x) for x in temp]
                 e_vshare.append(np.mean([float(x) for x in temp]))
             if index == 7:
                 #print(line[21:])
