@@ -180,7 +180,7 @@ for state_fips in indices:
         
             f.write("\n")
             f.write("\n")             
-            f.write(election_names[elect] + "How Many Seats :" + str(sum([x>.5 for x in tempvec]))
+            f.write(election_names[elect] + "How Many Seats :" + str(sum([x>.5 for x in tempvec])))
          
             f.write("\n")
             f.write("\n")    
