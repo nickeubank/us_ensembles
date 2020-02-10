@@ -50,7 +50,7 @@ fips_list = [
         '08',
         '09',
         #'10',
-        #'12',
+        '12',
         '13',
         '16',
         '17',
@@ -72,7 +72,7 @@ fips_list = [
         '33',
         '34',
         '35',
-        #'36',
+        '36',
         '37',
         #'38',
         '39',
@@ -105,8 +105,8 @@ state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "48":"Texas","49":"Utah","51":"Virginia","50":"Vermont","53":"Washington",
 "55":"Wisconsin","54":"West_Virginia","56":"Wyoming"}
 
-e_dir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/"
-newdir = f"../../../Dropbox/dislocation_intermediate_files/Outlier_Comparisons/"
+e_dir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats_Swung/"
+newdir = f"../../../Dropbox/dislocation_intermediate_files/Outlier_Comparisons_Swung/"
 os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
 with open(newdir + "init.txt", "w") as f:
     f.write("Created Folder")
@@ -124,8 +124,11 @@ e_pgs = []
 e_seats = []
 
 e_adlocs = []
-
+e_qdlocs = []
 e_vshare = []
+
+e_dgi = []
+
 
 names = []
 
@@ -138,9 +141,11 @@ m_pgs = []
 m_seats = []
 
 m_adlocs = []
+m_qdlocs = []
 
 m_vshare = []
 
+m_dgi = []
 
 for state_fips in fips_list:
     print(f"Starting {state_fips}")
@@ -162,14 +167,17 @@ for state_fips in fips_list:
             if index == 13:
                 e_pgs.append(float(line[23:]))
             if index == 15:
-                e_seats.append(float(line[24:]))#/len(temp))
+                e_seats.append(float(line[24:]))/len(temp))
                 #print(seats)
                 #print(line[24:])
             if index == 19:
                 #print(line[38:])
                 e_adlocs.append(float(line[38:]))    
     
-    
+            if index == 21:
+                #print(line[38:])
+                e_qdlocs.append(float(line[38:]))    
+        
 
 
     
@@ -209,8 +217,8 @@ for state_fips in fips_list:
         ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]    
          
         for t in ts:       
-            temp = np.loadtxt(datadir2 + "hmss" + str(t) + ".csv", delimiter=",")
-            seats[:, t - step_size : t] = temp.T
+            #temp = np.loadtxt(datadir2 + "hmss" + str(t) + ".csv", delimiter=",")
+            #seats[:, t - step_size : t] = temp.T
             temp = np.loadtxt(datadir2 + "mms" + str(t) + ".csv", delimiter=",")
             mms[:, t - step_size : t] = temp.T
             temp = np.loadtxt(datadir2 + "pbs" + str(t) + ".csv", delimiter=",")
@@ -220,17 +228,40 @@ for state_fips in fips_list:
             temp = np.loadtxt(datadir2 + "egs" + str(t) + ".csv", delimiter=",")
             egs[:, t - step_size : t] = temp.T
             
+
+
+        loaded_vec = np.loadtxt(datadir2+"swungvotes.csv", delimiter=",")
+        
+
+
+        
+        medians = [np.median(loaded_vec[:,i]) for i in range(len(list(loaded_vec[0,:])))]
+        
+        dgi = []
+        for j in range(max_steps):
+            dgi.append(math.sqrt(sum([(medians[i]-loaded_vec[j,i])**2 for i in range(len(medians))])))
+        
+        m_dgi.append(np.mean(dgi)) 
+        
+        e_dgi.append(math.sqrt(sum([(medians[i]-temp[i])**2 for i in range(len(medians))])))       
+
+        seats = np.loadtxt(datadir2+"swungseats.csv", delimiter=",")
         
         m_mms.append(np.mean(mms))
         m_egs.append(np.mean(egs))
         m_pbs.append(np.mean(pbs))
         m_pgs.append(np.mean(pgs))
 
-        m_seats.append(np.mean(seats))
+        m_seats.append(np.mean(seats)/len(temp))
 
         m_adlocs.append(np.mean(adlocs))
         
-        
+plt.figure()   
+plt.plot([abs(m_dgi[x]-e_dgi[x]) for x in range(len(fips_list))],e_adlocs, 'ob')
+plt.xlabel('Distance to Ensemble Gerrymandering Index Mean')
+plt.ylabel('Absolute Average Dislocation')
+plt.savefig(newdir+ 'adlocVSdgi_distance.png')
+plt.close()        
             
 plt.figure()   
 plt.plot([abs(m_seats[x]-e_seats[x]) for x in range(len(fips_list))],e_adlocs, 'ob')
@@ -276,6 +307,16 @@ plt.xlabel('Distance to Ensemble Seat Share Mean')
 plt.ylabel('Distance to Ensemble Absolute Average Dislocation Mean')
 plt.savefig(newdir+ 'dist_adlocVSseat_distance.png')
 plt.close()
+
+
+            
+plt.figure()   
+plt.plot([abs(m_dgi[x]-e_dgi[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
+plt.xlabel('Distance to Ensemble Gerrymandering Index Mean')
+plt.ylabel('Distance to Ensemble Absolute Average Dislocation Mean')
+plt.savefig(newdir+ 'dist_adlocVSdgi_distance.png')
+plt.close()
+    
     
 plt.figure()   
 plt.plot([abs(m_mms[x]-e_mms[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
@@ -311,6 +352,14 @@ plt.close()
 
 
 
+fig, ax = plt.subplots()
+plt.plot([abs(m_dgi[x]-e_dgi[x]) for x in range(len(fips_list))],e_adlocs, 'ob')
+plt.xlabel('Distance to Ensemble Gerrymandering Index Mean')
+plt.ylabel('Absolute Average Dislocation')
+for i, txt in enumerate(names):
+    ax.annotate(txt, ([abs(m_dgi[x]-e_dgi[x]) for x in range(len(fips_list))][i],e_adlocs[i]))
+plt.savefig(newdir+ 'N_adlocVSdgi_distance.png')
+plt.close()
 
 fig, ax = plt.subplots()
 plt.plot([abs(m_seats[x]-e_seats[x]) for x in range(len(fips_list))],e_adlocs, 'ob')
@@ -359,6 +408,14 @@ plt.savefig(newdir+ 'N_adlocVSpb_distance.png')
 plt.close()
 
 
+fig, ax = plt.subplots()   
+plt.plot([abs(m_dgi[x]-e_dgi[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
+plt.xlabel('Distance to Ensemble Gerrymandering Index Mean')
+plt.ylabel('Distance to Ensemble Absolute Average Dislocation Mean')
+for i, txt in enumerate(names):
+    ax.annotate(txt, ([abs(m_dgi[x]-e_dgi[x]) for x in range(len(fips_list))][i],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))][i]))
+plt.savefig(newdir+ 'N_dist_adlocVSdgi_distance.png')
+plt.close()
             
 fig, ax = plt.subplots()   
 plt.plot([abs(m_seats[x]-e_seats[x]) for x in range(len(fips_list))],[abs(m_adlocs[x]-e_adlocs[x]) for x in range(len(fips_list))], 'ob')
