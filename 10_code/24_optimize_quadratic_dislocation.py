@@ -385,7 +385,7 @@ def optimize_dislocation(state_fips):
             votes[elect].append([x - 0.0369 for x in sorted(part[election_names[elect]].percents("Dem"))])
             mms[-1].append(mean_median(part[election_names[elect]]))
             egs[-1].append(efficiency_gap(part[election_names[elect]]))
-            hmss[-1].append(part[election_names[elect]].wins("Dem"))
+            hmss[-1].append(sum([x>.5 for x in votes[elect][-1]]))
             pbs[-1].append(partisan_bias(part[election_names[elect]]))
             pgs[-1].append(partisan_gini(part[election_names[elect]]))
             
@@ -473,7 +473,7 @@ def optimize_dislocation(state_fips):
                 
 from joblib import Parallel, delayed
 
-n_jobs = 2
+n_jobs = 12
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(optimize_dislocation)(fips) for fips in fips_list)
