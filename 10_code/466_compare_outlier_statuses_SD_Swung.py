@@ -171,6 +171,7 @@ for state_fips in fips_list:
         for index, line in enumerate(f):
             if index == 5:
                 temp = line[29:-3].split(',')
+                tempvec = line[29:-3].split(',')
                 e_vshare.append(np.mean([float(x) for x in temp]))
             if index == 7:
                 #print(line[21:])
@@ -259,7 +260,7 @@ for state_fips in fips_list:
         
         m_dgi.append(np.mean(dgi)) 
         
-        e_dgi.append(math.sqrt(sum([(medians[i]-temp[i])**2 for i in range(len(medians))])))    
+        e_dgi.append(math.sqrt(sum([(medians[i]-tempvec[i])**2 for i in range(len(medians))])))    
         
         dgi_std.append(np.std(dgi))   
         mms_std.append(np.std(mms))
@@ -276,8 +277,8 @@ for state_fips in fips_list:
         m_pbs.append(np.mean(pbs))
         m_pgs.append(np.mean(pgs))
 
-        m_seats.append(np.mean(seats)/len(temp))
-        seats_std.append(np.std([x/len(temp) for x in seats]))
+        m_seats.append(np.mean(seats)/len(medians))
+        seats_std.append(np.std([x/len(medians) for x in seats]))
 
         m_adlocs.append(np.mean(adlocs))
         adlocs_std.append(np.std(adlocs))
