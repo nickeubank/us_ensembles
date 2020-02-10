@@ -197,18 +197,21 @@ for state_fips in fips_list:
         
         datadir2 = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/" 
         
-        """    
+
         adlocs = np.zeros([1, max_steps])
+        for t in ts:
+            temp = np.loadtxt(datadir + "new_adloc" + str(t) + ".csv", delimiter=",")
+            #print(t,len(temp))
+            adlocs[0, t - step_size  : t] = temp
+
+        """    
+        
         seats = np.zeros([1, max_steps])
         mms = np.zeros([1, max_steps]) 
         pbs = np.zeros([1, max_steps]) 
         pgs = np.zeros([1, max_steps]) 
         egs = np.zeros([1, max_steps])
         
-        for t in ts:
-            temp = np.loadtxt(datadir + "new_adloc" + str(t) + ".csv", delimiter=",")
-            #print(t,len(temp))
-            adlocs[0, t - step_size  : t] = temp
             
         step_size = 10000
             
@@ -284,7 +287,9 @@ for state_fips in fips_list:
                 #if i == 42 or i == 30:
                 #    print(o_seats[-1], b[i,:])
                 
-            #print(o_seats)   
+            #print(o_seats)
+
+   
             
         plt.figure()
         sns.distplot(dgi,kde=False, bins=1000, color='gray', norm_hist = True, label = 'All Plans')     
@@ -296,11 +301,12 @@ for state_fips in fips_list:
         plt.savefig(newdir+"Opt_DGI.png")
         plt.close()
   
+        o_adlocs = np.zeros([1, 100])
 
+        o_adlocs[0,:] = np.loadtxt(o_datadir + "adloc100.csv", delimiter=",")
 
         
         """
-        o_adlocs = np.zeros([1, 100])
         o_seats = np.zeros([1, 100])
         o_mms = np.zeros([1, 100]) 
         o_pbs = np.zeros([1, 100]) 
@@ -310,7 +316,6 @@ for state_fips in fips_list:
          
         
                
-        o_adlocs[0,:] = np.loadtxt(o_datadir + "adloc100.csv", delimiter=",")
         o_seats[0,:] = np.loadtxt(o_datadir + "hmss100.csv", delimiter=",")
         o_mms[0,:] = np.loadtxt(o_datadir + "mms100.csv", delimiter=",") 
         o_pbs[0,:] = np.loadtxt(o_datadir + "pbs100.csv", delimiter=",")
@@ -327,15 +332,7 @@ for state_fips in fips_list:
         plt.savefig(newdir+"Opt_MM.png")
         plt.close()
         
-        plt.figure()
-        sns.distplot(adlocs,kde=False, bins=1000, color='gray', norm_hist = True, label = 'All Plans')     
-        sns.distplot(o_adlocs,kde=False, color='green', norm_hist = True, label = 'Optimized Plans') 
-        plt.axvline(x=e_adlocs[-1],color='red',label='Enacted') 
-        plt.ylabel("Frequency")
-        plt.xlabel("Absolute Dislocation")    
-        plt.legend()
-        plt.savefig(newdir+"Opt_adloc.png")
-        plt.close()    
+   
         
         
         plt.figure()
@@ -377,5 +374,15 @@ for state_fips in fips_list:
         plt.xlabel("Dem Seats")    
         plt.legend()
         plt.savefig(newdir+"Opt_seats.png")
-        plt.close()       
+        plt.close()  
+
+        plt.figure()
+        sns.distplot(adlocs,kde=False, bins=1000, color='gray', norm_hist = True, label = 'All Plans')     
+        sns.distplot(o_adlocs,kde=False, color='green', norm_hist = True, label = 'Optimized Plans') 
+        plt.axvline(x=e_adlocs[-1],color='red',label='Enacted') 
+        plt.ylabel("Frequency")
+        plt.xlabel("Absolute Dislocation")    
+        plt.legend()
+        plt.savefig(newdir+"Opt_adloc.png")
+        plt.close()      
         #"""
