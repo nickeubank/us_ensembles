@@ -47,7 +47,7 @@ fips_list = [
         #'02',
         '04',
         '05',
-        '06',
+        #'06',
         '08',
         '09',
         #'10',
@@ -171,7 +171,8 @@ for state_fips in fips_list:
         for index, line in enumerate(f):
             if index == 5:
                 temp = line[29:-3].split(',')
-                tempvec = [float(x) for x in temp]
+                tempvec = list([float(x) for x in temp])
+                print(len(tempvec))
                 e_vshare.append(np.mean([float(x) for x in temp]))
             if index == 7:
                 #print(line[21:])
@@ -253,6 +254,7 @@ for state_fips in fips_list:
 
         
         medians = [np.median(loaded_vec[:,i]) for i in range(len(list(loaded_vec[0,:])))]
+        print(len(medians))
         
         dgi = []
         for j in range(max_steps):
