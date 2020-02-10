@@ -184,8 +184,8 @@ for state_fips in fips_list:
         sub_sample = 1
         step_size = 10000
     
-        #if int(state_fips)<17:
-        #    step_size = 100000
+        if int(state_fips)<17:
+            step_size = 100000
             
         ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]
         
@@ -194,7 +194,7 @@ for state_fips in fips_list:
         
         datadir2 = f"../../../Dropbox/dislocation_intermediate_files/100_ensembles/{state_fips}_run{run}/" 
         
-        """    
+           
         adlocs = np.zeros([1, max_steps])
         seats = np.zeros([1, max_steps])
         mms = np.zeros([1, max_steps]) 
@@ -206,7 +206,8 @@ for state_fips in fips_list:
             temp = np.loadtxt(datadir + "new_adloc" + str(t) + ".csv", delimiter=",")
             #print(t,len(temp))
             adlocs[0, t - step_size  : t] = temp
-            
+
+        """    
         step_size = 10000
             
         ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]    
@@ -291,15 +292,6 @@ for state_fips in fips_list:
         plt.savefig(newdir+"Opt_MM.png")
         plt.close()
         
-        plt.figure()
-        sns.distplot(adlocs,kde=False, bins=1000, color='gray', norm_hist = True, label = 'All Plans')     
-        sns.distplot(o_adlocs,kde=False, color='green', norm_hist = True, label = 'Optimized Plans') 
-        plt.axvline(x=e_adlocs[-1],color='red',label='Enacted') 
-        plt.ylabel("Frequency")
-        plt.xlabel("Absolute Dislocation")    
-        plt.legend()
-        plt.savefig(newdir+"Opt_adloc.png")
-        plt.close()    
         
         
         plt.figure()
@@ -332,6 +324,7 @@ for state_fips in fips_list:
         plt.savefig(newdir+"Opt_pg.png")
         plt.close()
         """
+        
         plt.figure()        
         sns.distplot(seats, kde=False, bins = [x-.15 for x in range(int(min(seats))-1,int(max(seats))+2)], color='gray', norm_hist = True, label = 'All Plans',hist_kws={"rwidth":.3,"align":"left"})
         sns.distplot([x+1 for x in o_seats], kde=False, bins=[x+.15 for x in range(int(min(seats))-1,int(max(seats))+2)],color='green', norm_hist = True, label='Optimized Plans',hist_kws={"rwidth":.3,"align":"left"}) 
@@ -341,3 +334,14 @@ for state_fips in fips_list:
         plt.legend()
         plt.savefig(newdir+"Opt_seats.png")
         plt.close()       
+
+
+        plt.figure()
+        sns.distplot(adlocs,kde=False, bins=1000, color='gray', norm_hist = True, label = 'All Plans')     
+        sns.distplot(o_adlocs,kde=False, color='green', norm_hist = True, label = 'Optimized Plans') 
+        plt.axvline(x=e_adlocs[-1],color='red',label='Enacted') 
+        plt.ylabel("Frequency")
+        plt.xlabel("Absolute Dislocation")    
+        plt.legend()
+        plt.savefig(newdir+"Opt_adloc.png")
+        plt.close()    
