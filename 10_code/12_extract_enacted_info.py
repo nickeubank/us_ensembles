@@ -15,8 +15,7 @@ indices=['01',
         '08',
         '09',
         '10',
-        #'11',
-        #'12',
+        '12',
         '13',
         '16',
         '17',
@@ -37,7 +36,7 @@ indices=['01',
         '33',
         '34',
         '35',
-        #'36',
+        '36',
         '37',
         '38',
         '39',
@@ -78,7 +77,7 @@ state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "48":"Texas","49":"Utah","51":"Virginia","50":"Vermont","53":"Washington",
 "55":"Wisconsin","54":"West_Virginia","56":"Wyoming"}
 
-newdir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats/"
+newdir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats_Swung/"
 os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
 with open(newdir + "init.txt", "w") as f:
     f.write("Created Folder")
@@ -100,26 +99,10 @@ for state_fips in indices:
         }
     )
     
-    state_precincts = gpd.read_file(f"../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp")
-    state_points = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_USHouse.shp") # THIS FILEANAME isn't quite right - need to check format values. 
+    state_points = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Points.shp") 
     print("loaded precincts/points")
 
-    print(state_precincts.crs)
-    print(state_points.crs)
-    #state_points['geometry'] = state_points['geometry'].to_crs(state_precincts.crs)
-    state_precincts = state_precincts.to_crs(state_points.crs)
-
-    print(state_precincts.crs)
-    print(state_points.crs)
-
-
-    print("changed crs")
-
-    point_assign = assign(state_points,state_precincts)
- 
-    print("Made Assignment")
     
-    state_points['precinct'] = point_assign
 
 
     pvec = initial_partition[election_name].percents("Dem")
@@ -134,6 +117,7 @@ for state_fips in indices:
  
     
     state_points["dislocate"] = -(state_points["KnnShrDem"] - (state_points["current"].map(pdict) - 0.0369))
+
 
     #dstate_points["abs_dislocate"] = np.abs(state_points["dislocate"])
 
@@ -159,11 +143,12 @@ for state_fips in indices:
         f.write("\n")
 
         for elect in range(num_elections):
-            f.write(election_names[elect] + "District Percentages" + str(sorted(initial_partition[election_names[elect]].percents("Dem"))))
+            tempvec = [x - 0.0369 for x in sorted(initial_partition[election_names[elect]].percents("Dem"))]
+            f.write(election_names[elect] + "District Percentages" + str(tempvec))
             f.write("\n")
             f.write("\n")
 
-            f.write(election_names[elect] + "Mean-Median :"+ str(mean_median(initial_partition[election_names[elect]])))
+            f.write(election_names[elect] + "Mean-Median :"+ str(np.median(tempvec)-np.mean(tempvec)))
         
             f.write("\n")
             f.write("\n")
@@ -177,11 +162,25 @@ for state_fips in indices:
         
             f.write("\n")
             f.write("\n")   
-            f.write(election_names[elect] + "Partisan Gini :" + str(partisan_gini(initial_partition[election_names[elect]])))
+            
+            overall_result = tempvec
+            race_results = sorted(election_results.percents(party), reverse=True)
+            seats_votes = [overall_result - r + 0.5 for r in race_results]
+
+            # Apply reflection of seats-votes curve about (.5, .5)
+            reflected_sv = reversed([1 - s for s in seats_votes])
+            # Calculate the unscaled, unsigned area between the seats-votes curve
+            # and its reflection. For each possible number of seats attained, we find
+            # the area of a rectangle of unit height, with a width determined by the
+            # horizontal distance between the curves at that number of seats.
+            unscaled_area = sum(abs(s - r) for s, r in zip(seats_votes, reflected_sv))
+            # We divide by area by the number of seats to obtain a partisan Gini score
+            # between 0 and 1.
+            f.write(election_names[elect] + "Partisan Gini :" + str(unscaled_area / len(race_results)))
         
             f.write("\n")
             f.write("\n")             
-            f.write(election_names[elect] + "How Many Seats :" + str(initial_partition[election_names[elect]].wins("Dem")))
+            f.write(election_names[elect] + "How Many Seats :" + str(sum([x>.5 for x in tempvec]))
          
             f.write("\n")
             f.write("\n")    
@@ -197,4 +196,7 @@ for state_fips in indices:
             f.write("\n")    
 
 
-
+            f.write(election_names[elect] + "Average Squaredd Dislocation :" + str((state_points["dislocate"].pow(2)).mean()))
+         
+            f.write("\n")
+            f.write("\n")
