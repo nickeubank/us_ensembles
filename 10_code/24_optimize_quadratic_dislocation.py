@@ -473,7 +473,7 @@ def optimize_dislocation(state_fips):
                 
 from joblib import Parallel, delayed
 
-n_jobs = 12
+n_jobs = 16
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(optimize_dislocation)(fips) for fips in fips_list)
