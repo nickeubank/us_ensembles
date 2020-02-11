@@ -13,7 +13,7 @@ import random
 from maup import assign
 import numpy as np
 import ast
-improt math
+import math
 #from dislocation_chain_utility import * 
 
 
