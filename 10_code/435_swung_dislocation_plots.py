@@ -189,9 +189,11 @@ for state_fips in fips_list:
         medians = [np.median(loaded_vec[:,i]) for i in range(len(list(loaded_vec[0,:])))]
         print(len(medians))
         
-        dgi = []
+        dgi = np.zeros([1, max_steps])
         for j in range(max_steps):
-            dgi.append(math.sqrt(sum([(medians[i]-loaded_vec[j,i])**2 for i in range(len(medians))])))
+            #dgi.append(math.sqrt(sum([(medians[i]-loaded_vec[j,i])**2 for i in range(len(medians))])))
+            dgi[0,j] = math.sqrt(sum([(medians[i]-loaded_vec[j,i])**2 for i in range(len(medians))]))
+            
         
         
         dgi = np.array(dgi)
