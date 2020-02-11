@@ -193,6 +193,9 @@ for state_fips in fips_list:
         for j in range(max_steps):
             dgi.append(math.sqrt(sum([(medians[i]-loaded_vec[j,i])**2 for i in range(len(medians))])))
         
+        
+        dgi = np.array(dgi)
+        
         seats[0,:] = np.loadtxt(datadir2+"swungseats.csv", delimiter=",")        
         
         
