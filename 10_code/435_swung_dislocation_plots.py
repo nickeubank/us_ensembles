@@ -224,7 +224,7 @@ for state_fips in fips_list:
 
 
         plt.figure()
-        sns.distplot(q_dlocs,kde=False, bins=1000, color='gray',label = 'All Plans')     
+        sns.distplot(qdlocs,kde=False, bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(lqd,kde=False, bins=100, color='green',label = 'Small Dislocation')   
         plt.xlabel("Squared Dislocation")
         plt.ylabel("Frequency")
@@ -234,7 +234,7 @@ for state_fips in fips_list:
         plt.close()
   
         plt.figure()
-        sns.distplot(q_dlocs,kde=False, bins=1000, color='gray',label = 'All Plans')     
+        sns.distplot(qdlocs,kde=False, bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(uqd,kde=False, bins=100, color='orange',label = 'Large Dislocation')   
         plt.xlabel("Squared Dislocation")
         plt.ylabel("Frequency")
@@ -477,7 +477,7 @@ for state_fips in fips_list:
 
 
         plt.figure()
-        sns.distplot(q_dlocs,kde=False, bins=1000, color='gray',label = 'All Plans')     
+        sns.distplot(qdlocs,kde=False, bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(lqd,kde=False, bins=100, color='green',label = 'Small Dislocation')   
         plt.xlabel("Squared Dislocation")
         plt.ylabel("Frequency")
@@ -487,7 +487,7 @@ for state_fips in fips_list:
         plt.close()
   
         plt.figure()
-        sns.distplot(q_dlocs,kde=False, bins=1000, color='gray',label = 'All Plans')     
+        sns.distplot(qdlocs,kde=False, bins=1000, color='gray',label = 'All Plans')     
         sns.distplot(uqd,kde=False, bins=100, color='orange',label = 'Large Dislocation') 
         plt.xlabel("Squared Dislocation")
         plt.ylabel("Frequency")  
