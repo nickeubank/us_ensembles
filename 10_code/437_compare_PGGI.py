@@ -32,6 +32,15 @@ import math
 #    f.write("Created Folder")
 
 
+def draw_plot(data, offset, edge_color, fill_color):
+    pos = np.arange(data.shape[1])+1+offset
+    #bp = ax.boxplot(data, positions= pos, widths=0.3, patch_artist=True, manage_xticks=False)
+    bp = ax.boxplot(data, positions= pos,widths=1, whis=[25,75],showfliers=False, patch_artist=True, manage_xticks=False,zorder=4)
+    for element in ['boxes', 'whiskers', 'medians', 'caps']:
+        plt.setp(bp[element], color=edge_color,zorder=4)
+    for patch in bp['boxes']:
+        patch.set(facecolor=fill_color,zorder=4)
+
 
 num_elections = 1
 
@@ -127,8 +136,15 @@ fu_avg_pg = []
 fl_avg_dgi = []
 fl_avg_pg = []
 
+plt.figure()
+
+
+offset = 0
+
 for state_fips in fips_list:
     print(f"Starting {state_fips}")
+    
+    
     
 ##
 # Analysis function to parallelize
@@ -237,7 +253,7 @@ for state_fips in fips_list:
         fl_avg_dgi.append(np.mean(ldgi))
         fl_avg_pg.append(np.mean(lpgs))
         
-        if state_fips == state_fips:
+        if state_fips == '00':#state_fips:
             plt.figure()
             plt.plot(dgi,pgs,'o',color='gray',markersize=2)
             plt.plot(udgi,upgs,'o',color='yellow',markersize=2)
@@ -251,9 +267,25 @@ for state_fips in fips_list:
             plt.legend()
             plt.savefig(newdir+'dgivspg.png')
             plt.close()
-
-
+            
+            
+        draw_plot(ldgi, offset, 'green', None)    
+        draw_plot(udgi, offset+2, 'gray', None)    
+        draw_plot(dgi, offset+4, 'yellow', None)    
+        
+        offset += 10
+        
 newdir = f"../../../Dropbox/dislocation_intermediate_files/Filtered_Swung_Plots/Comparisons/"
+
+plt.plot([],[],color='gray',label='All Plans')
+plt.plot([],[],color='green',label='Low  Dislocation')
+plt.plot([],[],color='yellow',label='High Dislocation')
+plt.legend()
+plt.savefig(newdir+'box_allstatesdgi.png')
+plt.close()
+
+
+"""
 
 plt.figure()
 plt.plot(range(len(names)),avg_dgi,'*',color='gray')
@@ -281,6 +313,6 @@ plt.legend()
 plt.savefig(newdir+'allstatespgs.png')
 plt.close()
 
-
+"""
 
         
