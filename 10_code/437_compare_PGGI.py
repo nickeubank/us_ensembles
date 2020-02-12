@@ -236,16 +236,17 @@ for state_fips in fips_list:
         fu_avg_pg.append(np.mean(upgs))
         fl_avg_dgi.append(np.mean(ldgi))
         fl_avg_pg.append(np.mean(lpgs))
+        
 
-        plt.figure()
-        plt.plot(dgi,pgs,'o',color='gray',markersize=2,label='All Plans')
-        plt.plot(udgi,upgs,'o',color='yellow',markersize=2,label='High Dislocation')
-        plt.plot(ldgi,lpgs,'o',color='green',markersize=2,label='Low Dislocation')
-        plt.xlabel('Gerrymandering Index')
-        plt.ylabel('Partisan Gini')
-        plt.legend()
-        plt.savefig(newdir+'dgivspg.png')
-        plt.close()
+        #plt.figure()
+        #plt.plot(dgi,pgs,'o',color='gray',markersize=2,label='All Plans')
+        #plt.plot(udgi,upgs,'o',color='yellow',markersize=2,label='High Dislocation')
+        #plt.plot(ldgi,lpgs,'o',color='green',markersize=2,label='Low Dislocation')
+        #plt.xlabel('Gerrymandering Index')
+        #plt.ylabel('Partisan Gini')
+        #plt.legend()
+        #plt.savefig(newdir+'dgivspg.png')
+        #plt.close()
 
 
 newdir = f"../../../Dropbox/dislocation_intermediate_files/Filtered_Swung_Plots/Comparisons/"
