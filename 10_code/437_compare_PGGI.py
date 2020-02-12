@@ -252,9 +252,9 @@ for state_fips in fips_list:
 newdir = f"../../../Dropbox/dislocation_intermediate_files/Filtered_Swung_Plots/Comparisons/"
 
 plt.figure()
-plt.plot(range(len(names)),avg_dvi,'*',color='gray',label='All Plans')
-plt.plot(range(len(names)),fu_avg_dvi,'*',color='green',label='High Dislocation')
-plt.plot(range(len(names)),fl_avg_dvi,'*',color='yellow',label='Low Dislocation')
+plt.plot(range(len(names)),avg_dgi,'*',color='gray',label='All Plans')
+plt.plot(range(len(names)),fu_avg_dgi,'*',color='green',label='High Dislocation')
+plt.plot(range(len(names)),fl_avg_dgi,'*',color='yellow',label='Low Dislocation')
 plt.ylabel('Gerrymandering Index')
 plt.xticks(range(len(names)),names,rotation=90,fontsize=6)
 plt.savefig(newdir+'allstatesdgi.png')
