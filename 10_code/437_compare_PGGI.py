@@ -35,7 +35,7 @@ import math
 def draw_plot(data, offset, edge_color, fill_color):
     pos = [1+offset] #np.arange(data.shape[1])+1+offset
     #bp = ax.boxplot(data, positions= pos, widths=0.3, patch_artist=True, manage_xticks=False)
-    bp = ax.boxplot(data, positions= pos,widths=4, whis=[1,99],showfliers=False, patch_artist=True, manage_ticks=False,zorder=4)
+    bp = ax.boxplot(data, positions= pos,widths=4, whis=[25,75],showfliers=False, patch_artist=True, manage_ticks=False,zorder=4)
     for element in ['boxes', 'whiskers', 'medians', 'caps']:
         plt.setp(bp[element], color=edge_color,zorder=4)
     for patch in bp['boxes']:
@@ -260,7 +260,7 @@ for state_fips in fips_list:
             plt.plot(ldgi,lpgs,'o',color='green',markersize=2)
             plt.plot([],[],'o',color='gray',markersize=2,label='All Plans')
             plt.plot([],[],'o',color='green',markersize=2,label='Low  Dislocation')
-            plt.plot([],[],'o',color='yellow',markersize=2,label='High Dislocation')
+            plt.plot([],[],'o',color='goldenrod',markersize=2,label='High Dislocation')
 
             plt.xlabel('Gerrymandering Index')
             plt.ylabel('Partisan Gini')
@@ -271,7 +271,7 @@ for state_fips in fips_list:
             
         draw_plot(ldgi.T, offset, 'green', 'None')    
         draw_plot(dgi.T, offset+5, 'gray', 'None')    
-        draw_plot(udgi.T, offset+10, 'yellow', 'None')  
+        draw_plot(udgi.T, offset+10, 'goldenrod', 'None')  
         #plt.show()  
         
         offset += 25
@@ -280,7 +280,7 @@ newdir = f"../../../Dropbox/dislocation_intermediate_files/Filtered_Swung_Plots/
 
 plt.plot([],[],color='gray',label='All Plans')
 plt.plot([],[],color='green',label='Low  Dislocation')
-plt.plot([],[],color='yellow',label='High Dislocation')
+plt.plot([],[],color='goldenrod',label='High Dislocation')
 plt.xticks(range(3,25*len(names)+3,25),names,rotation=90,fontsize=5)
 plt.ylabel('Gerrymandering Index')
 plt.legend()
