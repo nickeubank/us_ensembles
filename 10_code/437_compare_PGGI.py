@@ -160,9 +160,9 @@ for state_fips in fips_list:
         
         newdir = f"../../../Dropbox/dislocation_intermediate_files/Filtered_Swung_Plots/Comparisons/{state_fips}_"
         
-        os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
-        with open(newdir + "init.txt", "w") as f:
-            f.write("Created Folder")
+        #os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
+        #with open(newdir + "init.txt", "w") as f:
+        #    f.write("Created Folder")
             
             
         qdlocs = np.zeros([1, max_steps])
@@ -237,35 +237,47 @@ for state_fips in fips_list:
         fl_avg_dgi.append(np.mean(ldgi))
         fl_avg_pg.append(np.mean(lpgs))
         
+        if state_fips == '01':
+            plt.figure()
+            plt.plot(dgi,pgs,'o',color='gray',markersize=2)
+            plt.plot(udgi,upgs,'o',color='yellow',markersize=2)
+            plt.plot(ldgi,lpgs,'o',color='green',markersize=2)
+            plt.plot([],[],'o',color='gray',markersize=2,label='All Plans')
+            plt.plot([],[],'o',color='green',markersize=2,label='Low  Dislocation')
+            plt.plot([],[],'o',color='yellow',markersize=2,label='High Dislocation')
 
-        #plt.figure()
-        #plt.plot(dgi,pgs,'o',color='gray',markersize=2,label='All Plans')
-        #plt.plot(udgi,upgs,'o',color='yellow',markersize=2,label='High Dislocation')
-        #plt.plot(ldgi,lpgs,'o',color='green',markersize=2,label='Low Dislocation')
-        #plt.xlabel('Gerrymandering Index')
-        #plt.ylabel('Partisan Gini')
-        #plt.legend()
-        #plt.savefig(newdir+'dgivspg.png')
-        #plt.close()
+            plt.xlabel('Gerrymandering Index')
+            plt.ylabel('Partisan Gini')
+            plt.legend()
+            plt.savefig(newdir+'dgivspg.png')
+            plt.close()
 
 
 newdir = f"../../../Dropbox/dislocation_intermediate_files/Filtered_Swung_Plots/Comparisons/"
 
 plt.figure()
-plt.plot(range(len(names)),avg_dgi,'*',color='gray',label='All Plans')
-plt.plot(range(len(names)),fu_avg_dgi,'*',color='green',label='High Dislocation')
-plt.plot(range(len(names)),fl_avg_dgi,'*',color='yellow',label='Low Dislocation')
+plt.plot(range(len(names)),avg_dgi,'*',color='gray')
+plt.plot(range(len(names)),fu_avg_dgi,'*',color='yellow')
+plt.plot(range(len(names)),fl_avg_dgi,'*',color='green')
 plt.ylabel('Gerrymandering Index')
 plt.xticks(range(len(names)),names,rotation=90,fontsize=6)
+plt.plot([],[],'*',color='gray',label='All Plans')
+plt.plot([],[],'*',color='green',label='Low  Dislocation')
+plt.plot([],[],'*',color='yellow',label='High Dislocation')
+plt.legend()
 plt.savefig(newdir+'allstatesdgi.png')
 plt.close()
 
 plt.figure()
-plt.plot(range(len(names)),avg_pg,'*',color='gray',label='All Plans')
-plt.plot(range(len(names)),fu_avg_pg,'*',color='green',label='High Dislocation')
-plt.plot(range(len(names)),fl_avg_pg,'*',color='yellow',label='Low Dislocation')
+plt.plot(range(len(names)),avg_pg,'*',color='gray')
+plt.plot(range(len(names)),fu_avg_pg,'*',color='yellow')
+plt.plot(range(len(names)),fl_avg_pg,'*',color='green')
 plt.ylabel('Partisan Gini')
 plt.xticks(range(len(names)),names,rotation=90,fontsize=6)
+plt.plot([],[],'*',color='gray',label='All Plans')
+plt.plot([],[],'*',color='green',label='Low  Dislocation')
+plt.plot([],[],'*',color='yellow',label='High Dislocation')
+plt.legend()
 plt.savefig(newdir+'allstatespgs.png')
 plt.close()
 
