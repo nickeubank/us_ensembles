@@ -35,7 +35,7 @@ import math
 def draw_plot(data, offset, edge_color, fill_color):
     pos = [1+offset] #np.arange(data.shape[1])+1+offset
     #bp = ax.boxplot(data, positions= pos, widths=0.3, patch_artist=True, manage_xticks=False)
-    bp = ax.boxplot(data, positions= pos,widths=1, whis=[25,75],showfliers=False, patch_artist=True, manage_ticks=False,zorder=4)
+    bp = ax.boxplot(data, positions= pos,widths=3, whis=[25,75],showfliers=False, patch_artist=True, manage_ticks=False,zorder=4)
     for element in ['boxes', 'whiskers', 'medians', 'caps']:
         plt.setp(bp[element], color=edge_color,zorder=4)
     for patch in bp['boxes']:
@@ -269,20 +269,25 @@ for state_fips in fips_list:
             plt.close()
             
             
-        draw_plot(ldgi.T, offset, 'green', None)    
-        draw_plot(udgi.T, offset+2, 'gray', None)    
-        draw_plot(dgi.T, offset+4, 'yellow', None)  
+        draw_plot(ldgi.T, offset, 'green', 'None')    
+        draw_plot(dgi.T, offset+3, 'gray', 'None')    
+        draw_plot(udgi.T, offset+6, 'yellow', 'None')  
         #plt.show()  
         
-        offset += 10
+        offset += 20
         
 newdir = f"../../../Dropbox/dislocation_intermediate_files/Filtered_Swung_Plots/Comparisons/"
 
 plt.plot([],[],color='gray',label='All Plans')
 plt.plot([],[],color='green',label='Low  Dislocation')
 plt.plot([],[],color='yellow',label='High Dislocation')
+plt.xticks(range(3,20*len(names)+3,20),names,rotation=90,fontsize=5)
+plt.ylabel('Gerrymandering Index')
 plt.legend()
 plt.savefig(newdir+'box_allstatesdgi.png')
+fig = plt.gcf()
+fig.set_size_inches((12,6), forward=False)
+fig.savefig(newdir+'box_allstatesdgi_dpi.png',dpi=500)           
 plt.close()
 
 
