@@ -269,19 +269,32 @@ for state_fips in fips_list:
             plt.close()
             
             
-        draw_plot(ldgi.T, offset, 'green', 'None')    
-        draw_plot(dgi.T, offset+5, 'gray', 'None')    
-        draw_plot(udgi.T, offset+10, 'goldenrod', 'None')  
+        draw_plot(lpgs.T, offset, 'green', 'None')    
+        draw_plot(pgs.T, offset+5, 'gray', 'None')    
+        draw_plot(upgs.T, offset+10, 'goldenrod', 'None')  
         #plt.show()  
         
-        offset += 25
+        offset += 30
         
 newdir = f"../../../Dropbox/dislocation_intermediate_files/Filtered_Swung_Plots/Comparisons/"
 
 plt.plot([],[],color='gray',label='All Plans')
 plt.plot([],[],color='green',label='Low  Dislocation')
 plt.plot([],[],color='goldenrod',label='High Dislocation')
-plt.xticks(range(3,25*len(names)+3,25),names,rotation=90,fontsize=5)
+plt.xticks(range(3,30*len(names)+3,30),names,rotation=90,fontsize=5)
+plt.ylabel('Partisan Gini')
+plt.legend()
+plt.savefig(newdir+'box_allstatespgi.png')
+fig = plt.gcf()
+fig.set_size_inches((12,6), forward=False)
+fig.savefig(newdir+'box_allstatespgs_dpi.png',dpi=500)           
+plt.close()
+
+"""
+plt.plot([],[],color='gray',label='All Plans')
+plt.plot([],[],color='green',label='Low  Dislocation')
+plt.plot([],[],color='goldenrod',label='High Dislocation')
+plt.xticks(range(3,30*len(names)+3,30),names,rotation=90,fontsize=5)
 plt.ylabel('Gerrymandering Index')
 plt.legend()
 plt.savefig(newdir+'box_allstatesdgi.png')
@@ -291,7 +304,7 @@ fig.savefig(newdir+'box_allstatesdgi_dpi.png',dpi=500)
 plt.close()
 
 
-"""
+
 
 plt.figure()
 plt.plot(range(len(names)),avg_dgi,'*',color='gray')
