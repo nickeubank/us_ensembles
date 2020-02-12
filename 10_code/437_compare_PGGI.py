@@ -269,9 +269,10 @@ for state_fips in fips_list:
             plt.close()
             
             
-        draw_plot(ldgi, offset, 'green', None)    
-        draw_plot(udgi, offset+2, 'gray', None)    
-        draw_plot(dgi, offset+4, 'yellow', None)    
+        draw_plot(ldgi.T, offset, 'green', None)    
+        draw_plot(udgi.T, offset+2, 'gray', None)    
+        draw_plot(dgi.T, offset+4, 'yellow', None)  
+        #plt.show()  
         
         offset += 10
         
