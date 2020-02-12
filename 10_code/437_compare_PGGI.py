@@ -33,7 +33,7 @@ import math
 
 
 def draw_plot(data, offset, edge_color, fill_color):
-    pos = np.arange(data.shape[1])+1+offset
+    pos = 1+offset #np.arange(data.shape[1])+1+offset
     #bp = ax.boxplot(data, positions= pos, widths=0.3, patch_artist=True, manage_xticks=False)
     bp = ax.boxplot(data, positions= pos,widths=1, whis=[25,75],showfliers=False, patch_artist=True, manage_xticks=False,zorder=4)
     for element in ['boxes', 'whiskers', 'medians', 'caps']:
@@ -211,7 +211,7 @@ for state_fips in fips_list:
 
         
         medians = [np.median(loaded_vec[:,i]) for i in range(len(list(loaded_vec[0,:])))]
-        print(len(medians))
+        #print(len(medians))
         
         dgi = np.zeros([1, max_steps])
         for j in range(max_steps):
