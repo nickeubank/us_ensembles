@@ -33,9 +33,9 @@ import math
 
 
 def draw_plot(data, offset, edge_color, fill_color):
-    pos = 1+offset #np.arange(data.shape[1])+1+offset
+    pos = [1+offset] #np.arange(data.shape[1])+1+offset
     #bp = ax.boxplot(data, positions= pos, widths=0.3, patch_artist=True, manage_xticks=False)
-    bp = ax.boxplot(data, positions= pos,widths=1, whis=[25,75],showfliers=False, patch_artist=True, manage_xticks=False,zorder=4)
+    bp = ax.boxplot(data, positions= pos,widths=1, whis=[25,75],showfliers=False, patch_artist=True, manage_ticks=False,zorder=4)
     for element in ['boxes', 'whiskers', 'medians', 'caps']:
         plt.setp(bp[element], color=edge_color,zorder=4)
     for patch in bp['boxes']:
