@@ -237,7 +237,7 @@ for state_fips in fips_list:
         fl_avg_dgi.append(np.mean(ldgi))
         fl_avg_pg.append(np.mean(lpgs))
         
-        if state_fips == '01':
+        if state_fips == state_fips:
             plt.figure()
             plt.plot(dgi,pgs,'o',color='gray',markersize=2)
             plt.plot(udgi,upgs,'o',color='yellow',markersize=2)
