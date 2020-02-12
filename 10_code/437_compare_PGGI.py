@@ -136,7 +136,7 @@ fu_avg_pg = []
 fl_avg_dgi = []
 fl_avg_pg = []
 
-plt.figure()
+fig, ax = plt.subplots()
 
 
 offset = 0
