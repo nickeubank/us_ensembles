@@ -300,7 +300,7 @@ for state_fips in fips_list:
         plt.figure()
         sns.distplot(dgi,kde=False, bins=1000, color='gray', norm_hist = True, label = 'All Plans')     
         sns.distplot(o_dgi,kde=False, bins=100, color='green', norm_hist = True, label = 'Optimized Plans') 
-        plt.axvline(x=math.sqrt(sum([(medians[i]-e_swung_votes[i])**2 for i in range(len(medians))])),color='red',label='Enacted') 
+        plt.axvline(x=math.sqrt(sum([(medians[i]-tempvec[i])**2 for i in range(len(medians))])),color='red',label='Enacted') 
         plt.ylabel("Frequency")
         plt.xlabel("Gerrymandering Index")    
         plt.legend()
@@ -312,6 +312,7 @@ for state_fips in fips_list:
         step_size = 10
             
         ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]    
+        
         o_seats = np.zeros([1, 100])
         o_mms = np.zeros([1, 100]) 
         o_pbs = np.zeros([1, 100]) 
@@ -320,16 +321,16 @@ for state_fips in fips_list:
         o_adlocs = np.zeros([1, 100])
                          
         for t in ts:       
-            temp = np.loadtxt(datadir2 + "hmss" + str(t) + ".csv", delimiter=",")
-            seats[:, t - step_size : t] = temp.T
+            temp = np.loadtxt(o_datadir + "hmss" + str(t) + ".csv", delimiter=",")
+            o_seats[:, t - step_size : t] = temp.T
             temp = np.loadtxt(o_datadir + "mms" + str(t) + ".csv", delimiter=",")
-            mms[:, t - step_size : t] = temp.T
+            o_mms[:, t - step_size : t] = temp.T
             temp = np.loadtxt(o_datadir + "pbs" + str(t) + ".csv", delimiter=",")
-            pbs[:, t - step_size : t] = temp.T
+            o_pbs[:, t - step_size : t] = temp.T
             temp = np.loadtxt(o_datadir + "pgs" + str(t) + ".csv", delimiter=",")
-            pgs[:, t - step_size : t] = temp.T
+            o_pgs[:, t - step_size : t] = temp.T
             temp = np.loadtxt(o_datadir + "egs" + str(t) + ".csv", delimiter=",")
-            egs[:, t - step_size : t] = temp.T
+            o_egs[:, t - step_size : t] = temp.T
             temp = np.loadtxt(o_datadir + "adloc" + str(t) + ".csv", delimiter=",")
             o_adlocs[:, t - step_size : t] = temp.T  
 
