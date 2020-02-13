@@ -150,7 +150,7 @@ for state_fips in fips_list:
     #    f.write("Created Folder")
     names.append(state_names[state_fips])    
 
-     with open(e_dir + "Start_Values_"+str(state_fips)+".txt", "r") as f:
+    with open(e_dir + "Start_Values_"+str(state_fips)+".txt", "r") as f:
         for index, line in enumerate(f):
             if index == 5:
                 temp = line[29:-3].split(',')
