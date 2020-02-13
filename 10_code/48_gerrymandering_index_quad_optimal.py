@@ -169,7 +169,7 @@ for state_fips in fips_list:
             if index == 13:
                 e_pgs.append(float(line[23:]))
             if index == 15:
-                e_seats.append(float(line[24:])#/len(temp))
+                e_seats.append(float(line[24:]))#/len(temp))
                 #print(seats)
                 #print(line[24:])
             if index == 19:
