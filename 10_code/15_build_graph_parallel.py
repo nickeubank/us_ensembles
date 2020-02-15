@@ -14,6 +14,7 @@ from joblib import Parallel, delayed
 
 f='../20_intermediate_files/sequential_to_fips.pickle'
 state_fips_codes = list(pickle.load(open(f, "rb" )).values())
+state_fips_codes = [i for i in state_fips_codes if i not in ['12', '06']]
 
 ##########
 # Find nearest gaps and connect
@@ -28,7 +29,8 @@ def build_graphs(state_fips):
     file = f'../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp'
 
     gdf = gpd.read_file(file)
-
+    gdf = gdf.rename({'pop_total': 'population'}, axis='columns')
+    
     # Add centroids
     centroids = gdf.centroid
 
@@ -125,7 +127,6 @@ def build_graphs(state_fips):
             cddict =  recursive_tree_part(graph, range(num_districts), 
                                           totpop / num_districts, "population", .02, 1)
         else: 
-            print(f'trying with 0.1 threshold')
             cddict =  recursive_tree_part(graph, range(num_districts), 
                                           totpop / num_districts, "population", .05, 1)
 
