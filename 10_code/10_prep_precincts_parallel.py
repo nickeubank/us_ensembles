@@ -10,7 +10,8 @@ import numpy as np
 def check_intersection_validity(intersections, precincts, state_fips):
         assert (intersections['share_in_precinct'] <=1.01).all()
         intersections['current_fragment_area'] = intersections.area
-        intersections['new_block_summed_area'] = intersections.groupby('BLOCKID10'                                                                      ).current_fragment_area.transform(sum)
+        intersections['new_block_summed_area'] = intersections.groupby('GISJOIN'
+                                                ).current_fragment_area.transform(sum)
 
         # Check area splits obey logical math
         if state_fips in ['12', '36']:
@@ -33,8 +34,8 @@ def check_intersection_validity(intersections, precincts, state_fips):
 
         # Check more people -> more votes. 
         vote_totals = precincts['P2008_D'] + precincts['P2008_R']
-        corr = np.corrcoef(vote_totals[precincts.population > 10].values, 
-                           precincts[precincts.population > 10].population.values)[0,1]
+        corr = np.corrcoef(vote_totals[precincts.pop_total > 10].values, 
+                           precincts[precincts.pop_total > 10].pop_total.values)[0,1]
         
         if state_fips != '44':
             # Rhode Island doesn't have enough variation / N to 
@@ -50,7 +51,9 @@ def check_intersection_validity(intersections, precincts, state_fips):
 # running quickly in parallel. 
 ############
 
-def setup_state_by_fips(state_fips):
+def setup_state_by_fips(args):
+
+    state_fips, master_precincts, master_districts = args
 
     try: 
         print(f'on fips {state_fips}', flush=True)
@@ -77,21 +80,32 @@ def setup_state_by_fips(state_fips):
                                                                        'geometry'].buffer(0)
         assert precincts.is_valid.all()
 
+        ######
         # Census blocks
-        f_blocks = f'../00_source_data/census_blocks/tabblock2010_{state_fips}'\
-                   f'_pophu/tabblock2010_{state_fips}_pophu.shp'
+        ######
+        
+        f_blocks = f'../00_source_data/census_blocks_w_race/prepped_census.shp'
 
         # FL and NY have some places with census blocks but no precincts (e.g. federal parks). 
         # Causes later problems.
-        if state_fips in ['12', '36']:
-            f_blocks = f'../00_source_data/census_blocks/tabblock2010_{state_fips}'\
-                       f'_pophu_clipped/tabblock2010_{state_fips}_pophu_clipped.shp'
+        #if state_fips in ['12', '36']:
+        #    f_blocks = f'../00_source_data/census_blocks/tabblock2010_{state_fips}'\
+        #               f'_pophu_clipped/tabblock2010_{state_fips}_pophu_clipped.shp'
             
         census_blocks = gpd.read_file(f_blocks)
+        census_blocks = census_blocks[census_blocks.STATEFP10 == state_fips]
 
+        assert census_blocks.is_valid.mean() > 0.95
+        
+        census_blocks.loc[~census_blocks.is_valid, 'geometry'] = census_blocks.loc[ 
+                                                                   ~census_blocks.is_valid, 
+                                                                   'geometry'].buffer(0)
         assert census_blocks.is_valid.all()
 
+        ######
         # Legislative Districts
+        ######
+        
         districts = master_districts[master_districts['STATEFP'] == state_fips].copy()
 
         # Topology problems
@@ -118,35 +132,39 @@ def setup_state_by_fips(state_fips):
         # Make sure OBJECTID unique
         assert not precincts.OBJECTID.duplicated().any()
         
-        census_blocks = census_blocks[['POP10', 'BLOCKID10', 'geometry']]
+        population_fields = ['pop_total', 'pop_VAP', 'pop_BVAP', 'pop_HVAP']
+        census_blocks = census_blocks[population_fields + ['geometry', 'GISJOIN']]
         census_blocks['pre_split_area'] = census_blocks.area
  
         # Get all intersections
         intersections = gpd.overlay(census_blocks, precincts, how='intersection')
         
         # Do interpolations
-        intersections['population'] = intersections.POP10 * (intersections.area / 
-                                                             intersections['pre_split_area'])
-        
-        # Actual population interpolation
         intersections['share_in_precinct'] = intersections.area / intersections['pre_split_area']
-        intersections['population'] = intersections.POP10 * intersections['share_in_precinct']
+
+        for p in population_fields:
+            intersections[p] = intersections[p] * intersections['share_in_precinct']
         
-        precinct_pops = intersections[['OBJECTID', 'population']].groupby('OBJECTID',
+        precinct_pops = intersections[['OBJECTID'] + population_fields].groupby('OBJECTID',
                                                                    as_index=False).sum()
         
         precincts = precincts.merge(precinct_pops, on='OBJECTID', 
                                     how='outer', validate='1:1', 
                                     indicator=True)
         # Check re-merge. 
-        if state_fips == '30':
-            assert precincts._merge.value_counts(normalize=True).loc['both'] > 0.99
-        else: 
-            assert (precincts._merge == 'both').all()
+        assert precincts._merge.value_counts(normalize=True).loc['both'] > 0.99
+        if not (precincts._merge == 'both').all():
+            assert (precincts[precincts._merge == 'left_only'].P2008_D == 0).all()
 
         precincts = precincts.drop('_merge', axis='columns')
-
+        
         # Check my work
+        assert precincts.is_valid.mean() > 0.95
+        
+        precincts.loc[~precincts.is_valid, 
+                      'geometry'] = precincts.loc[ ~precincts.is_valid, 
+                                                  'geometry'].buffer(0)
+
         check_intersection_validity(intersections, precincts, state_fips)
                 
         ###########
@@ -166,7 +184,7 @@ def setup_state_by_fips(state_fips):
 
         import pandas as pd
 
-        missing = pd.isnull(precincts['district']) | pd.isnull(precincts['population'])
+        missing = pd.isnull(precincts['district']) | pd.isnull(precincts['pop_total'])
 
         # only one close is Washington with a few missing districts. 
         # in island land. 
@@ -223,9 +241,9 @@ master_districts = master_districts[['STATEFP', 'CD114FP', 'GEOID', 'geometry']]
 # And... EXECUTE!
 ##
 
-results = (Parallel(n_jobs=3, verbose=10, backend='multiprocessing')
+results = (Parallel(n_jobs=4, verbose=10, backend='multiprocessing')
            (delayed(setup_state_by_fips)
-           (fips) for fips in state_fips_codes)
+           ((fips, master_precincts, master_districts)) for fips in state_fips_codes)
           )
 
 
