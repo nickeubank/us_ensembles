@@ -1,6 +1,7 @@
 import geopandas as gpd
 import os
 import pickle
+import pandas as pd
 import numpy as np
 import gerrychain as gc
 from gerrychain.tree import recursive_tree_part
@@ -12,9 +13,10 @@ from joblib import Parallel, delayed
 # and convert
 ###########
 
-f='../20_intermediate_files/sequential_to_fips.pickle'
+f='../../20_intermediate_files/sequential_to_fips.pickle'
 state_fips_codes = list(pickle.load(open(f, "rb" )).values())
 state_fips_codes = [i for i in state_fips_codes if i not in ['12', '06']]
+state_fips_codes = ['06', '12']
 
 ##########
 # Find nearest gaps and connect
@@ -26,7 +28,7 @@ from gerrychain.constraints.contiguity import contiguous_components, contiguous
 
 def build_graphs(state_fips):
     print(f'starting fips {state_fips}', flush=True)
-    file = f'../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp'
+    file = f'../../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp'
 
     gdf = gpd.read_file(file)
     gdf = gdf.rename({'pop_total': 'population'}, axis='columns')
@@ -43,7 +45,26 @@ def build_graphs(state_fips):
     graph.add_data(gdf)
     totpop = sum(gdf['population'])
     num_districts = gdf.district.nunique()
+        
+    # Messes in CA and FL
+    if state_fips in ['06', '12']:
+        deg = pd.Series(dict(graph.degree()))
+        deg = deg[deg > 40]
+        
+        for i in deg.index:
+            d = graph.nodes[i]['P2008_D']
+            r = graph.nodes[i]['P2008_R']
 
+            # These crazy districts should
+            # have no votes
+            assert (r + d == 0)
+            
+            # OK to remove. 
+            # Doesn't re-number like
+            # igraph
+            graph.remove_node(i)
+    
+        
     ##########
     # First, deal with unconnected nodes
     ##########
@@ -118,7 +139,7 @@ def build_graphs(state_fips):
 
     print(f'done with connections for {state_fips}', flush=True)
 
-    graph.to_json(f'../20_intermediate_files/precinct_graphs/preseed/'
+    graph.to_json(f'../../20_intermediate_files/precinct_graphs/preseed/'
                   f'precinct_graphs_{state_fips}.json')
     
     print(f'all done with {state_fips}', flush=True)
