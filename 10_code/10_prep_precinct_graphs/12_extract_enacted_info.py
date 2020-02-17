@@ -86,8 +86,9 @@ with open(newdir + "init.txt", "w") as f:
         
 for state_fips in indices:
 
-    graph = Graph.from_json(f"../../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed0.json")
-    
+    graph = Graph.from_json(f"../../20_intermediate_files/precinct_graphs/preseed/precinct_graphs_{state_fips}.json")
+    #OLD VERSION ->Graph.from_json(f"../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed0.json")
+
     election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 
     for n in graph.nodes():
