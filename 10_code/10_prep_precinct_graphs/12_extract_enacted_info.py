@@ -11,11 +11,11 @@ from gerrychain.metrics import efficiency_gap, mean_median, partisan_bias, parti
 indices=['01',
         '04',
         '05',
-        '06',
+        #'06',
         '08',
         '09',
         #'10',
-        '12',
+        #'12',
         '13',
         '16',
         '17',
@@ -92,6 +92,7 @@ for state_fips in indices:
     election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 
     for n in graph.nodes():
+        #print(graph.nodes[n])
         graph.nodes[n]["nBVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_BVAP"] 
         graph.nodes[n]["nHVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_HVAP"] 
 
