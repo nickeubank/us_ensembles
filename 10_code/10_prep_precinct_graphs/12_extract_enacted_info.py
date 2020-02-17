@@ -154,15 +154,32 @@ for state_fips in indices:
         f.write("\n")
 
         f.write('BVAP vector:', str(sorted(initial_partition["BVAP"].percents("BVAP")))
-        f.write('BVAP over 40:',  str(sum([x>.4 for x in sorted(initial_partition["BVAP"].percents("BVAP")]))
-        f.write('BVAP over 45:',  str(sum([x>.45 for x in sorted(initial_partition["BVAP"].percents("BVAP")]))
-        f.write('BVAP over 40:',  str(sum([x>.4 for x in sorted(initial_partition["BVAP"].percents("BVAP")]))
+        f.write("\n")
+        f.write("\n")
+
+        f.write('BVAP over 40:',  str(sum([x>.4 for x in sorted(initial_partition["BVAP"].percents("BVAP"))])
+        f.write("\n")
+        f.write("\n")
+        f.write('BVAP over 45:',  str(sum([x>.45 for x in sorted(initial_partition["BVAP"].percents("BVAP"))])
+        f.write("\n")
+        f.write("\n")
+        f.write('BVAP over 40:',  str(sum([x>.4 for x in sorted(initial_partition["BVAP"].percents("BVAP"))])
+        f.write("\n")
+        f.write("\n")
 
         f.write('HVAP vector:', str(sorted(initial_partition["HVAP"].percents("HVAP")))
-        f.write('HVAP over 40:',  str(sum([x>.4 for x in sorted(initial_partition["HVAP"].percents("HVAP")]))
-        f.write('HVAP over 45:',  str(sum([x>.45 for x in sorted(initial_partition["HVAP"].percents("HVAP")]))
-        f.write('HVAP over 40:',  str(sum([x>.4 for x in sorted(initial_partition["HVAP"].percents("HVAP")]))
+        f.write("\n")
+        f.write("\n")
+        f.write('HVAP over 40:',  str(sum([x>.4 for x in sorted(initial_partition["HVAP"].percents("HVAP"))])
+        f.write("\n")
+        f.write("\n")
+        f.write('HVAP over 45:',  str(sum([x>.45 for x in sorted(initial_partition["HVAP"].percents("HVAP"))])
+        f.write("\n")
+        f.write("\n")
+        f.write('HVAP over 40:',  str(sum([x>.4 for x in sorted(initial_partition["HVAP"].percents("HVAP"))])
 
+        f.write("\n")
+        f.write("\n")
         for elect in range(num_elections):
             tempvec = [x - 0.0369 for x in sorted(initial_partition[election_names[elect]].percents("Dem"))]
             f.write(election_names[elect] + "District Percentages" + str(tempvec))
