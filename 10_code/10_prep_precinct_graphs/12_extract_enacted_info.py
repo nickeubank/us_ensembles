@@ -105,7 +105,7 @@ for state_fips in indices:
             "cut_edges": cut_edges,
             "population": Tally("population", alias="population"),
             "PRES2008": election, 
-            "BVAP" : electionbvap
+            "BVAP" : electionbvap,
             "HVAP" : electionhvap
         }
     )
