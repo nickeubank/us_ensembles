@@ -167,7 +167,7 @@ for state_fips in indices:
         f.write("\n")
         f.write("\n")
 
-        f.write('HVAP vector:', str(sorted(initial_partition["HVAP"].percents("HVAP")))
+        f.write('HVAP vector:', str(sorted(initial_partition["HVAP"].percents("HVAP"))))
         f.write("\n")
         f.write("\n")
         f.write('HVAP over 40:',  str(sum([x>.4 for x in sorted(initial_partition["HVAP"].percents("HVAP"))])))
