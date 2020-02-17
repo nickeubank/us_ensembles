@@ -78,7 +78,7 @@ state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "48":"Texas","49":"Utah","51":"Virginia","50":"Vermont","53":"Washington",
 "55":"Wisconsin","54":"West_Virginia","56":"Wyoming"}
 
-newdir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Take2/"
+newdir = f"../../../../Dropbox/dislocation_intermediate_files/Enacted_Take2/"
 os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
 with open(newdir + "init.txt", "w") as f:
     f.write("Created Folder")
