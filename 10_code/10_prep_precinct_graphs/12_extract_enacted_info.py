@@ -97,7 +97,7 @@ for state_fips in indices:
 
     electionbvap = Election("BVAP", {"BVAP": "pop_BVAP", "nBVAP": "nBVAP"})
 
-    electionhavp = Election("HVAP", {"HVAP": "pop_HVAP", "nHVAP": "nHVAP"})
+    electionhvap = Election("HVAP", {"HVAP": "pop_HVAP", "nHVAP": "nHVAP"})
 
     initial_partition = Partition(
         graph,
