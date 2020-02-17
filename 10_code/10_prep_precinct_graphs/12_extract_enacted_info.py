@@ -110,13 +110,13 @@ for state_fips in indices:
             "HVAP" : electionhvap
         }
     )
-    
+    """ 
     state_points = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Points.shp") 
     print("loaded precincts/points")
 
     
 
-
+   
     pvec = initial_partition[election_name].percents("Dem")
         
         
@@ -140,7 +140,9 @@ for state_fips in indices:
             
     #dlocs[-1].append(state_points["dislocate"].mean())
     #adlocs[-1].append((state_points["dislocate"].abs()).mean())
-   
+    """
+
+
 #### WANT Separate files instead!   Think about this 
 
 
@@ -226,7 +228,7 @@ for state_fips in indices:
          
             f.write("\n")
             f.write("\n")    
-    
+            """
             f.write(election_names[elect] + "Average Signed Dislocation :" + str(state_points["dislocate"].mean()))
          
             f.write("\n")
@@ -242,3 +244,4 @@ for state_fips in indices:
          
             f.write("\n")
             f.write("\n")
+            """
