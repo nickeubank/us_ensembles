@@ -90,13 +90,23 @@ for state_fips in indices:
     
     election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 
+    for n in graph.nodes():
+        graph.nodes[n]["nBVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_BVAP"] 
+        graph.nodes[n]["nHVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_HVAP"] 
+
+    electionbvap = Election("BVAP", {"BVAP": "pop_BVAP", "nBVAP": "nBVAP"})
+
+    electionhavp = Election("HVAP", {"HVAP": "pop_HVAP", "nHVAP": "nHVAP"})
+
     initial_partition = Partition(
         graph,
         assignment='district',
         updaters={
             "cut_edges": cut_edges,
             "population": Tally("population", alias="population"),
-            "PRES2008": election
+            "PRES2008": election, 
+            "BVAP" : electionbvap
+            "HVAP" : electionhvap
         }
     )
     
