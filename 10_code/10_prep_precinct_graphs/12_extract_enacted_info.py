@@ -78,7 +78,7 @@ state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "48":"Texas","49":"Utah","51":"Virginia","50":"Vermont","53":"Washington",
 "55":"Wisconsin","54":"West_Virginia","56":"Wyoming"}
 
-newdir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats_Swung/"
+newdir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Take2/"
 os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
 with open(newdir + "init.txt", "w") as f:
     f.write("Created Folder")
@@ -86,7 +86,7 @@ with open(newdir + "init.txt", "w") as f:
         
 for state_fips in indices:
 
-    graph = Graph.from_json(f"../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed0.json")
+    graph = Graph.from_json(f"../../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed0.json")
     
     election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 
@@ -152,6 +152,16 @@ for state_fips in indices:
         #f.write("Initial County Splits: "+ str(num_splits(initial_partition)))
         #f.write("\n")
         f.write("\n")
+
+        f.write('BVAP vector:', str(sorted(initial_partition["BVAP"].percents("BVAP")))
+        f.write('BVAP over 40:',  str(sum([x>.4 for x in sorted(initial_partition["BVAP"].percents("BVAP")]))
+        f.write('BVAP over 45:',  str(sum([x>.45 for x in sorted(initial_partition["BVAP"].percents("BVAP")]))
+        f.write('BVAP over 40:',  str(sum([x>.4 for x in sorted(initial_partition["BVAP"].percents("BVAP")]))
+
+        f.write('HVAP vector:', str(sorted(initial_partition["HVAP"].percents("HVAP")))
+        f.write('HVAP over 40:',  str(sum([x>.4 for x in sorted(initial_partition["HVAP"].percents("HVAP")]))
+        f.write('HVAP over 45:',  str(sum([x>.45 for x in sorted(initial_partition["HVAP"].percents("HVAP")]))
+        f.write('HVAP over 40:',  str(sum([x>.4 for x in sorted(initial_partition["HVAP"].percents("HVAP")]))
 
         for elect in range(num_elections):
             tempvec = [x - 0.0369 for x in sorted(initial_partition[election_names[elect]].percents("Dem"))]
