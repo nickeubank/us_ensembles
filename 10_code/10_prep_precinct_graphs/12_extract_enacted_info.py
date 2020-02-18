@@ -56,6 +56,7 @@ indices=['01',
         #'56'
         ]
 
+names = []
 
 num_elections = 1
 
