@@ -203,7 +203,7 @@ def VRAify_seeds(state_fips):
         percbound = seed2bound[seed_num]
         
 
-        graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/seeded/precinct_graphs_{state_fip}_seed{seed_num}.json')
+        graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/seeded/precinct_graphs_{state_fips}_seed{seed_num}.json')
         
         
 
