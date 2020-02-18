@@ -11,11 +11,11 @@ import networkx as nx
 indices=['01',
         '04',
         '05',
-        '06',
+        #'06',
         '08',
         '09',
         #'10',
-        '12',
+        #'12',
         '13',
         '16',
         '17',
@@ -173,25 +173,30 @@ for state_fips in indices:
         f.write("\n")
 
         f.write('BVAP over 40: '+  str(sum([x>.4 for x in sorted(initial_partition["BVAP"].percents("BVAP"))])))
+        b40.append(sum([x>.4 for x in sorted(initial_partition["BVAP"].percents("BVAP"))]))
         f.write("\n")
         f.write("\n")
         f.write('BVAP over 45: '+  str(sum([x>.45 for x in sorted(initial_partition["BVAP"].percents("BVAP"))])))
+        b45.append(sum([x>.45 for x in sorted(initial_partition["BVAP"].percents("BVAP"))]))
         f.write("\n")
         f.write("\n")
         f.write('BVAP over 50: '+  str(sum([x>.5 for x in sorted(initial_partition["BVAP"].percents("BVAP"))])))
         f.write("\n")
         f.write("\n")
-
+        b50.append(sum([x>.5 for x in sorted(initial_partition["BVAP"].percents("BVAP"))]))
         f.write('HVAP vector: '+ str(sorted(initial_partition["HVAP"].percents("HVAP"))))
         f.write("\n")
         f.write("\n")
         f.write('HVAP over 40: '+  str(sum([x>.4 for x in sorted(initial_partition["HVAP"].percents("HVAP"))])))
+        h40.append(sum([x>.4 for x in sorted(initial_partition["HVAP"].percents("HVAP"))]))
         f.write("\n")
         f.write("\n")
         f.write('HVAP over 45: '+  str(sum([x>.45 for x in sorted(initial_partition["HVAP"].percents("HVAP"))])))
+        h45.append(sum([x>.45 for x in sorted(initial_partition["HVAP"].percents("HVAP"))]))
         f.write("\n")
         f.write("\n")
         f.write('HVAP over 50: '+  str(sum([x>.5 for x in sorted(initial_partition["HVAP"].percents("HVAP"))])))
+        h50.append(sum([x>.5 for x in sorted(initial_partition["HVAP"].percents("HVAP"))]))
 
         f.write("\n")
         f.write("\n")
