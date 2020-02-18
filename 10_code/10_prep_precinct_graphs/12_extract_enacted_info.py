@@ -7,15 +7,15 @@ from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
 from maup import assign
 from gerrychain.metrics import efficiency_gap, mean_median, partisan_bias, partisan_gini
-
+import networkx as nx
 indices=['01',
         '04',
         '05',
-        '06',
+        #'06',
         '08',
         '09',
         #'10',
-        '12',
+        #'12',
         '13',
         '16',
         '17',
@@ -56,6 +56,7 @@ indices=['01',
         #'56'
         ]
 
+names = []
 
 num_elections = 1
 
@@ -78,17 +79,41 @@ state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "48":"Texas","49":"Utah","51":"Virginia","50":"Vermont","53":"Washington",
 "55":"Wisconsin","54":"West_Virginia","56":"Wyoming"}
 
-newdir = f"../../../Dropbox/dislocation_intermediate_files/Enacted_Stats_Swung/"
+newdir = f"../../../../Dropbox/dislocation_intermediate_files/Enacted_Take2/"
 os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
 with open(newdir + "init.txt", "w") as f:
     f.write("Created Folder")
 
+b40 = []
+b45 = []
+b50 = []
+h40 = []
+h45 = []
+h50 = []
+
+bvap_dict = dict()
+
+hvap_dict = dict()
         
 for state_fips in indices:
 
-    graph = Graph.from_json(f"../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed0.json")
-    
+    names.append(state_names[state_fips])
+
+    graph = Graph.from_json(f"../../20_intermediate_files/precinct_graphs/preseed/precinct_graphs_{state_fips}.json")
+    #OLD VERSION ->Graph.from_json(f"../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed0.json")
+
     election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
+
+    for n in graph.nodes():
+        if state_fips in ['06','12'] and n==0:
+            print(state_fips,nx.is_connected(graph),graph.nodes[n])
+            print(len(list(graph.neighbors(22065))))#(nx.degree(graph)[343])
+        graph.nodes[n]["nBVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_BVAP"] 
+        graph.nodes[n]["nHVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_HVAP"] 
+
+    electionbvap = Election("BVAP", {"BVAP": "pop_BVAP", "nBVAP": "nBVAP"})
+
+    electionhvap = Election("HVAP", {"HVAP": "pop_HVAP", "nHVAP": "nHVAP"})
 
     initial_partition = Partition(
         graph,
@@ -96,16 +121,18 @@ for state_fips in indices:
         updaters={
             "cut_edges": cut_edges,
             "population": Tally("population", alias="population"),
-            "PRES2008": election
+            "PRES2008": election, 
+            "BVAP" : electionbvap,
+            "HVAP" : electionhvap
         }
     )
-    
+    """ 
     state_points = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Points.shp") 
     print("loaded precincts/points")
 
     
 
-
+   
     pvec = initial_partition[election_name].percents("Dem")
         
         
@@ -129,7 +156,9 @@ for state_fips in indices:
             
     #dlocs[-1].append(state_points["dislocate"].mean())
     #adlocs[-1].append((state_points["dislocate"].abs()).mean())
-   
+    """
+
+
 #### WANT Separate files instead!   Think about this 
 
 
@@ -143,6 +172,38 @@ for state_fips in indices:
         #f.write("\n")
         f.write("\n")
 
+        f.write('BVAP vector: '+ str(sorted(initial_partition["BVAP"].percents("BVAP"))))
+        f.write("\n")
+        f.write("\n")
+
+        f.write('BVAP over 40: '+  str(sum([x>.4 for x in sorted(initial_partition["BVAP"].percents("BVAP"))])))
+        b40.append(sum([x>.4 for x in sorted(initial_partition["BVAP"].percents("BVAP"))]))
+        f.write("\n")
+        f.write("\n")
+        f.write('BVAP over 45: '+  str(sum([x>.45 for x in sorted(initial_partition["BVAP"].percents("BVAP"))])))
+        b45.append(sum([x>.45 for x in sorted(initial_partition["BVAP"].percents("BVAP"))]))
+        f.write("\n")
+        f.write("\n")
+        f.write('BVAP over 50: '+  str(sum([x>.5 for x in sorted(initial_partition["BVAP"].percents("BVAP"))])))
+        f.write("\n")
+        f.write("\n")
+        b50.append(sum([x>.5 for x in sorted(initial_partition["BVAP"].percents("BVAP"))]))
+        f.write('HVAP vector: '+ str(sorted(initial_partition["HVAP"].percents("HVAP"))))
+        f.write("\n")
+        f.write("\n")
+        f.write('HVAP over 40: '+  str(sum([x>.4 for x in sorted(initial_partition["HVAP"].percents("HVAP"))])))
+        h40.append(sum([x>.4 for x in sorted(initial_partition["HVAP"].percents("HVAP"))]))
+        f.write("\n")
+        f.write("\n")
+        f.write('HVAP over 45: '+  str(sum([x>.45 for x in sorted(initial_partition["HVAP"].percents("HVAP"))])))
+        h45.append(sum([x>.45 for x in sorted(initial_partition["HVAP"].percents("HVAP"))]))
+        f.write("\n")
+        f.write("\n")
+        f.write('HVAP over 50: '+  str(sum([x>.5 for x in sorted(initial_partition["HVAP"].percents("HVAP"))])))
+        h50.append(sum([x>.5 for x in sorted(initial_partition["HVAP"].percents("HVAP"))]))
+
+        f.write("\n")
+        f.write("\n")
         for elect in range(num_elections):
             tempvec = [x - 0.0369 for x in sorted(initial_partition[election_names[elect]].percents("Dem"))]
             f.write(election_names[elect] + "District Percentages" + str(tempvec))
@@ -188,7 +249,7 @@ for state_fips in indices:
          
             f.write("\n")
             f.write("\n")    
-    
+            """
             f.write(election_names[elect] + "Average Signed Dislocation :" + str(state_points["dislocate"].mean()))
          
             f.write("\n")
@@ -204,3 +265,45 @@ for state_fips in indices:
          
             f.write("\n")
             f.write("\n")
+            """
+            
+            bvap_dict[state_fips] = (b40[-1], b45[-1], b50[-1] )
+            hvap_dict[state_fips] = (h40[-1], h45[-1], h50[-1] )
+            
+            
+            
+with open(newdir + "BVAP_Comparison.txt", "w") as f:
+    temp = 0
+    f.write(f"State Name\t BVAP > 40 \t BVAP > 45 \t BVAP > 50")
+    f.write("\n")
+    f.write("\n")
+    
+    for state_fips in indices: 
+        
+        f.write(f"{names[temp]}:\t {b40[temp]} \t {b45[temp]} \t {b50[temp]}")
+        f.write("\n")
+        f.write("\n")
+        temp += 1
+
+
+
+with open(newdir + "HVAP_Comparison.txt", "w") as f:
+    temp = 0
+    f.write(f"State Name\t HVAP > 40 \t HVAP > 45 \t HVAP > 50")
+    f.write("\n")
+    f.write("\n")
+    for state_fips in indices: 
+        
+        f.write(f"{names[temp]}:\t {h40[temp]} \t {h45[temp]} \t {h50[temp]}")
+        f.write("\n")
+        f.write("\n")
+        temp += 1
+
+
+
+print(bvap_dict)
+
+print(hvap_dict)
+
+
+
