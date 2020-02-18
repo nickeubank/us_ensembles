@@ -7,7 +7,7 @@ from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
 from maup import assign
 from gerrychain.metrics import efficiency_gap, mean_median, partisan_bias, partisan_gini
-
+import networkx as nx
 indices=['01',
         '04',
         '05',
@@ -83,8 +83,16 @@ os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
 with open(newdir + "init.txt", "w") as f:
     f.write("Created Folder")
 
+b40 = []
+b45 = []
+b50 = []
+h40 = []
+h45 = []
+h50 = []
         
 for state_fips in indices:
+
+    names.append(state_names[state_fips])
 
     graph = Graph.from_json(f"../../20_intermediate_files/precinct_graphs/preseed/precinct_graphs_{state_fips}.json")
     #OLD VERSION ->Graph.from_json(f"../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed0.json")
@@ -92,7 +100,9 @@ for state_fips in indices:
     election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 
     for n in graph.nodes():
-        #print(graph.nodes[n])
+        if state_fips in ['06','12'] and n==0:
+            print(state_fips,nx.is_connected(graph),graph.nodes[n])
+            print(len(list(graph.neighbors(22065))))#(nx.degree(graph)[343])
         graph.nodes[n]["nBVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_BVAP"] 
         graph.nodes[n]["nHVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_HVAP"] 
 
@@ -246,3 +256,32 @@ for state_fips in indices:
             f.write("\n")
             f.write("\n")
             """
+            
+            
+            
+with open(newdir + "BVAP_Comparison.txt", "w") as f:
+    temp = 0
+    f.write(f"State Name\t BVAP > 40 \t BVAP > 45 \t BVAP > 50")
+    
+    for state_fips in indices: 
+        
+        f.write(f"{names[temp]}:\t {b40[temp]} \t {b45[temp]} \t {b50[temp]}")
+        temp += 1
+
+
+
+with open(newdir + "HVAP_Comparison.txt", "w") as f:
+    temp = 0
+    f.write(f"State Name\t HVAP > 40 \t HVAP > 45 \t HVAP > 50")
+    
+    for state_fips in indices: 
+        
+        f.write(f"{names[temp]}:\t {h40[temp]} \t {h45[temp]} \t {h50[temp]}")
+        temp += 1
+
+
+
+
+
+
+
