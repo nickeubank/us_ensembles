@@ -234,7 +234,7 @@ def VRAify_seeds(state_fips):
             hvec = sorted(partition["HVAP"].percents("HVAP"))
             
             if sum([x>percbound for x in bvec]) >= bbound:
-                if ([x>percbound for x in hvec]) >= hbound:
+                if sum([x>percbound for x in hvec]) >= hbound:
                     return True
             else:
                 return False
