@@ -307,7 +307,7 @@ def VRAify_seeds(state_fips):
         for node in graph.nodes():
             graph.nodes[node]['New_Seed'] = new_dict[node]
             
-        graph.to_json(f'../../20_intermediate_files/precinct_graphs/VRAseeds/precinct_graphs_{state_fip}_seed{seed_num}.json')  
+        graph.to_json(f'../../20_intermediate_files/precinct_graphs/VRAseeds/precinct_graphs_{state_fips}_seed{seed_num}.json')  
         
 
 from joblib import Parallel, delayed         
