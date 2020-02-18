@@ -220,7 +220,7 @@ def VRAify_seeds(state_fips,seed_num):
 
     initial_partition = Partition(
         graph,
-        assignment='New_Seed',
+        assignment='district',
         updaters={
             "cut_edges": cut_edges,
             "population": Tally("population", alias="population"),
@@ -238,11 +238,19 @@ def VRAify_seeds(state_fips,seed_num):
           
     print(state_fips, seed_num,  "B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP")),'\n')
     print(state_fips, seed_num,  "H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["HVAP"].percents("HVAP")),'\n')
+    
+    from gerrychain.constraints.contiguity import contiguous_components, contiguous
+    
+    print(contiguous(part))
+    
+    pop_test = within_percent_of_ideal_population(initial_partition, 0.01)
+    print(pop_test(part))
+    
     #print(part['population'])
             
 
                 
-VRAify_seeds('45',1)                
+VRAify_seeds('37',0)                
 
         
 
