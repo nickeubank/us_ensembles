@@ -90,6 +90,10 @@ b50 = []
 h40 = []
 h45 = []
 h50 = []
+
+bvap_dict = dict()
+
+hvap_dict = dict()
         
 for state_fips in indices:
 
@@ -263,6 +267,9 @@ for state_fips in indices:
             f.write("\n")
             """
             
+            bvap_dict[state_fips] = (b40[-1], b45[-1], b50[-1] )
+            hvap_dict[state_fips] = (h40[-1], h45[-1], h50[-1] )
+            
             
             
 with open(newdir + "BVAP_Comparison.txt", "w") as f:
@@ -294,7 +301,9 @@ with open(newdir + "HVAP_Comparison.txt", "w") as f:
 
 
 
+print(bvap_dict)
 
+print(hvap_dict)
 
 
 
