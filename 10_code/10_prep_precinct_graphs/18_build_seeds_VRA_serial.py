@@ -106,6 +106,7 @@ def grow_seeds(state_fips):
     
     
     for new_seed in range(3):
+        print('starting', state_fips, new_seed)
 
         if state_fips not in ['12', '06']:
             cddict =  recursive_tree_part(graph, range(num_districts), 
@@ -122,6 +123,7 @@ def grow_seeds(state_fips):
 
         graph.to_json(f'../../20_intermediate_files/precinct_graphs/seeded/'
                       f'precinct_graph_{state_fips}_seed{new_seed}.json')
+        print('finished', state_fips, new_seed)
 
 
 
