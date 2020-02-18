@@ -248,8 +248,8 @@ def VRAify_seeds(state_fips):
             if partition.parent is not None:
                 bvec = sorted(partition["BVAP"].percents("BVAP"))
                 hvec = sorted(partition["HVAP"].percents("HVAP"))            
-                parentbvec = sorted(partition["BVAP"].percents("BVAP"))
-                parenthvec = sorted(partition["HVAP"].percents("HVAP"))
+                parentbvec = sorted(partition.parent["BVAP"].percents("BVAP"))
+                parenthvec = sorted(partition.parent["HVAP"].percents("HVAP"))
                 
                 if bbound > 0:
                     if parentbvec[-bbound] > bvec[-bbound]:
@@ -311,7 +311,7 @@ def VRAify_seeds(state_fips):
         for node in graph.nodes():
             graph.nodes[node]['New_Seed'] = new_dict[node]
             
-        graph.to_json(f'../../20_intermediate_files/precinct_graphs/VRAseeds2/precinct_graph_{state_fips}_seed{seed_num}.json')  
+        graph.to_json(f'../../20_intermediate_files/precinct_graphs/VRAseeds3/precinct_graph_{state_fips}_seed{seed_num}.json')  
         
 
 from joblib import Parallel, delayed         
