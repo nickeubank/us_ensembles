@@ -59,7 +59,7 @@ fips_list = [
         '33',
         '34',
         '35',
-        #'36',
+        '36',
         '37',
         #'38',
         '39',
@@ -298,7 +298,7 @@ def VRAify_seeds(state_fips):
                 #print(part['population'])
                 
             if test_fun(part):
-                print(state_fips, seed_num, temp)
+                print(state_fips, seed_num, temp, sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound)
                 break
                 
                 
@@ -312,7 +312,7 @@ def VRAify_seeds(state_fips):
 
 from joblib import Parallel, delayed         
         
-n_jobs = 2
+n_jobs = 10
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(VRAify_seeds)(fips) for fips in fips_list)
