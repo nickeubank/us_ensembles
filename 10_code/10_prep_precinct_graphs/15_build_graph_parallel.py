@@ -40,7 +40,7 @@ def build_graphs(state_fips):
     gdf["C_Y"] = centroids.y
 
     # Convert to graph
-    graph = gc.Graph.from_geodataframe(gdf,ignore_errors =True)
+    graph = gc.Graph.from_geodataframe(gdf, ignore_errors =True)
 
     graph.add_data(gdf)
     totpop = sum(gdf['population'])
@@ -50,7 +50,10 @@ def build_graphs(state_fips):
     if state_fips in ['06', '12']:
         deg = pd.Series(dict(graph.degree()))
         deg = deg[deg > 40]
+
+        clean_gdf = gdf.copy()
         
+        # Check all lack data
         for i in deg.index:
             d = graph.nodes[i]['P2008_D']
             r = graph.nodes[i]['P2008_R']
@@ -58,12 +61,25 @@ def build_graphs(state_fips):
             # These crazy districts should
             # have no votes
             assert (r + d == 0)
-            
-            # OK to remove. 
-            # Doesn't re-number like
-            # igraph
-            graph.remove_node(i)
-    
+        
+        deg.loc[:] = 1
+        clean_gdf['probs'] = deg
+        clean_gdf = clean_gdf[clean_gdf.probs != 1]
+        clean_gdf = clean_gdf.drop('probs', axis='columns')
+        
+        assert len(clean_gdf) + len(deg) == len(gdf)
+        
+        # Convert to graph
+        graph = gc.Graph.from_geodataframe(clean_gdf, 
+                                           ignore_errors =True)
+
+        graph.add_data(clean_gdf)
+        totpop = sum(clean_gdf['population'])
+        num_districts = clean_gdf.district.nunique()
+        
+        deg = pd.Series(dict(graph.degree()))
+        assert (deg <= 40).all()
+
         
     ##########
     # First, deal with unconnected nodes
@@ -148,7 +164,7 @@ def build_graphs(state_fips):
 # Now run in parallel!
 #######
 
-results = (Parallel(n_jobs=8, verbose=10, backend='multiprocessing')
+results = (Parallel(n_jobs=2, verbose=10, backend='multiprocessing')
            (delayed(build_graphs)
            (fips) for fips in state_fips_codes)
           )
