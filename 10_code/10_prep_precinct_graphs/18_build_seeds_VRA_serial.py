@@ -91,7 +91,7 @@ from gerrychain.constraints.contiguity import contiguous_components, contiguous
 
 def grow_seeds(state_fips):
 
-    graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/preseed'
+    graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/preseed/'
                             f'precinct_graphs_{state_fips}.json')
                             
     totpop = 0
@@ -120,7 +120,7 @@ def grow_seeds(state_fips):
             graph.nodes[node]['New_Seed'] = cddict[node]
 
 
-        graph.to_json(f'../../20_intermediate_files/precinct_graphs/seeded'
+        graph.to_json(f'../../20_intermediate_files/precinct_graphs/seeded/'
                       f'precinct_graph_{state_fips}_seed{new_seed}.json')
 
 
