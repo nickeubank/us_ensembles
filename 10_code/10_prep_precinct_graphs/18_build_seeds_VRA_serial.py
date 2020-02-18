@@ -85,12 +85,26 @@ state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 from gerrychain import Graph
 from gerrychain.constraints.contiguity import contiguous_components, contiguous
 
-graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/preseed'
-                        f'precinct_graphs_{state_fips}.json')
+
 
 
 
 def grow_seeds(state_fips):
+
+    graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/preseed'
+                            f'precinct_graphs_{state_fips}.json')
+                            
+    totpop = 0
+    dists = set()
+    for n in graph.nodes():
+        totpop += graph.nodes[n]["population"]
+        dists.add(graph.nodes[n]["district"])
+
+    num_districts = len(dists)
+    
+    print(state_names[state_fips], num_districts)
+    
+    
     for new_seed in range(3):
 
         if state_fips not in ['12', '06']:
@@ -106,7 +120,7 @@ def grow_seeds(state_fips):
             graph.nodes[node]['New_Seed'] = cddict[node]
 
 
-        graph.to_json(f'../../20_intermediate_files/precinct_graphs/'
+        graph.to_json(f'../../20_intermediate_files/precinct_graphs/seeded'
                       f'precinct_graph_{state_fips}_seed{new_seed}.json')
 
 
