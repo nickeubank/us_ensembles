@@ -295,12 +295,12 @@ def VRAify_seeds(state_fips):
             temp += 1
             if temp %100 == 0: 
                 print(state_fips, seed_num, temp,"B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP"))[-bbound],'\n')
-                print(state_fips, seed_num, temp,"H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["BVAP"].percents("BVAP"))[-bbound],'\n')
+                print(state_fips, seed_num, temp,"H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["HVAP"].percents("HVAP"))[-hbound],'\n')
                 #print(part['population'])
                 
             if test_fun(part):
                 print(state_fips, seed_num, temp,"B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP"))[-bbound],'\n')
-                print(state_fips, seed_num, temp,"H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["BVAP"].percents("BVAP"))[-bbound],'\n')
+                print(state_fips, seed_num, temp,"H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["HVAP"].percents("HVAP"))[-hbound],'\n')
                 break
                 
                 
@@ -314,7 +314,7 @@ def VRAify_seeds(state_fips):
 
 from joblib import Parallel, delayed         
         
-n_jobs = 10
+n_jobs = 16
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(VRAify_seeds)(fips) for fips in fips_list)
