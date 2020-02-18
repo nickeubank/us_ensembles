@@ -220,7 +220,7 @@ def VRAify_seeds(state_fips):
 
         initial_partition = Partition(
             graph,
-            assignment='district',
+            assignment='New_Seed',
             updaters={
                 "cut_edges": cut_edges,
                 "population": Tally("population", alias="population"),
