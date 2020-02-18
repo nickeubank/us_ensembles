@@ -268,10 +268,14 @@ for state_fips in indices:
 with open(newdir + "BVAP_Comparison.txt", "w") as f:
     temp = 0
     f.write(f"State Name\t BVAP > 40 \t BVAP > 45 \t BVAP > 50")
+    f.write("\n")
+    f.write("\n")
     
     for state_fips in indices: 
         
         f.write(f"{names[temp]}:\t {b40[temp]} \t {b45[temp]} \t {b50[temp]}")
+        f.write("\n")
+        f.write("\n")
         temp += 1
 
 
@@ -279,10 +283,13 @@ with open(newdir + "BVAP_Comparison.txt", "w") as f:
 with open(newdir + "HVAP_Comparison.txt", "w") as f:
     temp = 0
     f.write(f"State Name\t HVAP > 40 \t HVAP > 45 \t HVAP > 50")
-    
+    f.write("\n")
+    f.write("\n")
     for state_fips in indices: 
         
         f.write(f"{names[temp]}:\t {h40[temp]} \t {h45[temp]} \t {h50[temp]}")
+        f.write("\n")
+        f.write("\n")
         temp += 1
 
 
