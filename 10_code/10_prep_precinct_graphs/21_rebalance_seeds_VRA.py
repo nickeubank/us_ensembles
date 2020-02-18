@@ -244,9 +244,10 @@ def VRAify_seeds(state_fips):
             
         graph.to_json(f'../../20_intermediate_files/precinct_graphs/VRAseeds/precinct_graphs_{state_fip}_seed{seed_num}.json')  
         
-          
+
+from joblib import Parallel, delayed         
         
-n_jobs = 10
+n_jobs = 2
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(grow_seeds)(fips) for fips in fips_list)
