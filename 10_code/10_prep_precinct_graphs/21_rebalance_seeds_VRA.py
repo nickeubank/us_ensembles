@@ -315,6 +315,6 @@ from joblib import Parallel, delayed
 n_jobs = 2
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
-           (delayed(grow_seeds)(fips) for fips in fips_list)
+           (delayed(VRAify_seeds)(fips) for fips in fips_list)
           )
 
