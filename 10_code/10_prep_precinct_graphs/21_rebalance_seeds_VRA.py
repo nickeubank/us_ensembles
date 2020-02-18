@@ -298,7 +298,7 @@ def VRAify_seeds(state_fips):
                 #print(part['population'])
                 
             if test_fun(part):
-                print(temp)
+                print(state_fips, seed_num, temp)
                 break
                 
                 
