@@ -257,7 +257,7 @@ def VRAify_seeds(state_fips):
                         
                         
                 if hbound > 0:
-                    if parenthvec[-hbound] > hvec[hbound]:
+                    if parenthvec[-hbound] > hvec[-hbound]:
                         bound = 0
                         
             return bound
