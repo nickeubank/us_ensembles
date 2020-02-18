@@ -23,9 +23,74 @@ from gerrychain import Graph
 from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
 
-state_fip = '06'
+#state_fip = '06'
 
-seed_num = '2'
+#seed_num = '2'
+
+
+fips_list = [
+        '01',
+        #'02',
+        '04',
+        '05',
+        #'06',
+        '08',
+        '09',
+        #'10',
+        #'12',
+        '13',
+        '16',
+        '17',
+        '18',
+        '19',
+        '20',
+        '21',
+        '22',
+        '23',
+        '24',
+        '25',
+        '26',
+        '27',
+        '28',
+        '29',
+        #'30',
+        '31',
+        '32',
+        '33',
+        '34',
+        '35',
+        #'36',
+        '37',
+        #'38',
+        '39',
+        '40',
+        '42',
+        '44',
+        '45',
+        #'46',
+        '47',
+        '48',
+        '49',
+        #'50',
+        '51',
+        '53',
+        '54',
+        '55',
+        #'56'
+             ]
+
+state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
+"06":"California","08":"Colorado","09":"Connecticut","10":"Delaware",
+"12":"Florida","13":"Georgia","66":"Guam","15":"Hawaii","19":"Iowa",
+"16":"Idaho","17":"Illinois","18":"Indiana","20":"Kansas","21":"Kentucky",
+"22":"Louisiana","25":"Massachusetts","24":"Maryland","23":"Maine","26":"Michigan",
+"27":"Minnesota","29":"Missouri","28":"Mississippi","30":"Montana",
+"37":"North_Carolina","38":"North_Dakota","31":"Nebraska","33":"New_Hampshire",
+"34":"New_Jersey","35":"New_Mexico","32":"Nevada","36":"New_York","39":"Ohio",
+"40":"Oklahoma","41":"Oregon","42":"Pennsylvania","72":"Puerto_Rico",
+"44":"Rhode_Island","45":"South_Carolina","46":"South_Dakota","47":"Tennessee",
+"48":"Texas","49":"Utah","51":"Virginia","50":"Vermont","53":"Washington",
+"55":"Wisconsin","54":"West_Virginia","56":"Wyoming"}
 
 
 bvap_dict = {'01': (1, 1, 1), '04': (0, 0, 0), '05': (0, 0, 0), '08': (0, 0, 0), '09': (0, 0, 0), '13': (4, 4, 3), '16': (0, 0, 0), '17': (3, 3, 2), '18': (0, 0, 0), '19': (0, 0, 0), '20': (0, 0, 0), '21': (0, 0, 0), '22': (1, 1, 1), '23': (0, 0, 0), '24': (2, 2, 2), '25': (0, 0, 0), '26': (2, 2, 2), '27': (0, 0, 0), '28': (1, 1, 1), '29': (1, 1, 0), '31': (0, 0, 0), '32': (0, 0, 0), '33': (0, 0, 0), '34': (1, 1, 1), '35': (0, 0, 0), '36': (3, 3, 3), '37': (2, 2, 1), '39': (1, 1, 1), '40': (0, 0, 0), '42': (1, 1, 1), '44': (0, 0, 0), '45': (1, 1, 1), '47': (1, 1, 1), '48': (2, 0, 0), '49': (0, 0, 0), '51': (1, 1, 1), '53': (0, 0, 0), '54': (0, 0, 0), '55': (0, 0, 0)}
