@@ -287,18 +287,20 @@ def VRAify_seeds(state_fips):
 
         #test_fun = within_percent_of_ideal_population(initial_partition, 0.05)
 
-        pos = {node:(float(graph.nodes[node]['C_X']), float(graph.nodes[node]['C_Y'])) for node in graph.nodes}
+
 
 
         temp = 0
         for part in chain:
             temp += 1
             if temp %100 == 0: 
-                print(state_fips, seed_num, temp)
+                print(state_fips, seed_num, temp,"B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP"))[-bbound],'\n')
+                print(state_fips, seed_num, temp,"H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["BVAP"].percents("BVAP"))[-bbound],'\n')
                 #print(part['population'])
                 
             if test_fun(part):
-                print(state_fips, seed_num, temp, sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound)
+                print(state_fips, seed_num, temp,"B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP"))[-bbound],'\n')
+                print(state_fips, seed_num, temp,"H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["BVAP"].percents("BVAP"))[-bbound],'\n')
                 break
                 
                 
@@ -307,7 +309,7 @@ def VRAify_seeds(state_fips):
         for node in graph.nodes():
             graph.nodes[node]['New_Seed'] = new_dict[node]
             
-        graph.to_json(f'../../20_intermediate_files/precinct_graphs/VRAseeds/precinct_graph_{state_fips}_seed{seed_num}.json')  
+        graph.to_json(f'../../20_intermediate_files/precinct_graphs/VRAseeds2/precinct_graph_{state_fips}_seed{seed_num}.json')  
         
 
 from joblib import Parallel, delayed         
