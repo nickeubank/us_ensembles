@@ -27,20 +27,15 @@ state_fip = '06'
 
 seed_num = '2'
 
-# Ignore errors: some overlap issues, but shouldn't matter for adjacency
-graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fip}_seed{seed_num}.json')
+
+bvap_dict = {'01': (1, 1, 1), '04': (0, 0, 0), '05': (0, 0, 0), '08': (0, 0, 0), '09': (0, 0, 0), '13': (4, 4, 3), '16': (0, 0, 0), '17': (3, 3, 2), '18': (0, 0, 0), '19': (0, 0, 0), '20': (0, 0, 0), '21': (0, 0, 0), '22': (1, 1, 1), '23': (0, 0, 0), '24': (2, 2, 2), '25': (0, 0, 0), '26': (2, 2, 2), '27': (0, 0, 0), '28': (1, 1, 1), '29': (1, 1, 0), '31': (0, 0, 0), '32': (0, 0, 0), '33': (0, 0, 0), '34': (1, 1, 1), '35': (0, 0, 0), '36': (3, 3, 3), '37': (2, 2, 1), '39': (1, 1, 1), '40': (0, 0, 0), '42': (1, 1, 1), '44': (0, 0, 0), '45': (1, 1, 1), '47': (1, 1, 1), '48': (2, 0, 0), '49': (0, 0, 0), '51': (1, 1, 1), '53': (0, 0, 0), '54': (0, 0, 0), '55': (0, 0, 0)}
+hvap_dice = {'01': (0, 0, 0), '04': (2, 2, 2), '05': (0, 0, 0), '08': (0, 0, 0), '09': (0, 0, 0), '13': (0, 0, 0), '16': (0, 0, 0), '17': (1, 1, 1), '18': (0, 0, 0), '19': (0, 0, 0), '20': (0, 0, 0), '21': (0, 0, 0), '22': (0, 0, 0), '23': (0, 0, 0), '24': (0, 0, 0), '25': (0, 0, 0), '26': (0, 0, 0), '27': (0, 0, 0), '28': (0, 0, 0), '29': (0, 0, 0), '31': (0, 0, 0), '32': (0, 0, 0), '33': (0, 0, 0), '34': (1, 1, 1), '35': (2, 1, 0), '36': (4, 2, 2), '37': (0, 0, 0), '39': (0, 0, 0), '40': (0, 0, 0), '42': (0, 0, 0), '44': (0, 0, 0), '45': (0, 0, 0), '47': (0, 0, 0), '48': (10, 10, 9), '49': (0, 0, 0), '51': (0, 0, 0), '53': (0, 0, 0), '54': (0, 0, 0), '55': (0, 0, 0)}
+
+
+seed2bound = {0: .4, 1: .45, 2: .5}
 
 
 
-
-initial_partition = Partition(
-    graph,
-    assignment='New_Seed',
-    updaters={
-        "cut_edges": cut_edges,
-        "population": Tally("population", alias="population"),
-    }
-)
 
 from gerrychain.tree import recursive_tree_part, bipartition_tree_random, PopulatedGraph,contract_leaves_until_balanced_or_none,find_balanced_edge_cuts
 
@@ -132,50 +127,128 @@ from gerrychain.accept import always_accept
 from gerrychain.metrics import efficiency_gap, mean_median, partisan_bias, partisan_gini
 from gerrychain.proposals import recom
 
-election_names = ["PRES2008"]
-num_elections = 1 
+def VRAify_seeds(state_fips):
 
-ideal_population = sum(initial_partition["population"].values()) / len(
-    initial_partition
-)
 
-proposal = partial(
-    recom, pop_col="population", pop_target=ideal_population, epsilon=0.01, node_repeats=1, method =my_uu_bipartition_tree_random)
+    for seed_num in range(3):
     
-
-chain = MarkovChain(
-    proposal=proposal,
-    constraints=[within_percent_of_ideal_population(initial_partition, 0.6)],
-    accept=always_accept,
-    initial_state=initial_partition,
-    total_steps=100000
-)
-
-test_fun = within_percent_of_ideal_population(initial_partition, 0.05)
-
-pos = {node:(float(graph.nodes[node]['C_X']), float(graph.nodes[node]['C_Y'])) for node in graph.nodes}
-
-
-temp = 0
-for part in chain:
-    temp += 1
-    if temp %100 == 0: 
-        print(temp)
-        print(part['population'])
+        bbound = bvap_dict[state_fips][seed_num]
+        hbound = hvap_dict[state_fips][seed_num]
         
-    if test_fun(part):
-        print(temp)
-        break
+        percbound = seed2bound[seed_num]
+        
+
+        graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/seeded/precinct_graphs_{state_fip}_seed{seed_num}.json')
         
         
-new_dict = dict(part.assignment)
 
-for node in graph.nodes():
-    graph.nodes[node]['New_Seed'] = new_dict[node]
-    
-graph.to_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fip}_newseed{seed_num}.json')  
-    
+        for n in graph.nodes():
+            #if state_fips in ['06','12'] and n==0:
+            #    print(state_fips,nx.is_connected(graph),graph.nodes[n])
+            #    print(len(list(graph.neighbors(22065))))#(nx.degree(graph)[343])
+            graph.nodes[n]["nBVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_BVAP"] 
+            graph.nodes[n]["nHVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_HVAP"] 
+
+        electionbvap = Election("BVAP", {"BVAP": "pop_BVAP", "nBVAP": "nBVAP"})
+
+        electionhvap = Election("HVAP", {"HVAP": "pop_HVAP", "nHVAP": "nHVAP"})
+
+        initial_partition = Partition(
+            graph,
+            assignment='district',
+            updaters={
+                "cut_edges": cut_edges,
+                "population": Tally("population", alias="population"),
+                "BVAP" : electionbvap,
+                "HVAP" : electionhvap
+            }
+        ) 
+        
+        def test_fun(partition):
+            bvec = sorted(partition["BVAP"].percents("BVAP"))
+            hvec = sorted(partition["HVAP"].percents("HVAP"))
+            
+            if sum([x>percbound for x in bvec]) >= bbound:
+                if ([x>percbound for x in hvec]) >= hbound:
+                    return True
+            else:
+                return False
+                
+        def vra_accept(partition):
+        
+
+            
+            bound = 1
+            
+            if partition.parent is not None:
+                bvec = sorted(partition["BVAP"].percents("BVAP"))
+                hvec = sorted(partition["HVAP"].percents("HVAP"))            
+                parentbvec = sorted(partition["BVAP"].percents("BVAP"))
+                parenthvec = sorted(partition["HVAP"].percents("HVAP"))
+                
+                if bbound > 0:
+                    if parentbvec[-bbound] > bvec[-bbound]:
+                        bound = 0
+                        
+                        
+                if hbound > 0:
+                    if parenthvec[-hbound] > hvec[hbound]:
+                        bound = 0
+                        
+            return bound
+                                        
+        
+        
+            
+                
+        
+        
+
+        ideal_population = sum(initial_partition["population"].values()) / len(
+            initial_partition
+        )
+
+        proposal = partial(
+            recom, pop_col="population", pop_target=ideal_population, epsilon=0.01, node_repeats=1, method =my_uu_bipartition_tree_random)
+            
+
+        chain = MarkovChain(
+            proposal=proposal,
+            constraints=[within_percent_of_ideal_population(initial_partition, 0.1)],
+            accept=vra_accept,
+            initial_state=initial_partition,
+            total_steps=100000
+        )
+
+        #test_fun = within_percent_of_ideal_population(initial_partition, 0.05)
+
+        pos = {node:(float(graph.nodes[node]['C_X']), float(graph.nodes[node]['C_Y'])) for node in graph.nodes}
+
+
+        temp = 0
+        for part in chain:
+            temp += 1
+            if temp %100 == 0: 
+                print(state_fips, seed_num, temp)
+                #print(part['population'])
+                
+            if test_fun(part):
+                print(temp)
+                break
+                
+                
+        new_dict = dict(part.assignment)
+
+        for node in graph.nodes():
+            graph.nodes[node]['New_Seed'] = new_dict[node]
+            
+        graph.to_json(f'../../20_intermediate_files/precinct_graphs/VRAseeds/precinct_graphs_{state_fip}_seed{seed_num}.json')  
+        
           
         
+n_jobs = 10
 
+results = (Parallel(n_jobs=n_jobs, verbose=10)
+           (delayed(grow_seeds)(fips) for fips in fips_list)
+          )
 
