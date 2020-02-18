@@ -279,11 +279,13 @@ def VRAify_seeds(state_fips):
 
         chain = MarkovChain(
             proposal=proposal,
-            constraints=[within_percent_of_ideal_population(initial_partition, 0.1)],
+            constraints=[within_percent_of_ideal_population(initial_partition, 0.01)],
             accept=vra_accept,
             initial_state=initial_partition,
             total_steps=100000
         )
+        
+        
 
         #test_fun = within_percent_of_ideal_population(initial_partition, 0.05)
 
@@ -294,13 +296,13 @@ def VRAify_seeds(state_fips):
         for part in chain:
             temp += 1
             if temp %100 == 0: 
-                print(state_fips, seed_num, temp,"B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP"))[-bbound],'\n')
-                print(state_fips, seed_num, temp,"H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["HVAP"].percents("HVAP"))[-hbound],'\n')
+                print(state_fips, seed_num, temp,"B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP"))[-bbound:],'\n')
+                print(state_fips, seed_num, temp,"H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["HVAP"].percents("HVAP"))[-hbound:],'\n')
                 #print(part['population'])
                 
             if test_fun(part):
-                print(state_fips, seed_num, temp,"B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP"))[-bbound],'\n')
-                print(state_fips, seed_num, temp,"H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["HVAP"].percents("HVAP"))[-hbound],'\n')
+                print(state_fips, seed_num, temp,"B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP"))[-bbound:],'\n')
+                print(state_fips, seed_num, temp,"H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["HVAP"].percents("HVAP"))[-hbound:],'\n')
                 break
                 
                 
