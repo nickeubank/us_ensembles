@@ -115,9 +115,9 @@ def build_graphs(state_fips):
 
     # Make sure index is rows. 
     # Should happen naturally, but one can never be too sure!
-    gdf = gdf.reset_index(drop=False)
-    assert (gdf.index == gdf['index']).all()
-    gdf = gdf.drop('index', axis='columns')
+    #gdf = gdf.reset_index(drop=False)
+    #assert (gdf.index == gdf['index']).all()
+    #gdf = gdf.drop('index', axis='columns')
 
 
     # Let's do some connecting! :)
