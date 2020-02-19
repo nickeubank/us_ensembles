@@ -187,7 +187,7 @@ def my_uu_bipartition_tree_random(
 
 
 inputs = [('34',2),('39',2),('37',0),('37',1),('37',2)]
-inputs = [('37',2),('37',1),('37',0)]
+inputs = [('37',2),('37',1)]
 #inputs = [('06',2),('06',1),('06',0)]
 
 from gerrychain import MarkovChain
@@ -320,7 +320,7 @@ def VRAify_seeds(fips_seed):
         temp = 0
         for part in chain:
             temp += 1
-            if temp %100 == 0: 
+            if temp %10 == 0: 
                 print(fips_seed[0], fips_seed[1], temp,"B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP"))[-bbound:],'\n')
                 print(fips_seed[0], fips_seed[1], temp,"H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["HVAP"].percents("HVAP"))[-hbound:],'\n')
                 #print(part['population'])
@@ -341,7 +341,7 @@ def VRAify_seeds(fips_seed):
 
 from joblib import Parallel, delayed         
         
-n_jobs = 3
+n_jobs = 2
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(VRAify_seeds)(fips_seed) for fips_seed in inputs)
