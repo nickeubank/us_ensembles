@@ -197,16 +197,17 @@ def VRAify_seeds(state_fips,seed_num):
 
 
 
-    bbound = bvap_dict[state_fips][seed_num]
-    hbound = hvap_dict[state_fips][seed_num]
+    #bbound = bvap_dict[state_fips][seed_num]
+    #hbound = hvap_dict[state_fips][seed_num]
     
-    percbound = seed2bound[seed_num]
-    
-
-    graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/seeded/precinct_graph_{state_fips}_seed{seed_num}.json')
-    
+    #percbound = seed2bound[seed_num]
     
 
+    graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/preseed/precinct_graphs_{state_fips}_copied.json')#_seed{seed_num}.json')
+    
+    
+    print(len(list(graph.neighbors(22065))))
+    print( graph.nodes[22065] )
     for n in graph.nodes():
         #if state_fips in ['06','12'] and n==0:
         #    print(state_fips,nx.is_connected(graph),graph.nodes[n])
@@ -220,7 +221,7 @@ def VRAify_seeds(state_fips,seed_num):
 
     initial_partition = Partition(
         graph,
-        assignment='New_Seed',
+        assignment='district',
         updaters={
             "cut_edges": cut_edges,
             "population": Tally("population", alias="population"),
@@ -253,7 +254,7 @@ def VRAify_seeds(state_fips,seed_num):
             
 #,(718940.0335368967, 733464.0746184502))
                 
-VRAify_seeds('25',0)                
+VRAify_seeds('06',0)                
 
         
 
