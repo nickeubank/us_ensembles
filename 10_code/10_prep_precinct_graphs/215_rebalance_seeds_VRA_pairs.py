@@ -195,7 +195,7 @@ from gerrychain.accept import always_accept
 from gerrychain.metrics import efficiency_gap, mean_median, partisan_bias, partisan_gini
 from gerrychain.proposals import recom
 
-def VRAify_seeds(fip_seed):
+def VRAify_seeds(fips_seed):
 
 
     for iteration in range(1):
