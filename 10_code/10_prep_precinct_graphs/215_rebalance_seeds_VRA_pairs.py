@@ -185,7 +185,8 @@ def my_uu_bipartition_tree_random(
 ############
 
 
-inputs = [('34',2),('39',2),('54',2),('37',0),('37',1),('37',2),('25',0)]
+inputs = [('34',2),('39',2),('37',0),('37',1),('37',2)]
+inputs = [('54',2)]
 
 
 from gerrychain import MarkovChain
@@ -269,7 +270,9 @@ def VRAify_seeds(fips_seed):
         
             
                 
+        doesitwork = within_percent_of_ideal_population(initial_partition, 0.01)
         
+        print(initial_partition['population'].values())
         
 
         ideal_population = sum(initial_partition["population"].values()) / len(
@@ -319,7 +322,7 @@ def VRAify_seeds(fips_seed):
 
 from joblib import Parallel, delayed         
         
-n_jobs = 10
+n_jobs = 1
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(VRAify_seeds)(fips_seed) for fips_seed in inputs)

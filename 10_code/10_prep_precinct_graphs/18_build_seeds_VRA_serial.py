@@ -68,6 +68,8 @@ fips_list = [
 
 fips_list = ['06','12']
 
+fips_list = ['54']
+
 state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "06":"California","08":"Colorado","09":"Connecticut","10":"Delaware",
 "12":"Florida","13":"Georgia","66":"Guam","15":"Hawaii","19":"Iowa",
@@ -109,7 +111,7 @@ def grow_seeds(state_fips):
     print(state_names[state_fips], num_districts)
     
     
-    for new_seed in range(3):
+    for new_seed in [2]:#range(3):
         print('starting', state_fips, new_seed)
 
         if state_fips not in ['12', '06']:
@@ -131,7 +133,7 @@ def grow_seeds(state_fips):
 
 
 
-n_jobs = 2
+n_jobs = 1
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(grow_seeds)(fips) for fips in fips_list)
