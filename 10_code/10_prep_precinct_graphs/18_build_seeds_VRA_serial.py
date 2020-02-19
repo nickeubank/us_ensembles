@@ -66,6 +66,8 @@ fips_list = [
         #'56'
              ]
 
+fips_list = ['06','12']
+
 state_names={"02":"Alaska","01":"Alabama","05":"Arkansas","04":"Arizona",
 "06":"California","08":"Colorado","09":"Connecticut","10":"Delaware",
 "12":"Florida","13":"Georgia","66":"Guam","15":"Hawaii","19":"Iowa",
@@ -111,9 +113,9 @@ def grow_seeds(state_fips):
         if state_fips not in ['12', '06']:
             cddict =  recursive_tree_part(graph, range(num_districts), 
                                               totpop / num_districts, "population", .01, 1)
-        #else: 
-        #    cddict =  recursive_tree_part(graph, range(num_districts), 
-        #                                      totpop / num_districts, "population", .05, 1)
+        else: 
+            cddict =  recursive_tree_part(graph, range(num_districts), 
+                                              totpop / num_districts, "population", .01, 1)
 
                 
 
@@ -127,7 +129,7 @@ def grow_seeds(state_fips):
 
 
 
-n_jobs = 10
+n_jobs = 2
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(grow_seeds)(fips) for fips in fips_list)
