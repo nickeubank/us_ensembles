@@ -198,33 +198,55 @@ def VRAify_seeds(state_fips,seed_num):
 
 
 
-    #bbound = bvap_dict[state_fips][seed_num]
-    #hbound = hvap_dict[state_fips][seed_num]
-    #percbound = seed2bound[seed_num]
+    bbound = bvap_dict[state_fips][seed_num]
+    hbound = hvap_dict[state_fips][seed_num]
+    percbound = seed2bound[seed_num]
     
 
     graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/preseed/precinct_graphs_{state_fips}.json')#_seed{seed_num}.json')
     
-    #nx.draw(graph, pos = {n:(graph.nodes[n]['C_X'],graph.nodes[n]['C_Y']) for n in graph.nodes()}, node_size = 5)
-    #plt.show()
+    nx.draw(graph, pos = {n:(graph.nodes[n]['C_X'],graph.nodes[n]['C_Y']) for n in graph.nodes()}, node_color = [graph.nodes[n]['district'] for n in graph.nodes()], node_size = 25,cmap='tab20')
+    plt.show()
     #print(len(list(graph.neighbors(22065))))
     #print( graph.nodes[22065] )
     for n in graph.nodes():
-        if int(graph.nodes[n]['OBJECTID'] in [138165, 136321, 136319,136312]:
+        if int(graph.nodes[n]['OBJECTID']) in [138165, 136321, 136319,136312]:
             graph.nodes[n]['district'] = 293
-        if int(graph.nodes[n]['OBJECTID'] in [138121, 136672,136673,136669]:
+            print('yes')
+        if int(graph.nodes[n]['OBJECTID']) in [138121, 136672,136673,136669]:
             graph.nodes[n]['district'] = 289
-            
+            print('yes')
+        if int(graph.nodes[n]['OBJECTID']) in [138819]:
+            graph.nodes[n]['district'] = 297
+            print('yes')
+        if int(graph.nodes[n]['OBJECTID']) in [137576]:
+            graph.nodes[n]['district'] = 295
+            print('yes')
+        if int(graph.nodes[n]['OBJECTID']) in [136607]:
+            graph.nodes[n]['district'] = 294
+            print('yes')
+        if int(graph.nodes[n]['OBJECTID']) in [137199]:
+            graph.nodes[n]['district'] = 301
+            print('yes')                        
         #if state_fips in ['06','12'] and n==0:
         #    print(state_fips,nx.is_connected(graph),graph.nodes[n])
         #    print(len(list(graph.neighbors(22065))))#(nx.degree(graph)[343])
         graph.nodes[n]["nBVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_BVAP"] 
         graph.nodes[n]["nHVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_HVAP"] 
-
+    
+    graph.add_edge(831,840)
+    graph.add_edge(643,1402)
+    
+    graph[831][840]['shared_perim']=0 
+    graph[643][1402]['shared_perim']=0
+    
     electionbvap = Election("BVAP", {"BVAP": "pop_BVAP", "nBVAP": "nBVAP"})
 
     electionhvap = Election("HVAP", {"HVAP": "pop_HVAP", "nHVAP": "nHVAP"})
 
+    nx.draw(graph, pos = {n:(graph.nodes[n]['C_X'],graph.nodes[n]['C_Y']) for n in graph.nodes()}, node_color = [graph.nodes[n]['district'] for n in graph.nodes()], node_size = 25,with_labels=False,cmap='tab20')
+    plt.show()
+    
     initial_partition = Partition(
         graph,
         assignment='district',
@@ -249,9 +271,9 @@ def VRAify_seeds(state_fips,seed_num):
     from gerrychain.constraints.contiguity import contiguous_components, contiguous
     
     print(contiguous(part))
-    print([f"{x}\n" for x in contiguous_components(part).values()])
+    print([f"{x}\n" for x in contiguous_components(part)])#.values()])
     
-    pop_test = within_percent_of_ideal_population(initial_partition, 0.01)
+    pop_test = within_percent_of_ideal_population(initial_partition, 0.05)
     print(pop_test(part))
     
     print(part['population'].values())

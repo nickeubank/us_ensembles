@@ -16,7 +16,7 @@ from joblib import Parallel, delayed
 f='../../20_intermediate_files/sequential_to_fips.pickle'
 state_fips_codes = list(pickle.load(open(f, "rb" )).values())
 state_fips_codes = [i for i in state_fips_codes if i not in ['12', '06']]
-state_fips_codes = ['06', '12']
+state_fips_codes = ['06']
 
 ##########
 # Find nearest gaps and connect
@@ -136,7 +136,7 @@ def build_graphs(state_fips):
         trying_union = trying_to_connect.geometry.unary_union
         distances = others.distance(trying_union).sort_values(ascending=True)
 
-        acceptance_distance = distances.iloc[0] * 1.05
+        acceptance_distance = distances.iloc[0] * 1.1#changed for CA #1.05
         to_match = distances[distances <= acceptance_distance].index.tolist()
 
         # Now find precincts in original component close to those precincts
@@ -145,7 +145,7 @@ def build_graphs(state_fips):
             distances = trying_to_connect.distance(others.loc[match, 'geometry'])
             distances = distances.sort_values(ascending=True)
 
-            acceptance_distance = distances.iloc[0] * 1.05
+            acceptance_distance = distances.iloc[0] * 1.1#changed for CA #1.05
             to_connect = distances[distances <= acceptance_distance].index.tolist()
 
             for close in to_connect: 
@@ -166,7 +166,7 @@ def build_graphs(state_fips):
 # Now run in parallel!
 #######
 
-results = (Parallel(n_jobs=2, verbose=10, backend='multiprocessing')
+results = (Parallel(n_jobs=1, verbose=10, backend='multiprocessing')
            (delayed(build_graphs)
            (fips) for fips in state_fips_codes)
           )

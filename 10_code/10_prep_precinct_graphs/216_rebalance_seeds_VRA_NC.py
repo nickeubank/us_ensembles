@@ -187,7 +187,7 @@ def my_uu_bipartition_tree_random(
 
 
 inputs = [('34',2),('39',2),('37',0),('37',1),('37',2)]
-inputs = [('12',2),('12',1),('12',0)]
+inputs = [('37',2),('37',1),('37',0)]
 #inputs = [('06',2),('06',1),('06',0)]
 
 from gerrychain import MarkovChain
@@ -213,6 +213,24 @@ def VRAify_seeds(fips_seed):
         
 
         for n in graph.nodes():
+            if int(graph.nodes[n]['OBJECTID']) in [138165, 136321, 136319,136312]:
+                graph.nodes[n]['district'] = 293
+                print('yes')
+            if int(graph.nodes[n]['OBJECTID']) in [138121, 136672,136673,136669]:
+                graph.nodes[n]['district'] = 289
+                print('yes')
+            if int(graph.nodes[n]['OBJECTID']) in [138819]:
+                graph.nodes[n]['district'] = 297
+                print('yes')
+            if int(graph.nodes[n]['OBJECTID']) in [137576]:
+                graph.nodes[n]['district'] = 295
+                print('yes')
+            if int(graph.nodes[n]['OBJECTID']) in [136607]:
+                graph.nodes[n]['district'] = 294
+                print('yes')
+            if int(graph.nodes[n]['OBJECTID']) in [137199]:
+                graph.nodes[n]['district'] = 301
+                print('yes')                        
             #if state_fips in ['06','12'] and n==0:
             #    print(state_fips,nx.is_connected(graph),graph.nodes[n])
             #    print(len(list(graph.neighbors(22065))))#(nx.degree(graph)[343])
@@ -225,7 +243,7 @@ def VRAify_seeds(fips_seed):
 
         initial_partition = Partition(
             graph,
-            assignment='New_Seed',
+            assignment='district',
             updaters={
                 "cut_edges": cut_edges,
                 "population": Tally("population", alias="population"),
@@ -281,20 +299,20 @@ def VRAify_seeds(fips_seed):
         )
 
         proposal = partial(
-            recom, pop_col="population", pop_target=ideal_population, epsilon=0.01, node_repeats=1, method =my_uu_bipartition_tree_random)
+            recom, pop_col="population", pop_target=ideal_population, epsilon=0.005, node_repeats=1, method =my_uu_bipartition_tree_random)
             
 
         chain = MarkovChain(
             proposal=proposal,
-            constraints=[within_percent_of_ideal_population(initial_partition, 0.01)],
-            accept=vra_accept,
+            constraints=[within_percent_of_ideal_population(initial_partition, 0.05), test_fun],
+            accept=always_accept,
             initial_state=initial_partition,
             total_steps=100000
         )
         
         
 
-        #test_fun = within_percent_of_ideal_population(initial_partition, 0.05)
+        pop_fun = within_percent_of_ideal_population(initial_partition, 0.01)
 
 
 
@@ -307,7 +325,7 @@ def VRAify_seeds(fips_seed):
                 print(fips_seed[0], fips_seed[1], temp,"H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["HVAP"].percents("HVAP"))[-hbound:],'\n')
                 #print(part['population'])
                 
-            if test_fun(part):
+            if pop_fun(part):
                 print(fips_seed[0], fips_seed[1], temp,"B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP"))[-bbound:],'\n')
                 print(fips_seed[0], fips_seed[1], temp,"H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["HVAP"].percents("HVAP"))[-hbound:],'\n')
                 break
@@ -318,7 +336,7 @@ def VRAify_seeds(fips_seed):
         for node in graph.nodes():
             graph.nodes[node]['New_Seed'] = new_dict[node]
             
-        graph.to_json(f'../../20_intermediate_files/precinct_graphs/VRAseeds3/precinct_graph_{fips_seed[0]}_seed{fips_seed[1]}.json')  
+        graph.to_json(f'../../20_intermediate_files/precinct_graphs/VRAseeds4/precinct_graph_{fips_seed[0]}_seed{fips_seed[1]}.json')  
         
 
 from joblib import Parallel, delayed         
