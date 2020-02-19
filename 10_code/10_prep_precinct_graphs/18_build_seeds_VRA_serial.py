@@ -98,6 +98,8 @@ def grow_seeds(state_fips):
                             
     totpop = 0
     dists = set()
+    #print(graph.nodes[0])
+    #return 1
     for n in graph.nodes():
         totpop += graph.nodes[n]["population"]
         dists.add(graph.nodes[n]["district"])
