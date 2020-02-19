@@ -66,7 +66,7 @@ fips_list = [
         #'56'
              ]
 
-fips_list = ['06','12']
+fips_list = ['12']
 
 
 
@@ -95,7 +95,7 @@ from gerrychain.constraints.contiguity import contiguous_components, contiguous
 
 def grow_seeds(state_fips):
 
-    graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/preseed/'
+    graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/preseed2/'
                             f'precinct_graphs_{state_fips}.json')
                             
     totpop = 0
@@ -133,7 +133,7 @@ def grow_seeds(state_fips):
 
 
 
-n_jobs = 2
+n_jobs = 1
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(grow_seeds)(fips) for fips in fips_list)

@@ -105,9 +105,9 @@ for state_fips in indices:
     election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 
     for n in graph.nodes():
-        if state_fips in ['06','12'] and n==0:
-            print(state_fips,nx.is_connected(graph),graph.nodes[n])
-            print(len(list(graph.neighbors(22065))))#(nx.degree(graph)[343])
+        #if state_fips in ['06','12'] and n==0:
+        #    print(state_fips,nx.is_connected(graph),graph.nodes[n])
+        #    print(len(list(graph.neighbors(22065))))#(nx.degree(graph)[343])
         graph.nodes[n]["nBVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_BVAP"] 
         graph.nodes[n]["nHVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_HVAP"] 
 
