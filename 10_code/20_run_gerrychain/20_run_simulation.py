@@ -73,7 +73,7 @@ from gerrychain.updaters import Tally, cut_edges
 
 # Ignore errors: some overlap issues, but shouldn't matter for adjacency
 graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/'
-                        'VRAseeds_Final/precinct_graphs_{state_fips}_seed{run}.json')
+                        f'VRAseeds_Final/precinct_graph_{state_fips}_seed{run}.json')
 
 election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 for n in graph.nodes():
