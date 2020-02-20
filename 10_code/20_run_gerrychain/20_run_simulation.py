@@ -4,7 +4,7 @@ import pickle
 import csv
 import matplotlib
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
 import networkx as nx
 from functools import partial
 import json
@@ -18,7 +18,7 @@ state_run = os.getenv('STATE_RUN')
 state_index = int(state_run) // 3
 run = int(state_run) % 3
 
-f='../20_intermediate_files/sequential_to_fips.pickle'
+f='../../20_intermediate_files/sequential_to_fips.pickle'
 state_fips = pickle.load(open(f, "rb" ))[state_index]
 
 newdir = f"../20_intermediate_files/chain_ouputs/{state_fips}_run{run}/"
@@ -40,7 +40,7 @@ if state_fips == '37':
         bbound = 2
         percbound =.4
         b35 = 1
-        
+
     if run == 1:
         bbound = 1
         percbound =.4
@@ -72,12 +72,12 @@ from gerrychain import Graph, Partition, Election
 from gerrychain.updaters import Tally, cut_edges
 
 # Ignore errors: some overlap issues, but shouldn't matter for adjacency
-graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed{run}.json')
+graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed{run}.json')
 
 election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
 for n in graph.nodes():
-    graph.nodes[n]["nBVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_BVAP"] 
-    graph.nodes[n]["nHVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_HVAP"] 
+    graph.nodes[n]["nBVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_BVAP"]
+    graph.nodes[n]["nHVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_HVAP"]
 
 electionbvap = Election("BVAP", {"BVAP": "pop_BVAP", "nBVAP": "nBVAP"})
 
@@ -186,7 +186,7 @@ def VRA_bound(partition):
     if state_fips in ['12', '37']:
         if bvec[-b35] < .345:
             return False
-            
+
     if sum([x>percbound for x in bvec]) >= bbound:
         if sum([x>percbound for x in hvec]) >= hbound:
             return True
@@ -206,7 +206,7 @@ from gerrychain.metrics import efficiency_gap, mean_median, partisan_bias, parti
 from gerrychain.proposals import recom
 
 election_names = ["PRES2008"]
-num_elections = 1 
+num_elections = 1
 
 ideal_population = sum(initial_partition["population"].values()) / len(
     initial_partition
@@ -214,15 +214,15 @@ ideal_population = sum(initial_partition["population"].values()) / len(
 
 proposal = partial(
     recom, pop_col="population", pop_target=ideal_population, epsilon=0.01, node_repeats=1, method =my_uu_bipartition_tree_random)
-    
+
 threshold = 0.01
-    
+
 chain = MarkovChain(
     proposal=proposal,
     constraints=[VRA_bound, within_percent_of_ideal_population(initial_partition, threshold)],
     accept=always_accept,
     initial_state=initial_partition,
-    total_steps=100000
+    total_steps=100
 )
 
 pos = {node:(float(graph.nodes[node]['C_X']), float(graph.nodes[node]['C_Y'])) for node in graph.nodes}
@@ -240,12 +240,12 @@ hmss = []
 chain_flips = []
 
 step_index = 0
-for part in chain: 
+for part in chain:
     step_index += 1
-    
+
     if part.flips is not None:
         chain_flips.append(dict(part.flips))
-    else: 
+    else:
         chain_flips.append(dict())
     #Too much writing!
     #if part.flips is not None:
@@ -264,20 +264,20 @@ for part in chain:
     pgs.append([])
     hmss.append([])
     for elect in range(num_elections):
-    
+
         votes[elect].append(sorted(part[election_names[elect]].percents("Dem")))
         mms[-1].append(mean_median(part[election_names[elect]]))
         egs[-1].append(efficiency_gap(part[election_names[elect]]))
         hmss[-1].append(part[election_names[elect]].wins("Dem"))
         pbs[-1].append(partisan_bias(part[election_names[elect]]))
         pgs[-1].append(partisan_gini(part[election_names[elect]]))
-        
+
     if step_index % 10000 == 0:
         print(step_index)
-        
+
         with open(newdir+f'flips_{step_index}.json', 'w') as fp1:
             json.dump(chain_flips, fp1)
-        
+
         with open(newdir + "mms" + str(step_index) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
             writer.writerows(mms)
@@ -285,11 +285,11 @@ for part in chain:
         with open(newdir + "egs" + str(step_index) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
             writer.writerows(egs)
-            
+
         with open(newdir + "pbs" + str(step_index) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
             writer.writerows(pbs)
-            
+
         with open(newdir + "pgs" + str(step_index) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
             writer.writerows(pgs)
@@ -304,21 +304,21 @@ for part in chain:
 
         with open(newdir + "cuts" + str(step_index) + ".csv", "w") as tf1:
             writer = csv.writer(tf1, lineterminator="\n")
-            writer.writerows([cut_vec])     
-            
-            
+            writer.writerows([cut_vec])
+
+
         for elect in range(num_elections):
             with open(
             newdir + election_names[elect] + "_" + str(step_index) + ".csv", "w"
             ) as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
-                writer.writerows(votes[elect])  
+                writer.writerows(votes[elect])
 
         plt.figure(figsize=(8, 6), dpi=500)
-        nx.draw(graph, pos=pos, node_color=[dict(part.assignment)[node] for node in graph.nodes()], node_size = 20, cmap='tab20')                   
+        nx.draw(graph, pos=pos, node_color=[dict(part.assignment)[node] for node in graph.nodes()], node_size = 20, cmap='tab20')
         plt.savefig(newdir + "plot" + str(step_index) + ".png")
         plt.close()
-        
+
         pop_vec = []
         cut_vec = []
         votes = [[]]
@@ -328,6 +328,3 @@ for part in chain:
         pgs = []
         hmss = []
         chain_flips = []
-
-        
-    
