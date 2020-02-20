@@ -203,10 +203,10 @@ def VRAify_seeds(state_fips,seed_num):
     #percbound = seed2bound[seed_num]
     
 
-    graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/preseed2/precinct_graphs_{state_fips}.json')#_seed{seed_num}.json')
+    graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/preseed/precinct_graphs_{state_fips}.json')#_seed{seed_num}.json')
     
-    nx.draw(graph, pos = {n:(graph.nodes[n]['C_X'],graph.nodes[n]['C_Y']) for n in graph.nodes()}, node_size = 5)
-    plt.show()
+    #nx.draw(graph, pos = {n:(graph.nodes[n]['C_X'],graph.nodes[n]['C_Y']) for n in graph.nodes()}, node_size = 5)
+    #plt.show()
     #print(len(list(graph.neighbors(22065))))
     #print( graph.nodes[22065] )
     for n in graph.nodes():
@@ -238,8 +238,8 @@ def VRAify_seeds(state_fips,seed_num):
     
         
           
-    print(state_fips, seed_num,  "B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP")),'\n')
-    print(state_fips, seed_num,  "H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["HVAP"].percents("HVAP")),'\n')
+    #print(state_fips, seed_num,  "B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP")),'\n')
+    #print(state_fips, seed_num,  "H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["HVAP"].percents("HVAP")),'\n')
     
     from gerrychain.constraints.contiguity import contiguous_components, contiguous
     
@@ -255,7 +255,7 @@ def VRAify_seeds(state_fips,seed_num):
             
 #,(718940.0335368967, 733464.0746184502))
                 
-VRAify_seeds('06',0)             
+VRAify_seeds('12',0)             
 
         
 
