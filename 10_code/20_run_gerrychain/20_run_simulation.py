@@ -35,6 +35,35 @@ bbound = bvap_dict[state_fips][run]
 hbound = hvap_dict[state_fips][run]
 percbound = seed2bound[run]
 
+if state_fips == '37':
+    if run == 0:
+        bbound = 2
+        percbound =.4
+        b35 = 1
+        
+    if run == 1:
+        bbound = 1
+        percbound =.4
+        b35 = 2
+    if run == 2:
+        bbound = 1
+        percbound =.4
+        b35 = 1
+
+if state_fips == '12':
+    if run == 0:
+        bbound = 2
+        percbound =.4
+        b35 = 3
+    if run == 1:
+        bbound = 1
+        percbound =.45
+        b35 = 1
+    if run == 2:
+        bbound = 1
+        percbound =.5
+        b35 = 1
+
 ##########
 # Set Initial Partition
 ##########
@@ -153,6 +182,10 @@ def my_uu_bipartition_tree_random(
 def VRA_bound(partition):
     bvec = sorted(partition["BVAP"].percents("BVAP"))
     hvec = sorted(partition["HVAP"].percents("HVAP"))
+
+    if state_fips in ['12', '37']:
+        if bvec[-b35] < .345:
+            return False
             
     if sum([x>percbound for x in bvec]) >= bbound:
         if sum([x>percbound for x in hvec]) >= hbound:
@@ -186,7 +219,7 @@ threshold = 0.01
     
 chain = MarkovChain(
     proposal=proposal,
-    constraints=[VRA_bound,within_percent_of_ideal_population(initial_partition, threshold)],
+    constraints=[VRA_bound, within_percent_of_ideal_population(initial_partition, threshold)],
     accept=always_accept,
     initial_state=initial_partition,
     total_steps=100000
