@@ -100,6 +100,10 @@ hvap_dict = {'01': (0, 0, 0), '04': (2, 2, 2), '05': (0, 0, 0), '06': (15, 12, 1
 
 seed2bound = {0: .4, 1: .45, 2: .5}
 
+bvap_dict = {'37': (2, 1, 1)}
+
+seed2bound = {0: .4, 1: .4, 2: .4}
+
 
 
 
@@ -187,8 +191,10 @@ def my_uu_bipartition_tree_random(
 
 
 inputs = [('34',2),('39',2),('37',0),('37',1),('37',2)]
-inputs = [('12',2),('12',1),('12',0)]
 inputs = [('06',2),('06',1),('06',0)]
+inputs = [('37',2),('37',1),('37',0)]
+inputs = [('12',1),('12',0)]
+
 
 from gerrychain import MarkovChain
 from gerrychain.constraints import single_flip_contiguous, contiguous_bfs, within_percent_of_ideal_population
@@ -238,7 +244,7 @@ def VRAify_seeds(fips_seed):
             bvec = sorted(partition["BVAP"].percents("BVAP"))
             hvec = sorted(partition["HVAP"].percents("HVAP"))
             
-            if sum([x>percbound for x in bvec]) >= bbound:
+            if sum([x>percbound for x in bvec]) >= bbound: ### and sum([x>.35 for x in bvec]) >= 2SECOND PART JUST FOR NC
                 if sum([x>percbound for x in hvec]) >= hbound:
                     return True
             else:
@@ -261,10 +267,10 @@ def VRAify_seeds(fips_seed):
                         bound = 0
                         
                         
-                if hbound > 0:
-                    #if sum([x>percbound for x in hvec]) < hbound:#FOR FL 
-                    if parenthvec[-hbound] > hvec[-hbound]:
-                        bound = 0
+                #if hbound > 0:
+                #    #if sum([x>percbound for x in hvec]) < hbound:#FOR FL 
+                #    if parenthvec[-hbound] > hvec[-hbound]:
+                #        bound = 0
                         
             return bound
                                         
@@ -319,7 +325,7 @@ def VRAify_seeds(fips_seed):
         for node in graph.nodes():
             graph.nodes[node]['New_Seed'] = new_dict[node]
             
-        graph.to_json(f'../../20_intermediate_files/precinct_graphs/VRAseeds3/precinct_graph_{fips_seed[0]}_seed{fips_seed[1]}.json')  
+        graph.to_json(f'../../20_intermediate_files/precinct_graphs/VRAseeds5/precinct_graph_{fips_seed[0]}_seed{fips_seed[1]}.json')  
         
 
 from joblib import Parallel, delayed         
