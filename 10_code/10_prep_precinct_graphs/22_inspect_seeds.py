@@ -105,80 +105,6 @@ seed2bound = {0: .4, 1: .45, 2: .5}
 
 from gerrychain.tree import recursive_tree_part, bipartition_tree_random, PopulatedGraph,contract_leaves_until_balanced_or_none,find_balanced_edge_cuts
 
-def get_spanning_tree_u_w(G):
-    node_set=set(G.nodes())
-    x0=random.choice(tuple(node_set))
-    x1=x0
-    while x1==x0:
-        x1=random.choice(tuple(node_set))
-    node_set.remove(x1)
-    tnodes ={x1}
-    tedges=[]
-    current=x0
-    current_path=[x0]
-    current_edges=[]
-    while node_set != set():
-        next=random.choice(list(G.neighbors(current)))
-        current_edges.append((current,next))
-        current = next
-        current_path.append(next)
-
-        if next in tnodes:
-            for x in current_path[:-1]:
-                node_set.remove(x)
-                tnodes.add(x)
-            for ed in current_edges:
-                tedges.append(ed)
-            current_edges = []
-            if node_set != set():
-                current=random.choice(tuple(node_set))
-            current_path=[current]
-
-
-        if next in current_path[:-1]:
-            current_path.pop()
-            current_edges.pop()
-            for i in range(len(current_path)):
-                if current_edges !=[]:
-                    current_edges.pop()
-                if current_path.pop() == next:
-                    break
-            if len(current_path)>0:
-                current=current_path[-1]
-            else:
-                current=random.choice(tuple(node_set))
-                current_path=[current]
-
-    #tgraph = Graph()
-    #tgraph.add_edges_from(tedges)
-    return G.edge_subgraph(tedges)
-
-def my_uu_bipartition_tree_random(
-    graph,
-    pop_col,
-    pop_target,
-    epsilon,
-    node_repeats=1,
-    spanning_tree=None,
-    choice=random.choice):
-    populations = {node: graph.nodes[node][pop_col] for node in graph}
-
-    possible_cuts = []
-    #if spanning_tree is None:
-    #    spanning_tree = get_spanning_tree_u_w(graph)
-
-    tree_attempts = 0
-    while len(possible_cuts) == 0:
-        tree_attempts += 1
-        if tree_attempts == 25:
-            #print('25 trees')
-            return set()
-        spanning_tree = get_spanning_tree_u_w(graph)
-        h = PopulatedGraph(spanning_tree, populations, pop_target, epsilon)
-        possible_cuts = find_balanced_edge_cuts(h, choice=choice)
-
-    return choice(possible_cuts).subset
-
 
 
 ############
@@ -198,12 +124,12 @@ def VRAify_seeds(state_fips,seed_num):
 
 
 
-    #bbound = bvap_dict[state_fips][seed_num]
-    #hbound = hvap_dict[state_fips][seed_num]
-    #percbound = seed2bound[seed_num]
+    bbound = bvap_dict[state_fips][seed_num]
+    hbound = hvap_dict[state_fips][seed_num]
+    percbound = seed2bound[seed_num]
     
 
-    graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/preseed/precinct_graphs_{state_fips}.json')#_seed{seed_num}.json')
+    graph = Graph.from_json(f'../../20_intermediate_files/precinct_graphs/VRAseeds_Final/precinct_graph_{state_fips}_seed{seed_num}.json')
     
     #nx.draw(graph, pos = {n:(graph.nodes[n]['C_X'],graph.nodes[n]['C_Y']) for n in graph.nodes()}, node_size = 5)
     #plt.show()
@@ -222,7 +148,7 @@ def VRAify_seeds(state_fips,seed_num):
 
     initial_partition = Partition(
         graph,
-        assignment='district',
+        assignment='New_Seed',
         updaters={
             "cut_edges": cut_edges,
             "population": Tally("population", alias="population"),
@@ -238,8 +164,8 @@ def VRAify_seeds(state_fips,seed_num):
     
         
           
-    #print(state_fips, seed_num,  "B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP")),'\n')
-    #print(state_fips, seed_num,  "H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["HVAP"].percents("HVAP")),'\n')
+    print(state_fips, seed_num,  "B", sum([x>percbound for x in sorted(part["BVAP"].percents("BVAP"))]),bbound,'\n',sorted(part["BVAP"].percents("BVAP")),'\n')
+    print(state_fips, seed_num,  "H", sum([x>percbound for x in sorted(part["HVAP"].percents("HVAP"))]),hbound,'\n',sorted(part["HVAP"].percents("HVAP")),'\n')
     
     from gerrychain.constraints.contiguity import contiguous_components, contiguous
     
@@ -255,7 +181,7 @@ def VRAify_seeds(state_fips,seed_num):
             
 #,(718940.0335368967, 733464.0746184502))
                 
-VRAify_seeds('12',0)             
+VRAify_seeds('12',1)             
 
         
 
