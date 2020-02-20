@@ -100,9 +100,9 @@ hvap_dict = {'01': (0, 0, 0), '04': (2, 2, 2), '05': (0, 0, 0), '06': (15, 12, 1
 
 seed2bound = {0: .4, 1: .45, 2: .5}
 
-bvap_dict = {'37': (2, 1, 1)}
+#bvap_dict = {'37': (2, 1, 1)}
 
-seed2bound = {0: .4, 1: .4, 2: .4}
+#seed2bound = {0: .4, 1: .4, 2: .4}
 
 
 
@@ -267,15 +267,48 @@ def VRAify_seeds(fips_seed):
                         bound = 0
                         
                         
-                #if hbound > 0:
+                if hbound > 0:
                 #    #if sum([x>percbound for x in hvec]) < hbound:#FOR FL 
-                #    if parenthvec[-hbound] > hvec[-hbound]:
-                #        bound = 0
+                    if parenthvec[-hbound] > hvec[-hbound]:
+                        bound = 0
                         
             return bound
                                         
         
+        def FL_vra_accept(partition):
         
+
+            
+            bound = 1
+            
+            if partition.parent is not None:
+                bvec = sorted(partition["BVAP"].percents("BVAP"))
+                hvec = sorted(partition["HVAP"].percents("HVAP"))            
+                parentbvec = sorted(partition.parent["BVAP"].percents("BVAP"))
+                parenthvec = sorted(partition.parent["HVAP"].percents("HVAP"))
+
+
+                
+                if bvec[-1] > percbound:
+                    if bvec[-2] > percbound:
+                    
+                        if parentbvec[-3] > bvec[-3]:
+                            bound = 0
+                    else: 
+                        if parentbvec[-2] > bvec[-2]:
+                            bound = 0
+                else:
+                    if parentbvec[-1] > bvec[-1]:
+                        bound = 0
+                        
+                        
+                #if hbound > 0:
+                #    if sum([x>percbound for x in hvec]) < hbound:#FOR FL 
+                #    if parenthvec[-hbound] > hvec[-hbound]:
+                #        bound = 0
+                        
+            return bound
+       
             
                 
         #doesitwork = within_percent_of_ideal_population(initial_partition, 0.01)
@@ -294,9 +327,9 @@ def VRAify_seeds(fips_seed):
         chain = MarkovChain(
             proposal=proposal,
             constraints=[within_percent_of_ideal_population(initial_partition, 0.01)],
-            accept=vra_accept,
+            accept=FL_vra_accept,
             initial_state=initial_partition,
-            total_steps=100000
+            total_steps=50000
         )
         
         
