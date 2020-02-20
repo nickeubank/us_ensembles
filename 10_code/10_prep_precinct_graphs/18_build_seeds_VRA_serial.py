@@ -66,7 +66,7 @@ fips_list = [
         #'56'
              ]
 
-fips_list = ['12']
+fips_list = ['06']
 
 
 

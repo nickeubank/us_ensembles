@@ -188,7 +188,7 @@ def my_uu_bipartition_tree_random(
 
 inputs = [('34',2),('39',2),('37',0),('37',1),('37',2)]
 inputs = [('12',2),('12',1),('12',0)]
-#inputs = [('06',2),('06',1),('06',0)]
+inputs = [('06',2),('06',1),('06',0)]
 
 from gerrychain import MarkovChain
 from gerrychain.constraints import single_flip_contiguous, contiguous_bfs, within_percent_of_ideal_population
@@ -262,7 +262,8 @@ def VRAify_seeds(fips_seed):
                         
                         
                 if hbound > 0:
-                    if sum([x>percbound for x in hvec]) < hbound:#CHANGED FOR FL parenthvec[-hbound] > hvec[-hbound]:
+                    #if sum([x>percbound for x in hvec]) < hbound:#FOR FL 
+                    if parenthvec[-hbound] > hvec[-hbound]:
                         bound = 0
                         
             return bound

@@ -26,6 +26,15 @@ os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
 with open(newdir + "init.txt", "w") as f:
     f.write("Created Folder")
 
+
+bvap_dict = {'01': (1, 1, 1), '04': (0, 0, 0), '05': (0, 0, 0), '06': (0, 0, 0), '08': (0, 0, 0), '09': (0, 0, 0), '12': (3, 3, 1), '13': (4, 4, 3), '16': (0, 0, 0), '17': (3, 3, 2), '18': (0, 0, 0), '19': (0, 0, 0), '20': (0, 0, 0), '21': (0, 0, 0), '22': (1, 1, 1), '23': (0, 0, 0), '24': (2, 2, 2), '25': (0, 0, 0), '26': (2, 2, 2), '27': (0, 0, 0), '28': (1, 1, 1), '29': (1, 1, 0), '31': (0, 0, 0), '32': (0, 0, 0), '33': (0, 0, 0), '34': (1, 1, 1), '35': (0, 0, 0), '36': (3, 3, 3), '37': (2, 2, 1), '39': (1, 1, 1), '40': (0, 0, 0), '42': (1, 1, 1), '44': (0, 0, 0), '45': (1, 1, 1), '47': (1, 1, 1), '48': (2, 0, 0), '49': (0, 0, 0), '51': (1, 1, 1), '53': (0, 0, 0), '54': (0, 0, 0), '55': (0, 0, 0)}
+hvap_dict = {'01': (0, 0, 0), '04': (2, 2, 2), '05': (0, 0, 0), '06': (15, 12, 12), '08': (0, 0, 0), '09': (0, 0, 0), '12': (4, 3, 3), '13': (0, 0, 0), '16': (0, 0, 0), '17': (1, 1, 1), '18': (0, 0, 0), '19': (0, 0, 0), '20': (0, 0, 0), '21': (0, 0, 0), '22': (0, 0, 0), '23': (0, 0, 0), '24': (0, 0, 0), '25': (0, 0, 0), '26': (0, 0, 0), '27': (0, 0, 0), '28': (0, 0, 0), '29': (0, 0, 0), '31': (0, 0, 0), '32': (0, 0, 0), '33': (0, 0, 0), '34': (1, 1, 1), '35': (2, 1, 0), '36': (4, 2, 2), '37': (0, 0, 0), '39': (0, 0, 0), '40': (0, 0, 0), '42': (0, 0, 0), '44': (0, 0, 0), '45': (0, 0, 0), '47': (0, 0, 0), '48': (10, 10, 9), '49': (0, 0, 0), '51': (0, 0, 0), '53': (0, 0, 0), '54': (0, 0, 0), '55': (0, 0, 0)}
+seed2bound = {0: .4, 1: .45, 2: .5}
+
+bbound = bvap_dict[state_fips][run]
+hbound = hvap_dict[state_fips][run]
+percbound = seed2bound[run]
+
 ##########
 # Set Initial Partition
 ##########
@@ -37,6 +46,13 @@ from gerrychain.updaters import Tally, cut_edges
 graph = Graph.from_json(f'../20_intermediate_files/precinct_graphs/precinct_graphs_{state_fips}_seed{run}.json')
 
 election = Election("PRES2008", {"Dem": "P2008_D", "Rep": "P2008_R"})
+for n in graph.nodes():
+    graph.nodes[n]["nBVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_BVAP"] 
+    graph.nodes[n]["nHVAP"] = graph.nodes[n]["pop_VAP"] - graph.nodes[n]["pop_HVAP"] 
+
+electionbvap = Election("BVAP", {"BVAP": "pop_BVAP", "nBVAP": "nBVAP"})
+
+electionhvap = Election("HVAP", {"HVAP": "pop_HVAP", "nHVAP": "nHVAP"})
 
 initial_partition = Partition(
     graph,
@@ -44,7 +60,9 @@ initial_partition = Partition(
     updaters={
         "cut_edges": cut_edges,
         "population": Tally("population", alias="population"),
-        "PRES2008": election
+        "PRES2008": election,
+        "BVAP" : electionbvap,
+        "HVAP" : electionhvap
     }
 )
 
@@ -132,6 +150,15 @@ def my_uu_bipartition_tree_random(
 
     return choice(possible_cuts).subset
 
+def VRA_bound(partition):
+    bvec = sorted(partition["BVAP"].percents("BVAP"))
+    hvec = sorted(partition["HVAP"].percents("HVAP"))
+            
+    if sum([x>percbound for x in bvec]) >= bbound:
+        if sum([x>percbound for x in hvec]) >= hbound:
+            return True
+    else:
+        return False
 
 
 ############
@@ -155,13 +182,11 @@ ideal_population = sum(initial_partition["population"].values()) / len(
 proposal = partial(
     recom, pop_col="population", pop_target=ideal_population, epsilon=0.01, node_repeats=1, method =my_uu_bipartition_tree_random)
     
-threshold = 0.02
-if state_fips in ['06', '12']:
-    threshold = 0.05
+threshold = 0.01
     
 chain = MarkovChain(
     proposal=proposal,
-    constraints=[within_percent_of_ideal_population(initial_partition, threshold)],
+    constraints=[VRA_bound,within_percent_of_ideal_population(initial_partition, threshold)],
     accept=always_accept,
     initial_state=initial_partition,
     total_steps=100000
