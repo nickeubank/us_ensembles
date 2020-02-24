@@ -338,10 +338,10 @@ def join_and_evaluate_dislocation(state_fips):
             """
             with open(newdir + "bvaps" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
-                writer.writerows(bvaps)
+                writer.writerows(bvaps[-1])
             with open(newdir + "hvaps" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
-                writer.writerows(hvaps)
+                writer.writerows(hvaps[-1])
             with open(newdir + "new_adloc" + str(t) + ".csv", "w") as tf1:
                 writer = csv.writer(tf1, lineterminator="\n")
                 writer.writerows(new_adlocs)
@@ -397,7 +397,7 @@ def join_and_evaluate_dislocation(state_fips):
             bvaps = []
             hvaps = []
 
-        return state_fips
+    return state_fips
         
 
 ##
@@ -406,7 +406,7 @@ def join_and_evaluate_dislocation(state_fips):
         
 from joblib import Parallel, delayed
 
-n_jobs = 12
+n_jobs = 18
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(join_and_evaluate_dislocation)(fips) for fips in fips_list)
