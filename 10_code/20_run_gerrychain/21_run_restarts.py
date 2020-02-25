@@ -91,7 +91,7 @@ electionhvap = Election("HVAP", {"HVAP": "pop_HVAP", "nHVAP": "nHVAP"})
 
 initial_partition = Partition(
     graph,
-    assignment='Restart_Seed',
+    assignment='restart_seed',
     updaters={
         "cut_edges": cut_edges,
         "population": Tally("population", alias="population"),
