@@ -206,6 +206,7 @@ def join_and_evaluate_dislocation(state_fips,runs,restart):
     for n in graph.nodes():
         graph.nodes[n]['restart_seed'] =  restart_dict[n]
 
+
     graph.to_json(f"./restart_seed_{state_fips}_run{run}_restart{restart}.json")
     print(f"restart_seed_{state_fips}_run{run}_restart{restart} ",contiguous(new_partition))
 
@@ -226,6 +227,9 @@ def join_and_evaluate_dislocation(state_fips,runs,restart):
 from joblib import Parallel, delayed
 
 fips_list = [('17',0,90000),('17',1,90000),('20',1,50000),('20',2,50000),
+('22',0,90000),('22',1,70000),('22',2,50000),('39',1,90000),('39',2,90000),('54',2,90000)]
+
+fips_list = [('17',1,90000),('20',1,50000),('20',2,50000),
 ('22',0,90000),('22',1,70000),('22',2,50000),('39',1,90000),('39',2,90000),('54',2,90000)]
 
 n_jobs = 5
