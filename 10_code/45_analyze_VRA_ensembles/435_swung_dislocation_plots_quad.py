@@ -145,7 +145,7 @@ for state_fips in fips_list:
             
         ts = [x * step_size for x in range(1, int(max_steps / step_size) + 1)]
         
-        datadir = f"../../../../Dropbox/dislocation_intermediate_files/120_vra_ensembles/{state_fips}_run{run}/dislocation/"
+        datadir = f"../../../../Dropbox/dislocation_intermediate_files/120_vra_ensembles/{state_fips}_run{run}/dislocations/"
         
         
         datadir2 = f"../../../../Dropbox/dislocation_intermediate_files/120_vra_ensembles/{state_fips}_run{run}/" 
