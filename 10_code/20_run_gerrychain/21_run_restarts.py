@@ -16,10 +16,10 @@ import random
 
 
 fips_list = [('54',2,90000),('17',0,90000),('17',1,90000),('20',1,50000),('20',2,50000),
-('22',0,90000),('22',1,70000),('22',2,50000),('39',1,90000),('39',2,90000)]
+('22',0,90000),('22',1,70000),('22',2,50000),('39',1,90000),('39',2,90000),('55',0,90000), ('20',0,80000)]
 
 
-state_fips, run, restart = fips_list[0]
+state_fips, run, restart = fips_list[11]
 
 newdir = f"../../../../Dropbox/dislocation_intermediate_files/120_vra_ensembles/{state_fips}_run{run}/restart/"
 

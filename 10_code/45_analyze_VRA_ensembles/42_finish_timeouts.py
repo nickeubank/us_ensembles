@@ -232,7 +232,11 @@ fips_list = [('17',0,90000),('17',1,90000),('20',1,50000),('20',2,50000),
 fips_list = [('17',1,90000),('20',1,50000),('20',2,50000),
 ('22',0,90000),('22',1,70000),('22',2,50000),('39',1,90000),('39',2,90000),('54',2,90000)]
 
-n_jobs = 5
+fips_list = [('55',0,90000)]
+
+fips_list = [('20',0,80000)]
+
+n_jobs = 1
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(join_and_evaluate_dislocation)(fips[0],fips[1],fips[2]) for fips in fips_list)
