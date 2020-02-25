@@ -106,7 +106,7 @@ from gerrychain.updaters import Tally, cut_edges
 ##
     
     
-def join_and_evaluate_dislocation(state_fips,run,restart):
+def join_and_evaluate_dislocation(state_fips,runs,restart):
 
     dlocs = []
     dlocs_q = []
@@ -163,7 +163,7 @@ def join_and_evaluate_dislocation(state_fips,run,restart):
     
     print("loaded precincts/points")
     
-    while True:#for run in ['0','1','2']:#['0','1','2']:
+    for run in [runs]:#for run in ['0','1','2']:#['0','1','2']:
         
         datadir = f"../../../../Dropbox/dislocation_intermediate_files/120_vra_ensembles/{state_fips}_run{run}/"
         
@@ -236,14 +236,13 @@ def join_and_evaluate_dislocation(state_fips,run,restart):
                     }
                 )
 
-        restart_dict = dict(new_partition.assignment)
+    restart_dict = dict(new_partition.assignment)
 
-        for n in graph.nodes():
-            graph.nodes[n]['restart_seed'] =  resart_dict[n]
+    for n in graph.nodes():
+        graph.nodes[n]['restart_seed'] =  resart_dict[n]
 
-        graph.to_json(f"./restart_seed_{state_fips}_run{run}_restart{restart}.json")
-
-        print(f"restart_seed_{state_fips}_run{run}_restart{restart} ",contiguous(new_partition))
+    graph.to_json(f"./restart_seed_{state_fips}_run{run}_restart{restart}.json")
+    print(f"restart_seed_{state_fips}_run{run}_restart{restart} ",contiguous(new_partition))
 
         
         
