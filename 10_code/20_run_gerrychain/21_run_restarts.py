@@ -15,13 +15,13 @@ import random
 ###########
 
 
-fips_list = [('17',0,90000),('17',1,90000),('20',1,50000),('20',2,50000),
-('22',0,90000),('22',1,70000),('22',2,50000),('39',1,90000),('39',2,90000),('54',2,90000)]
+fips_list = [('54',2,90000),('17',0,90000),('17',1,90000),('20',1,50000),('20',2,50000),
+('22',0,90000),('22',1,70000),('22',2,50000),('39',1,90000),('39',2,90000)]
 
 
 state_fips, run, restart = fips_list[0]
 
-newdir = f"../../../../Dropbox/dislocation_intermediate_files/120_vra_ensembles/{state_fips}_run{run}/"
+newdir = f"../../../../Dropbox/dislocation_intermediate_files/120_vra_ensembles/{state_fips}_run{run}/restart/"
 
 os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
 with open(newdir + "init.txt", "w") as f:
@@ -281,7 +281,7 @@ for part in chain:
         pgs[-1].append(partisan_gini(part[election_names[elect]]))
 
     if step_index % 10000 == 0:
-        print(step_index)
+        print(state_fips, step_index, run)
 
         with open(newdir+f'flips_{step_index}.json', 'w') as fp1:
             json.dump(chain_flips, fp1)
