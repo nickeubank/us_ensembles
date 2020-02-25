@@ -121,43 +121,8 @@ def join_and_evaluate_dislocation(state_fips,runs,restart):
     bvaps = []
     hvaps = []
 
-
-    #Point initialization happens here
-    #check for crs matching!
     
     
-    #state_precincts = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Precincts.shp")
-    
-    
-    #state_precincts = gpd.read_file(f"../20_intermediate_files/pre_processed_precinct_maps/precincts_{state_fips}.shp")#ONLY FOR CA!!!! use above for everywhere else. 
-    
-    
-    #state_points = gpd.read_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_USHouse.shp") # THIS FILEANAME isn't quite right - need to check format values. 
-
-    
-    
-    """
-    
-    state_precincts = state_precincts.to_crs(state_points.crs)
-    print(state_precincts.crs)
-    print(state_points.crs)
-
-    print("changed crs")
-
-    point_assign = assign(state_points, state_precincts)
-    
-    state_precincts.to_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Precincts.shp")
-    state_precincts = []
-    
-    print("Made Assignment")
-    
-    state_points['precinct'] = point_assign
-    
-    point_assign = []
-    
-
-    state_points.to_file(f"../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Points.shp")
-    """
     
     state_points = gpd.read_file(f"../../../../Dropbox/dislocation_intermediate_files/60_voter_knn_scores/shapefiles/{state_names[state_fips]}_Matched_Points.shp")
     
@@ -239,7 +204,7 @@ def join_and_evaluate_dislocation(state_fips,runs,restart):
     restart_dict = dict(new_partition.assignment)
 
     for n in graph.nodes():
-        graph.nodes[n]['restart_seed'] =  resart_dict[n]
+        graph.nodes[n]['restart_seed'] =  restart_dict[n]
 
     graph.to_json(f"./restart_seed_{state_fips}_run{run}_restart{restart}.json")
     print(f"restart_seed_{state_fips}_run{run}_restart{restart} ",contiguous(new_partition))
