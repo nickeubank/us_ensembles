@@ -57,9 +57,9 @@ fips_list = [
         '17',
         '18',
         '19',
-        #'20',
+        '20',
         '21',
-        '22',
+        #'22',
         '23',
         '24',
         '25',
@@ -137,7 +137,7 @@ for state_fips in fips_list:
     #wseats = []
 
     
-    for run in ['0']:#['0','1','2']:
+    for run in ['0','1','2']:
         names.append(state_names[state_fips])
         max_steps = 100000
         step_size = 10000
@@ -150,7 +150,7 @@ for state_fips in fips_list:
         
         datadir2 = f"../../../../Dropbox/dislocation_intermediate_files/120_vra_ensembles/{state_fips}_run{run}/" 
         
-        newdir = f"../../../../Dropbox/dislocation_intermediate_files/Filtered_Swung_Plots_VRA/{state_fips}_"
+        newdir = f"../../../../Dropbox/dislocation_intermediate_files/Filtered_Swung_Plots_VRA/run{run}/{state_fips}_"
         
         os.makedirs(os.path.dirname(newdir + "init.txt"), exist_ok=True)
         with open(newdir + "init.txt", "w") as f:

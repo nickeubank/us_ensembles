@@ -31,9 +31,9 @@ fips_list = [
         '17',
         '18',
         '19',
-        #'20',
+        '20',
         '21',
-        '22',
+        #'22',
         '23',
         '24',
         '25',
@@ -84,7 +84,7 @@ sub_sample = 1
 
 
 for state_fips in fips_list:
-    for run in ['0']:
+    for run in ['1','2']:
         print('starting', state_fips, run)
 
         

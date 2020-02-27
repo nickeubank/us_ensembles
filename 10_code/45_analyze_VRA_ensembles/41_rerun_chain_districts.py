@@ -90,7 +90,9 @@ fips_list = [
         #'56'
              ]
 
-#fips_list = ['12','36']
+fips_list = ['17','39','54','22']
+
+fips_list = ['55']
 plan_name = "Enacted"
 
 election_name = election_names[0]
@@ -163,7 +165,13 @@ def join_and_evaluate_dislocation(state_fips):
     
     print("loaded precincts/points")
     
-    for run in ['0','1','2']:#['0','1','2']:
+    run_list = ['0','1','2']
+    if state_fips == '22':
+        run_list = ['0']
+    if state_fips == '55':
+        run_list = ['0']#['1','2']
+    
+    for run in run_list:#['0','1','2']:
         
         datadir = f"../../../../Dropbox/dislocation_intermediate_files/120_vra_ensembles/{state_fips}_run{run}/"
         
@@ -406,7 +414,7 @@ def join_and_evaluate_dislocation(state_fips):
         
 from joblib import Parallel, delayed
 
-n_jobs = 18
+n_jobs = 1
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(join_and_evaluate_dislocation)(fips) for fips in fips_list)
