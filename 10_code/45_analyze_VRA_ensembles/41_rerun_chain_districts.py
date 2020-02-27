@@ -90,9 +90,9 @@ fips_list = [
         #'56'
              ]
 
-fips_list = ['17','39','54','22']
+fips_list = ['20','22']
 
-fips_list = ['55']
+#fips_list = ['55']
 plan_name = "Enacted"
 
 election_name = election_names[0]
@@ -167,9 +167,9 @@ def join_and_evaluate_dislocation(state_fips):
     
     run_list = ['0','1','2']
     if state_fips == '22':
-        run_list = ['0']
-    if state_fips == '55':
-        run_list = ['0']#['1','2']
+        run_list = ['1','2']
+    #if state_fips == '55':
+    #    run_list = ['0']#['1','2']
     
     for run in run_list:#['0','1','2']:
         
@@ -414,7 +414,7 @@ def join_and_evaluate_dislocation(state_fips):
         
 from joblib import Parallel, delayed
 
-n_jobs = 1
+n_jobs = 2
 
 results = (Parallel(n_jobs=n_jobs, verbose=10)
            (delayed(join_and_evaluate_dislocation)(fips) for fips in fips_list)

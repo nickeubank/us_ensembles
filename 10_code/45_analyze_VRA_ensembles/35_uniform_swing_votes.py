@@ -66,6 +66,9 @@ fips_list = [
         '55',
         #'56'
              ]
+             
+             
+fips_list = ['20']
 
 plan_name = "Enacted"
 
@@ -84,7 +87,7 @@ sub_sample = 1
 
 
 for state_fips in fips_list:
-    for run in ['1','2']:
+    for run in ['0']:
         print('starting', state_fips, run)
 
         
