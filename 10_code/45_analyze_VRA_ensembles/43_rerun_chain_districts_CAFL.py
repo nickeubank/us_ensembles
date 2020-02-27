@@ -168,13 +168,13 @@ def join_and_evaluate_dislocation(state_fips, run):
     
     print("loaded precincts/points")
     
-    run_list = ['0','1','2']
+    #run_list = ['0','1','2']
     #if state_fips == '22':
     #    run_list = ['1','2']
     #if state_fips == '55':
     #    run_list = ['0']#['1','2']
     
-    for run in run_list:#['0','1','2']:
+    for attempt in [0]:#['0','1','2']:
         
         datadir = f"../../../../Dropbox/dislocation_intermediate_files/120_vra_ensembles/{state_fips}_run{run}/"
         
