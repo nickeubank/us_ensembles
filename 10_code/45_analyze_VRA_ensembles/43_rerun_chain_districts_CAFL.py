@@ -202,7 +202,7 @@ def join_and_evaluate_dislocation(state_fips, run):
 
         
         state_points['prec_index'] = state_points['OBJECTID'].map(prec_to_index)
-        print(state_points['prec_index'])
+        #print(state_points['prec_index'])
         #print('relabeled')
         
         
@@ -321,7 +321,7 @@ def join_and_evaluate_dislocation(state_fips, run):
                 #dlocs[-1].append(state_points["dislocate"].mean())
                 new_adlocs[-1].append(state_points["dislocate"].mean())
                 
-                print(new_adlocs[-1][-1])
+                #print(new_adlocs[-1][-1])
 
                 #Rdlocs[-1].append(len(state_points[state_points["dislocate"]>0]))
                 #Ddlocs[-1].append(len(state_points[state_points["dislocate"]<0]))
