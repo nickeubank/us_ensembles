@@ -37,6 +37,19 @@ Starting 05
  whole: 0.0 0.0 
  Number: 80413 
  winnowed: 0.0 0.0
+Starting 06
+06 0 
+ whole: 32.0 41.0 
+ Number: 33184 
+ winnowed: 32.0 40.0
+06 1 
+ whole: 32.0 41.0 
+ Number: 32817 
+ winnowed: 32.0 40.0
+06 2 
+ whole: 32.0 41.0 
+ Number: 41535 
+ winnowed: 32.0 41.0
 Starting 08
 08 0 
  whole: 2.0 6.0 
@@ -63,6 +76,19 @@ Starting 09
  whole: 4.0 5.0 
  Number: 76938 
  winnowed: 4.0 5.0
+Starting 12
+12 0 
+ whole: 6.0 14.0 
+ Number: 33079 
+ winnowed: 7.0 13.0
+12 1 
+ whole: 6.0 13.0 
+ Number: 3591 
+ winnowed: 6.0 12.0
+12 2 
+ whole: 7.0 12.0 
+ Number: 4140 
+ winnowed: 7.0 12.0
 Starting 13
 13 0 
  whole: 1.0 5.0 
@@ -116,6 +142,19 @@ Starting 19
  whole: 0.0 2.0 
  Number: 45537 
  winnowed: 0.0 2.0
+Starting 20
+20 0 
+ whole: 0.0 1.0 
+ Number: 34701 
+ winnowed: 0.0 1.0
+20 1 
+ whole: 0.0 1.0 
+ Number: 35188 
+ winnowed: 0.0 1.0
+20 2 
+ whole: 0.0 1.0 
+ Number: 35842 
+ winnowed: 0.0 1.0
 Starting 21
 21 0 
  whole: 0.0 1.0 
@@ -129,6 +168,19 @@ Starting 21
  whole: 0.0 1.0 
  Number: 19564 
  winnowed: 0.0 1.0
+Starting 22
+22 0 
+ whole: 0.0 1.0 
+ Number: 32873 
+ winnowed: 0.0 1.0
+22 1 
+ whole: 0.0 2.0 
+ Number: 22828 
+ winnowed: 0.0 1.0
+22 2 
+ whole: 1.0 2.0 
+ Number: 16344 
+ winnowed: 1.0 1.0
 Starting 23
 23 0 
  whole: 2.0 2.0 
@@ -455,4 +507,5 @@ Starting 55
  whole: 3.0 8.0 
  Number: 25754 
  winnowed: 5.0 8.0
+369 total states 73 perfect matches
 
